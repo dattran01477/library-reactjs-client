@@ -1,10 +1,17 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import BookSheft from "./components/book/BookShelf";
+import BookCardContainer from "./components/book/BookCardContainer";
+import BookCardCarouselContainer from "./components/carousel/BookCardCarouselContainer";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Container, Row } from "react-bootstrap";
 
 function App() {
-  return <BookSheft />;
+  return (
+    <Container>
+      <BookCardCarouselContainer />
+      <BookCardContainer />
+    </Container>
+  );
 }
 
 export default App;
