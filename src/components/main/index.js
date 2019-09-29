@@ -3,9 +3,10 @@ import { Route, Switch } from "react-router-dom";
 import "../../assets/scss/argon-dashboard-react.scss";
 import "../../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 import "../../assets/vendor/nucleo/css/nucleo.css";
-import routes from "../../share/constants/route";
-import SideMenu from "../sidebar";
 
+import routes from "../../share/route";
+import SideMenu from "../sidebar";
+import Header from "../header";
 
 class MainApp extends Component {
   getRoutes = routes => {
@@ -32,6 +33,7 @@ class MainApp extends Component {
           }}
         />
         <div className="main-content" ref="mainContent">
+          <Header />
           <Switch>{this.getRoutes(routes)}</Switch>
         </div>
       </>

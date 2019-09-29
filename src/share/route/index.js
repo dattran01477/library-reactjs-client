@@ -1,4 +1,4 @@
-import Books from "../../../components/book/BookCardContainer";
+import Books from "../../components/book/BookCardContainer";
 var routes = [
   {
     path: "/books",
@@ -8,4 +8,5 @@ var routes = [
     layout: ""
   }
 ];
+
 export default routes;
