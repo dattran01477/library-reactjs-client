@@ -1,17 +1,10 @@
 import React from "react";
 import "./App.css";
-import BookCardContainer from "./components/book/BookCardContainer";
-import BookCardCarouselContainer from "./components/carousel/BookCardCarouselContainer";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Row } from "react-bootstrap";
+import Main from "./components/main";
+
 
 function App() {
-  return (
-    <Container>
-      <BookCardCarouselContainer />
-      <BookCardContainer />
-    </Container>
-  );
+  return <Main />;
 }
 
 export default App;

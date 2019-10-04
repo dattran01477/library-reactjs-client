@@ -5,15 +5,23 @@ import { connect } from "react-redux";
 import { callApiAsPromise } from "../../api";
 import { actFetchBooks } from "../../data/actions/book";
 import { actFetchBooksCarousel } from "../../data/actions/book";
+import { ClapSpinner } from "react-spinners-kit";
 import BookCard from "./BookCard";
 
 export class BookCardContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true
+    };
+  }
   componentDidMount() {
     this.getBookByCriteria();
   }
   getBookByCriteria = () => {
     callApiAsPromise("GET", "books", null, null)
       .then(res => {
+        this.setState({ isLoading: false });
         this.props.fetchBooksToStore(res.data);
         this.props.fetchBooksCarouselToStore(res.data);
       })
@@ -23,6 +31,7 @@ export class BookCardContainer extends Component {
   };
 
   render() {
+    const { isLoading } = this.state;
     let bookCards = [];
     this.props.bookResults &&
       this.props.bookResults.content.map(item => {
@@ -38,7 +47,12 @@ export class BookCardContainer extends Component {
           ></BookCard>
         );
       });
-    return <Row className="justify-content-md-center">{bookCards}</Row>;
+    return (
+      <Row className="justify-content-md-center">
+        <ClapSpinner size={30} color="#686769" loading={isLoading} />
+        {bookCards}
+      </Row>
+    );
   }
 }
 
