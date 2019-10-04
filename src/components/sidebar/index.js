@@ -1,34 +1,26 @@
-import React, { Component } from "react";
-import { NavLink as NavLinkRRD, Link } from "react-router-dom";
 import { PropTypes } from "prop-types";
+import React, { Component } from "react";
+import { Link, NavLink as NavLinkRRD } from "react-router-dom";
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
+  Col,
   Collapse,
-  DropdownMenu,
+  Container,
   DropdownItem,
-  UncontrolledDropdown,
+  DropdownMenu,
   DropdownToggle,
-  FormGroup,
   Form,
   Input,
+  InputGroup,
   InputGroupAddon,
   InputGroupText,
-  InputGroup,
   Media,
-  NavbarBrand,
+  Nav,
   Navbar,
+  NavbarBrand,
   NavItem,
   NavLink,
-  Nav,
-  Progress,
-  Table,
-  Container,
   Row,
-  Col
+  UncontrolledDropdown
 } from "reactstrap";
 
 var ps;
@@ -251,24 +243,24 @@ class Sidebar extends Component {
 }
 
 Sidebar.defaultProps = {
-    routes: [{}]
-  };
-  
-  Sidebar.propTypes = {
-    // links that will be displayed inside the component
-    routes: PropTypes.arrayOf(PropTypes.object),
-    logo: PropTypes.shape({
-      // innerLink is for links that will direct the user within the app
-      // it will be rendered as <Link to="...">...</Link> tag
-      innerLink: PropTypes.string,
-      // outterLink is for links that will direct the user outside the app
-      // it will be rendered as simple <a href="...">...</a> tag
-      outterLink: PropTypes.string,
-      // the image src of the logo
-      imgSrc: PropTypes.string.isRequired,
-      // the alt for the img
-      imgAlt: PropTypes.string.isRequired
-    })
-  };
+  routes: [{}]
+};
 
-  export default Sidebar;
+Sidebar.propTypes = {
+  // links that will be displayed inside the component
+  routes: PropTypes.arrayOf(PropTypes.object),
+  logo: PropTypes.shape({
+    // innerLink is for links that will direct the user within the app
+    // it will be rendered as <Link to="...">...</Link> tag
+    innerLink: PropTypes.string,
+    // outterLink is for links that will direct the user outside the app
+    // it will be rendered as simple <a href="...">...</a> tag
+    outterLink: PropTypes.string,
+    // the image src of the logo
+    imgSrc: PropTypes.string.isRequired,
+    // the alt for the img
+    imgAlt: PropTypes.string.isRequired
+  })
+};
+
+export default Sidebar;

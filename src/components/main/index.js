@@ -7,6 +7,8 @@ import "../../assets/vendor/nucleo/css/nucleo.css";
 import routes from "../../share/route";
 import SideMenu from "../sidebar";
 import Header from "../header";
+import { Button } from "reactstrap";
+import KeycloakService from "../../app/services/keycloakService/keycloakService";
 
 class MainApp extends Component {
   getRoutes = routes => {
@@ -19,6 +21,11 @@ class MainApp extends Component {
         />
       );
     });
+  };
+
+  processLogin = () => {
+    console.log("click");
+    KeycloakService.init();
   };
   render() {
     return (
@@ -35,6 +42,7 @@ class MainApp extends Component {
         <div className="main-content" ref="mainContent">
           <Header />
           <Switch>{this.getRoutes(routes)}</Switch>
+          <Button onClick={this.processLogin}>login</Button>
         </div>
       </>
     );
