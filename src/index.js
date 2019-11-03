@@ -11,6 +11,7 @@ import { BrowserRouter } from "react-router-dom";
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+store.subscribe(() => {console.log(store.getState())});
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>

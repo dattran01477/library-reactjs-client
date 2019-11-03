@@ -9,3 +9,8 @@ export const actFetchBooksCarousel = data => ({
   type: types.FETCH_BOOK_CAROUSEL_SUCCESS,
   bookCarouselResults: data
 });
+
+export const actFetchBookID = idBook => ({
+  type: types.FETCH_ID_BOOK,
+  idBook:idBook
+})

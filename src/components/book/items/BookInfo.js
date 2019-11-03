@@ -9,7 +9,8 @@ class BookInfo extends Component {
     return (
       <div className="BookInfo">
         <h1>{this.props.name}</h1>
-        <p className="Author">by {this.props.author.name}</p>
+        <p className="Active">{this.props.active}</p>
+        {/* <p className="Author">by {this.props.author.name}</p> */}
         {/* <Rate
           rate={this.props.rate}
           voters={this.props.voters}
