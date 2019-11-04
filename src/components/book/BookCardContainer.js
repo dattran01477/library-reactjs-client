@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Row } from "react-bootstrap";
 import { connect } from "react-redux";
 import { callApiAsPromise } from "../../api";
-import { actFetchBooks, actFetchBookID } from "../../data/actions/book";
+import { actFetchBooks } from "../../data/actions/book";
 import { actFetchBooksCarousel } from "../../data/actions/book";
 import { ClapSpinner } from "react-spinners-kit";
 import BookCard from "./BookCard";
@@ -46,10 +46,6 @@ export class BookCardContainer extends Component {
           name={item.name}
           thumbnail={item.thumbnail}
           active={item.active}
-          onClick={() => {
-            this.props.fetchBookID(item.id);
-            
-          }}
           // img={item.smallImageLink}
           // author={item.author || {}}
           // rate={item.starTotal || {}}
@@ -74,8 +70,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchBooksToStore: data => dispatch(actFetchBooks(data)),
-  fetchBooksCarouselToStore: data => dispatch(actFetchBooksCarousel(data)),
-  fetchBookID: idBook => dispatch(actFetchBookID(idBook))
+  fetchBooksCarouselToStore: data => dispatch(actFetchBooksCarousel(data))
 });
 
 export default connect(

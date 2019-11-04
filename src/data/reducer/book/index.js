@@ -1,4 +1,4 @@
-import { FETCH_BOOK_SUCCESS, FETCH_BOOK_CAROUSEL_SUCCESS, FETCH_ID_BOOK } from "../../actions/action-type";
+import { FETCH_BOOK_SUCCESS, FETCH_BOOK_CAROUSEL_SUCCESS, FETCH_BOOK_DETAIL } from "../../actions/action-type";
 
 function books(state = {}, action) {
   switch (action.type) {
@@ -12,10 +12,10 @@ function books(state = {}, action) {
         ...state,
         bookCarouselResults: action.bookCarouselResults
       };
-    case FETCH_ID_BOOK:
+    case FETCH_BOOK_DETAIL:
       return {
         ...state,
-        bookDetailId:action.idBook
+        bookDetail:action.bookDetail
       } 
     default:
       return state;
