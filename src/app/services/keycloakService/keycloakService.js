@@ -9,10 +9,19 @@ class keycloakService {
       clientId: "libraryhcmute",
       onLoad: "login-required"
     };
-    let keycloak = Keycloak('/keycloak.json');
-    keycloak.init({onLoad: 'login-required'}).success(authenticated => {
-      console.log(authenticated);
-    });
+    let keycloak = Keycloak("/keycloak.json");
+    keycloak
+      .init({ onLoad: initOptions.onLoad })
+      .success(auth => {
+        if (!auth) {
+          window.location.reload();
+        } else {
+          console.info("Authenticated");
+        }
+      })
+      .error(() => {
+        console.error("Authenticated Failed");
+      });
   }
 }
 

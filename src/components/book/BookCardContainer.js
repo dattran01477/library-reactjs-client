@@ -1,12 +1,11 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
-import { Row } from "react-bootstrap";
 import { connect } from "react-redux";
-import { callApiAsPromise } from "../../api";
-import { actFetchBooks } from "../../data/actions/book";
-import { actFetchBooksCarousel } from "../../data/actions/book";
 import { ClapSpinner } from "react-spinners-kit";
+import { callApiAsPromise } from "../../api";
+import { actFetchBooks, actFetchBooksCarousel } from "../../data/actions/book";
 import BookCard from "./BookCard";
+import Page from "../page";
 
 export class BookCardContainer extends Component {
   constructor(props) {
@@ -36,22 +35,28 @@ export class BookCardContainer extends Component {
     this.props.bookResults &&
       this.props.bookResults.content.map(item => {
         bookCards.push(
-          <BookCard
-            key={item.id}
-            name={item.name}
-            img={item.smallImageLink}
-            author={item.author || {}}
-            rate={item.starTotal || {}}
-            voters={item.voters || []}
-            people={item.people || []}
-          ></BookCard>
+          <div className>
+            <BookCard
+              key={item.id}
+              name={item.name}
+              img={item.smallImageLink}
+              author={item.author || {}}
+              rate={item.starTotal || {}}
+              voters={item.voters || []}
+              people={item.people || []}
+            ></BookCard>
+          </div>
         );
       });
     return (
-      <Row className="justify-content-md-center">
-        <ClapSpinner size={30} color="#686769" loading={isLoading} />
-        {bookCards}
-      </Row>
+      <Page
+        header={<div class="font-bold text-xl mb-2">Tủ sách của bạn</div>}
+        content={
+          <div className="flex md:flex-row-reverse flex-wrap justify-center">
+            {bookCards}
+          </div>
+        }
+      ></Page>
     );
   }
 }

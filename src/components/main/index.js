@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
+import KeycloakService from "../../app/services/keycloakService/keycloakService";
 import "../../assets/scss/argon-dashboard-react.scss";
 import "../../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 import "../../assets/vendor/nucleo/css/nucleo.css";
-
 import routes from "../../share/route";
-import SideMenu from "../sidebar";
 import Header from "../header";
-import { Button } from "reactstrap";
-import KeycloakService from "../../app/services/keycloakService/keycloakService";
+import SideMenu from "../sidebar";
+import LoginPage from "../hooks/keycloak";
+import staus from "../hooks/status"
 
 class MainApp extends Component {
   getRoutes = routes => {
@@ -42,7 +42,6 @@ class MainApp extends Component {
         <div className="main-content" ref="mainContent">
           <Header />
           <Switch>{this.getRoutes(routes)}</Switch>
-          <Button onClick={this.processLogin}>login</Button>
         </div>
       </>
     );
@@ -50,3 +49,6 @@ class MainApp extends Component {
 }
 
 export default MainApp;
+
+
+

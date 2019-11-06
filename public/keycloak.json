@@ -3,9 +3,6 @@
   "auth-server-url": "https://ssolibraryhcmute.herokuapp.com/auth",
   "ssl-required": "none",
   "resource": "libraryhcmute",
-  "credentials": {
-    "secret": "b2fe5856-deb5-49a9-bd33-b37c281d48fd"
-  },
   "use-resource-role-mappings": true,
   "policy-enforcer": {},
   "cors-allowed-methods" : "POST, PUT, DELETE, GET",
