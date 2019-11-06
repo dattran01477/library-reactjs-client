@@ -17,21 +17,18 @@ export class BookDetail extends Component {
   }
   getBookDetailByCriteria = () => {
     let id = this.props.match.params.id
-    let x="books/"+id
+    let x="books/"+id;
     callApiAsPromise("GET", x, null, null)
       .then(res => {
         this.setState({ isLoading: false });
-        console.log(res.data);
-        store.dispatch(actFetchBookDetail(res.data));
-        // this.props.fetchBookDetailTest(res.data);
-        // this.props.fetchBooksCarouselToStore(res.data);
+        this.props.fetchBookDetailTest(res.data);
       })
       .catch(err => {
         alert(err);
       });
   };
   render() {
-    console.log(typeof this.props.bookDetail);
+    let id = this.props.match.params.id
     return (
       <div>
         aaaaaaaaaa
@@ -41,7 +38,6 @@ export class BookDetail extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("i am in");
   return {bookDetail:state.bookDetail};
 }
 

@@ -5,13 +5,14 @@ import App from "./App";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
+import thunk from 'redux-thunk'
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
 import reducer from "./data/reducer/book";
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, applyMiddleware(sagaMiddleware));
-store.subscribe(() => {console.log(store.getState())});
+const store = createStore(reducer, applyMiddleware(thunk));
+
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
