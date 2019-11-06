@@ -1,25 +1,33 @@
 import { FETCH_BOOK_SUCCESS, FETCH_BOOK_CAROUSEL_SUCCESS, FETCH_BOOK_DETAIL } from "../../actions/action-type";
+var redux =require('redux');
 
-function books(state = {}, action) {
+const booksInitialState = [];
+let booksArray=[];
+const booksReducer = (state = booksInitialState, action) => {
   switch (action.type) {
     case FETCH_BOOK_SUCCESS:
-      return {
-        ...state,
-        bookResults: action.bookResults
-      };
-    case FETCH_BOOK_CAROUSEL_SUCCESS:
-      return {
-        ...state,
-        bookCarouselResults: action.bookCarouselResults
-      };
+      for(let obj in action.bookResults){
+        booksArray.push(action.bookResults[obj]);
+      }
+      return (booksArray);
+    default:
+      return state
+  }
+}
+
+const bookDetailInitialState = {};
+const bookDetailReducer = (state = bookDetailInitialState, action) => {
+  switch (action.type) {
     case FETCH_BOOK_DETAIL:
-      return {
-        ...state,
-        bookDetail:action.bookDetail
-      } 
+      console.log(action.bookDetail);
+      return action.bookDetail;
     default:
       return state;
   }
 }
 
-export default books;
+const reducer=redux.combineReducers({
+  bookDetail:bookDetailReducer,
+  bookResults:booksReducer
+})
+export default reducer;

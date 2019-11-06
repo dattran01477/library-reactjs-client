@@ -13,4 +13,4 @@ export const actFetchBooksCarousel = data => ({
 export const actFetchBookDetail = data => ({
   type: types.FETCH_BOOK_DETAIL,
   bookDetail:data
-})
+});

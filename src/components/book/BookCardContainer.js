@@ -11,6 +11,7 @@ import {
   Link,
   useParams
 } from "react-router-dom";
+import { validate } from "@babel/types";
 export class BookCardContainer extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +26,7 @@ export class BookCardContainer extends Component {
     callApiAsPromise("GET", "books", null, null)
       .then(res => {
         this.setState({ isLoading: false });
-        this.props.fetchBooksToStore(res.data);
+        this.props.fetchBooksToStore(res.data.content);
         // this.props.fetchBooksCarouselToStore(res.data);
       })
       .catch(err => {
@@ -36,25 +37,19 @@ export class BookCardContainer extends Component {
   render() {
     const { isLoading } = this.state;
     let bookCards = [];
-    this.props.bookResults &&
-      this.props.bookResults.content.map(item => {
-        let x = "/book/"+item.id;
-
-        bookCards.push(
-          <Link to={x} key={item.id}><BookCard
+    let json = this.props.bookResults;
+    json.map(item => {
+      let x = "/book/" + item.id;
+      bookCards.push(
+        <Link to={x} key={item.id}><BookCard
           key={item.id}
           name={item.name}
           thumbnail={item.thumbnail}
           active={item.active}
-          // img={item.smallImageLink}
-          // author={item.author || {}}
-          // rate={item.starTotal || {}}
-          // voters={item.voters || []}
-          // people={item.people || []}
         ></BookCard></Link>
-          
-        );
-      });
+
+      );
+    })
     return (
       <Row className="justify-content-md-center">
         <ClapSpinner size={30} color="#686769" loading={isLoading} />
@@ -64,9 +59,13 @@ export class BookCardContainer extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  ...state.books
-});
+// const mapStateToProps = state => ({
+//   bookResults: state.bookResults
+// });
+const mapStateToProps = state => {
+  console.log("i am in");
+  return {bookResults: state.bookResults};
+}
 
 const mapDispatchToProps = dispatch => ({
   fetchBooksToStore: data => dispatch(actFetchBooks(data)),
