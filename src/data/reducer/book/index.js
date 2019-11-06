@@ -1,6 +1,10 @@
 import { FETCH_BOOK_SUCCESS, FETCH_BOOK_CAROUSEL_SUCCESS, FETCH_BOOK_DETAIL } from "../../actions/action-type";
 
-function books(state = {}, action) {
+const initState={
+  bookDetail:{}
+}
+
+function books(state = {...initState}, action) {
   switch (action.type) {
     case FETCH_BOOK_SUCCESS:
       return {

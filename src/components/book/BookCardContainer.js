@@ -26,7 +26,6 @@ export class BookCardContainer extends Component {
       .then(res => {
         this.setState({ isLoading: false });
         this.props.fetchBooksToStore(res.data);
-        // this.props.fetchBooksCarouselToStore(res.data);
       })
       .catch(err => {
         alert(err);

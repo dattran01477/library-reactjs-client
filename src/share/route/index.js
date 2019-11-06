@@ -1,6 +1,6 @@
 import Books from "../../components/book/BookCardContainer";
 import Book from "../../components/book/BookCard";
-import { BookDetail } from "../../components/bookdetail/BookDetail";
+import BookDetail  from "../../components/bookdetail/BookDetail";
 var routes = [
   {
     path: "/books",
