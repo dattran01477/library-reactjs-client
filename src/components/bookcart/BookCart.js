@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from 'axios'
 import React, { Component } from "react";
 import { Row, Button } from "react-bootstrap";
 import { connect } from "react-redux";
@@ -64,6 +65,9 @@ export class BookCart extends Component {
         editorId: editorId,
         status: "waitting",
         userId: user
+      }
+      const headers = {
+        'Content-Type': 'application/json'
       }
       console.log(body);
       callApiAsPromise("POST", "borrowing-card/", null, JSON.stringify(body))
