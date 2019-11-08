@@ -13,3 +13,13 @@ export const DELTempCartItem = data => ({
   type: types.DELETE_BOOK_CART,
   bookId:data
 });
+
+export const fetchBooksObjectCart = data =>({
+  type: types.FETCH_BOOK_OBJECT_CART,
+  bookData:data
+})
+
+export const resetBooksObjectCart = () =>({
+  type: types.RESET_BOOK_OBJECT_CART
+})
+
