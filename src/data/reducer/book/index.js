@@ -23,7 +23,7 @@ const bookDetailReducer = (state = bookDetailInitialState, action) => {
       console.log(action.bookDetail);
       return action.bookDetail;
     default:
-      return state;
+      return state
   }
 }
 function getCookie(cname) {
@@ -41,6 +41,11 @@ function getCookie(cname) {
   }
   return false;
 }
+
+const distinct = (value,index,self)=>{
+  return self.indexOf(value) ===index;
+}
+
 const bookCartInitialState = []
 const bookCart = (state = bookCartInitialState, action) => {
   if (getCookie("bookCart")) {
@@ -50,9 +55,9 @@ const bookCart = (state = bookCartInitialState, action) => {
     case GET_BOOK_CART:
       return [...state];
     case ADD_BOOK_CART:
-      let jsonCookie = JSON.stringify([...state, action.bookId]);
+      let jsonCookie = JSON.stringify([...state, action.bookId].filter((x, i, a)=>distinct(x,i,a)));
       document.cookie = "bookCart=" + jsonCookie;
-      return [...state, action.bookId]
+      return [...state, action.bookId].filter((x, i, a)=>distinct(x,i,a))
     case DELETE_BOOK_CART:
       return [state.filter(value => value !== action.bookId)]
     default:
