@@ -1,9 +1,10 @@
-import { FETCH_BOOK_SUCCESS, FETCH_BOOK_CAROUSEL_SUCCESS, FETCH_BOOK_DETAIL } from "../../actions/action-type";
+import { FETCH_BOOK_SUCCESS, FETCH_BOOK_CAROUSEL_SUCCESS, FETCH_BOOK_DETAIL, ADD_BOOK_CART, DELETE_BOOK_CART } from "../../actions/action-type";
 var redux =require('redux');
 
 const booksInitialState = [];
 let booksArray=[];
 const booksReducer = (state = booksInitialState, action) => {
+  booksArray=[];
   switch (action.type) {
     case FETCH_BOOK_SUCCESS:
       for(let obj in action.bookResults){
@@ -25,9 +26,40 @@ const bookDetailReducer = (state = bookDetailInitialState, action) => {
       return state;
   }
 }
-
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return false;
+}
+const bookCartInitialState = []
+const bookCart = (state = bookCartInitialState, action) => {
+  if(getCookie("bookCart")){
+    state=JSON.parse(getCookie("bookCart"));
+  }
+  switch (action.type) {
+    case ADD_BOOK_CART:
+        let jsonCookie= JSON.stringify([...state,action.bookId]);
+        document.cookie="bookCart="+jsonCookie;
+      return [...state,action.bookId]
+    case DELETE_BOOK_CART:
+      return [state.filter(value=> value!==action.bookId)]
+    default:
+      return state
+  }
+}
 const reducer=redux.combineReducers({
   bookDetail:bookDetailReducer,
-  bookResults:booksReducer
+  bookResults:booksReducer,
+  tempCart:bookCart
 })
 export default reducer;

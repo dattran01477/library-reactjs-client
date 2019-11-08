@@ -12,6 +12,7 @@ import {
   useParams
 } from "react-router-dom";
 import { validate } from "@babel/types";
+import { AddTempCart } from "../../data/actions/cart";
 export class BookCardContainer extends Component {
   constructor(props) {
     super(props);
@@ -63,7 +64,6 @@ export class BookCardContainer extends Component {
 //   bookResults: state.bookResults
 // });
 const mapStateToProps = state => {
-  console.log("i am in");
   return {bookResults: state.bookResults};
 }
 

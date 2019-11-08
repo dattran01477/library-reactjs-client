@@ -12,7 +12,7 @@ import reducer from "./data/reducer/book";
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducer, applyMiddleware(thunk));
-
+store.subscribe(()=>console.log(store.getState()));
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>

@@ -29,9 +29,17 @@ export class BookDetail extends Component {
   };
   render() {
     let id = this.props.match.params.id
+    let book = this.props.bookDetail;
+    
     return (
       <div>
-        aaaaaaaaaa
+        <img alt="anh sach" src ={book.thumbnail}/>
+        <br/>
+        {book.name}
+        <br/>
+        Số trang: {book.numberPages}
+        <br/>
+        Mô tả: {book.shortDescription}
     </div>
     );
   }
