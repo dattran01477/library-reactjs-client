@@ -40,6 +40,7 @@ export class BookDetail extends Component {
         Số trang: {book.numberPages}
         <br/>
         Mô tả: {book.shortDescription}
+        
     </div>
     );
   }

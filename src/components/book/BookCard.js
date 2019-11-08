@@ -50,7 +50,7 @@ class Book extends Component {
         ></BookInfo>
         {like}
         {/* <Likes people={this.props.people}></Likes> */}
-        <BrrowButton/>
+        <BrrowButton idBook={this.props.bookId}/>
       </div>
     );
   }

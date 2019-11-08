@@ -5,7 +5,7 @@ import { AddTempCart } from "../../../data/actions/cart";
 
 class BrrowButton extends Component {
     onClickBorrow = (e)=>{
-        this.props.addTemCart("123");
+        this.props.addTemCart(this.props.idBook);
         e.preventDefault();  
     }
     render() {

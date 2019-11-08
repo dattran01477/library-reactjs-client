@@ -4,7 +4,6 @@ import { Row } from "react-bootstrap";
 import { connect } from "react-redux";
 import { callApiAsPromise } from "../../api";
 import { actFetchBooks } from "../../data/actions/book";
-import { actFetchBooksCarousel } from "../../data/actions/book";
 import { ClapSpinner } from "react-spinners-kit";
 import BookCard from "./BookCard";
 import {
@@ -47,6 +46,7 @@ export class BookCardContainer extends Component {
           name={item.name}
           thumbnail={item.thumbnail}
           active={item.active}
+          bookId={item.id}
         ></BookCard></Link>
 
       );
@@ -68,8 +68,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  fetchBooksToStore: data => dispatch(actFetchBooks(data)),
-  fetchBooksCarouselToStore: data => dispatch(actFetchBooksCarousel(data))
+  fetchBooksToStore: data => dispatch(actFetchBooks(data))
 });
 
 export default connect(
