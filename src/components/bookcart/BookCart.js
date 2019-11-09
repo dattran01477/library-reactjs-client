@@ -6,8 +6,13 @@ import { callApiAsPromise } from "../../api";
 import {
   DELTempCartItem,
   fetchBooksObjectCart,
-  resetBooksObjectCart
+  resetBooksObjectCart,
+  resetTempCartItem
 } from "../../data/actions/cart";
+import {
+  Link,
+  useParams
+} from "react-router-dom";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
@@ -104,29 +109,30 @@ export class BookCart extends Component {
     //code use post api to send borrowingcard
     let dateString = new Date().toISOString().split("T")[0];
     console.log(dateString);
-    // bookId.map(id => {
-    //   let body = {
-    //     bookId: id,
-    //     userId: user,
-    //     type:"borrow",
-    //     status: "waitting",
-    //     borrowDate:date,
-    //     editorId: editorId
-    //   }
-    //   const headers = {
-    //     'Content-Type': 'application/json'
-    //   }
-    //   callApiAsPromise("POST", "borrowing-card/", null, JSON.stringify(body))
-    //     .then(res => {
-    //     })
-    //     .catch(err => {
-    //       alert(err);
-    //     });
-    // })
-    // alert("Successful !!!");
-    // // reset cart
-    // this.props.resetBookCart();
-    // this.props.resetBooksObjectCart();
+    bookId.map(id => {
+      let body = {
+        bookId: id,
+        userId: user,
+        type:"borrow",
+        status: "waitting",
+        borrowDate:new Date(),
+        editorId: editorId
+      }
+      const headers = {
+        'Content-Type': 'application/json'
+      }
+      this.onclickSendData(body);
+      // callApiAsPromise("POST", "borrowing-card/", null, JSON.stringify(body))
+      //   .then(res => {
+      //   })
+      //   .catch(err => {
+      //     alert(err);
+      //   });
+    })
+    alert("Successful !!!");
+    // reset cart
+    this.props.resetBookCart();
+    this.props.resetBooksObjectCart();
   }
   render() {
     const { isLoading } = this.state;
