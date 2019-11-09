@@ -1,4 +1,4 @@
-import { FETCH_BOOK_SUCCESS, FETCH_BOOK_DETAIL, ADD_BOOK_CART, DELETE_BOOK_CART, GET_BOOK_CART, FETCH_BOOK_OBJECT_CART, RESET_BOOK_OBJECT_CART } from "../../actions/action-type";
+import { FETCH_BOOK_SUCCESS, FETCH_BOOK_DETAIL, ADD_BOOK_CART, DELETE_BOOK_CART, GET_BOOK_CART, FETCH_BOOK_OBJECT_CART, RESET_BOOK_OBJECT_CART, RESET_BOOK_CART } from "../../actions/action-type";
 var redux = require('redux');
 
 const booksInitialState = [];
@@ -73,6 +73,10 @@ const bookCart = (state = bookCartInitialState, action) => {
       state.remove(action.bookId);
       jsonCookie = JSON.stringify(state);
       document.cookie = "bookCart=" + jsonCookie;
+      return state;
+    case RESET_BOOK_CART:
+      state =[];
+      document.cookie = "bookCart=";
       return state;
     default:
       return state

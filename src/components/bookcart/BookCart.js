@@ -11,8 +11,8 @@ import {
   Link,
   useParams
 } from "react-router-dom";
-import { validate } from "@babel/types";
-import { AddTempCart, GetTempCart, fetchBooksObjectCart, resetBooksObjectCart, DELTempCartItem } from "../../data/actions/cart";
+import { validate, thisExpression } from "@babel/types";
+import { AddTempCart, GetTempCart, fetchBooksObjectCart, resetBooksObjectCart, DELTempCartItem, reserTempCartItem, resetTempCartItem } from "../../data/actions/cart";
 export class BookCart extends Component {
   constructor(props) {
     super(props);
@@ -23,13 +23,27 @@ export class BookCart extends Component {
   }
 
   componentWillMount() {
+    //get BookCartTemp
     let bookCart = this.props.bookCart;
     this.props.resetBooksObjectCart();
     bookCart.map(id => {
       this.getBookByCriteria(id);
     })
+    //get BookCartSubmitted
+
   }
 
+  getBookCartSubmited(userId) {
+    // let x = "books/" + id;
+    // callApiAsPromise("GET", x, null, null)
+    //   .then(res => {
+    //     this.setState({ isLoading: false });
+    //     this.props.fetchBooksObjectCart(res.data);
+    //   })
+    //   .catch(err => {
+    //     alert(err);
+    //   });
+  }
 
   initBookCartObject(id) {
     this.props.resetBooksObjectCart();
@@ -59,24 +73,32 @@ export class BookCart extends Component {
 
   }
   handleSubmit = (user, bookId, editorId, e) => {
-    bookId.map(id => {
-      let body = {
-        bookId: id,
-        editorId: editorId,
-        status: "waitting",
-        userId: user
-      }
-      const headers = {
-        'Content-Type': 'application/json'
-      }
-      console.log(body);
-      callApiAsPromise("POST", "borrowing-card/", null, JSON.stringify(body))
-        .then(res => {
-        })
-        .catch(err => {
-          alert(err);
-        });
-    })
+    //code use post api to send borrowingcard
+    let dateString = new Date().toISOString().split("T")[0];
+    console.log(dateString);
+    // bookId.map(id => {
+    //   let body = {
+    //     bookId: id,
+    //     userId: user,
+    //     type:"borrow",
+    //     status: "waitting",
+    //     borrowDate:date,
+    //     editorId: editorId
+    //   }
+    //   const headers = {
+    //     'Content-Type': 'application/json'
+    //   }
+    //   callApiAsPromise("POST", "borrowing-card/", null, JSON.stringify(body))
+    //     .then(res => {
+    //     })
+    //     .catch(err => {
+    //       alert(err);
+    //     });
+    // })
+    // alert("Successful !!!");
+    // // reset cart
+    // this.props.resetBookCart();
+    // this.props.resetBooksObjectCart();
   }
   render() {
     const { isLoading } = this.state;
@@ -95,7 +117,14 @@ export class BookCart extends Component {
     const divStyle = {
       height: 'auto',
     };
-    console.log(bookItems)
+    if (bookItems.length < 1) {
+      return (
+        <div className="jumbotron">
+          <h2>Chưa thêm sách để mượn.</h2>
+          <Link to="/books">Quay lại mục sách</Link>
+        </div>
+      )
+    }
     return (
       <div>
         <h1>Thông tin mượn sách</h1>
@@ -114,8 +143,11 @@ export class BookCart extends Component {
               {bookItems}
             </tbody>
           </table>
+          <div className="float-right">
+            <Button onClick={(e) => { this.handleSubmit("Quan", this.props.bookCart, "Dat", e) }}>Xác nhận</Button>
+          </div>
         </div>
-        <Button onClick={(e) => { this.handleSubmit("Quan", this.props.bookCart, "Dat", e) }}>Xác nhận</Button>
+
       </div >
     );
   }
@@ -140,6 +172,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     delBooksCartById: (data) => {
       dispatch(DELTempCartItem(data))
+    },
+    resetBookCart: () => {
+      dispatch(resetTempCartItem())
     }
   }
 }
