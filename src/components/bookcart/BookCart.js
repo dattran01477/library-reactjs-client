@@ -115,7 +115,7 @@ export class BookCart extends Component {
         userId: user,
         type:"borrow",
         status: "waitting",
-        borrowDate:new Date(),
+        borrowDate:dateString,
         editorId: editorId
       }
       const headers = {
