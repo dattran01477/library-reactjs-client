@@ -1,25 +1,54 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import axios from 'axios'
 import React, { Component } from "react";
-import { Row, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { callApiAsPromise } from "../../api";
-import { actFetchBooks } from "../../data/actions/book";
-import { actFetchBooksCarousel } from "../../data/actions/book";
-import { ClapSpinner } from "react-spinners-kit";
 import {
-  Link,
-  useParams
-} from "react-router-dom";
-import { validate, thisExpression } from "@babel/types";
-import { AddTempCart, GetTempCart, fetchBooksObjectCart, resetBooksObjectCart, DELTempCartItem, reserTempCartItem, resetTempCartItem } from "../../data/actions/cart";
+  DELTempCartItem,
+  fetchBooksObjectCart,
+  resetBooksObjectCart
+} from "../../data/actions/cart";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
+
+let stompClient = null;
+
+function onConnected() {
+  // Subscribe to the Public Topic
+  stompClient.subscribe("/topic/borrowing-list", onMessageReceived);
+}
+
+function onError(error) {
+  console.log("loi roi " + error);
+}
+
+function onMessageReceived(data) {
+  console.log(data);
+}
+
 export class BookCart extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
-      bookCartLocal: []
+      bookCartLocal: [],
+      stompClient: null
     };
+  }
+
+  onclickSendData = data => {
+    this.state.stompClient.send(
+      "/apps/borrowing.add",
+      {},
+      JSON.stringify(data)
+    );
+  };
+
+  componentDidMount() {
+    var socket = new SockJS("http://localhost:8080/app/ws");
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, onConnected, onError);
+    this.setState({...this.state , stompClient:stompClient});
   }
 
   componentWillMount() {
@@ -52,9 +81,9 @@ export class BookCart extends Component {
     console.log("Hello" + temp);
     temp.map(idBook => {
       this.getBookByCriteria(idBook);
-    })
+    });
   }
-  getBookByCriteria = (id) => {
+  getBookByCriteria = id => {
     let x = "books/" + id;
     callApiAsPromise("GET", x, null, null)
       .then(res => {
@@ -70,8 +99,7 @@ export class BookCart extends Component {
     e.preventDefault();
     this.props.delBooksCartById(id);
     this.initBookCartObject(id);
-
-  }
+  };
   handleSubmit = (user, bookId, editorId, e) => {
     //code use post api to send borrowingcard
     let dateString = new Date().toISOString().split("T")[0];
@@ -105,17 +133,21 @@ export class BookCart extends Component {
     let bookCart = this.props.bookCartObject;
     let bookItems = [];
     bookCart.map(item => {
-      if (item.hasOwnProperty('id'))
+      if (item.hasOwnProperty("id"))
         bookItems.push(
           <tr className="row-table">
             <td>{item.name}</td>
             <td>{item.numberPages}</td>
-            <td><Button onClick={(e) => this.handleDelButton(item.id, e)}>Xóa</Button></td>
+            <td>
+              <Button onClick={e => this.handleDelButton(item.id, e)}>
+                Xóa
+              </Button>
+            </td>
           </tr>
-        )
-    })
+        );
+    });
     const divStyle = {
-      height: 'auto',
+      height: "auto"
     };
     if (bookItems.length < 1) {
       return (
@@ -139,16 +171,20 @@ export class BookCart extends Component {
                 <th>Xóa</th>
               </tr>
             </thead>
-            <tbody>
-              {bookItems}
-            </tbody>
+            <tbody>{bookItems}</tbody>
           </table>
           <div className="float-right">
             <Button onClick={(e) => { this.handleSubmit("Quan", this.props.bookCart, "Dat", e) }}>Xác nhận</Button>
           </div>
         </div>
-
-      </div >
+        <Button
+          onClick={e => {
+            this.handleSubmit("Quan", this.props.bookCart, "Dat", e);
+          }}
+        >
+          Xác nhận
+        </Button>
+      </div>
     );
   }
 }
@@ -160,15 +196,15 @@ const mapStateToProps = (state, ownProps) => {
   return {
     bookCart: state.tempCart,
     bookCartObject: state.tempCartObject
-  }
-}
+  };
+};
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    fetchBooksObjectCart: (data) => {
-      dispatch(fetchBooksObjectCart(data))
+    fetchBooksObjectCart: data => {
+      dispatch(fetchBooksObjectCart(data));
     },
     resetBooksObjectCart: () => {
-      dispatch(resetBooksObjectCart())
+      dispatch(resetBooksObjectCart());
     },
     delBooksCartById: (data) => {
       dispatch(DELTempCartItem(data))
@@ -176,8 +212,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     resetBookCart: () => {
       dispatch(resetTempCartItem())
     }
-  }
-}
+  };
+};
 export default connect(
-  mapStateToProps, mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(BookCart);
