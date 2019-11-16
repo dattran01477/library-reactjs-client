@@ -1,11 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { ClapSpinner } from "react-spinners-kit";
 import { callApiAsPromise } from "../../api";
 import { actFetchBooks, actFetchBooksCarousel } from "../../data/actions/book";
-import BookCard from "./BookCard";
 import Page from "../page";
+import BookCard from "./BookCard";
 
 export class BookCardContainer extends Component {
   constructor(props) {
@@ -14,9 +13,7 @@ export class BookCardContainer extends Component {
       isLoading: true
     };
   }
-  componentDidMount() {
-    this.getBookByCriteria();
-  }
+
   getBookByCriteria = () => {
     callApiAsPromise("GET", "books", null, null)
       .then(res => {
@@ -54,6 +51,7 @@ export class BookCardContainer extends Component {
         content={
           <div className="flex md:flex-row-reverse flex-wrap justify-center">
             {bookCards}
+            {console.log(this.props.auth)}
           </div>
         }
       ></Page>
@@ -62,7 +60,8 @@ export class BookCardContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state.books
+  ...state.books,
+  ...state.auth
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -70,7 +69,4 @@ const mapDispatchToProps = dispatch => ({
   fetchBooksCarouselToStore: data => dispatch(actFetchBooksCarousel(data))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BookCardContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(BookCardContainer);

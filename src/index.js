@@ -1,7 +1,6 @@
 import Keycloak from "keycloak-js";
 import React from "react";
 import ReactDOM from "react-dom";
-import { KeycloakProvider } from "react-keycloak";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { applyMiddleware, createStore } from "redux";
@@ -10,20 +9,19 @@ import App from "./App";
 import reducer from "./data/reducer";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
-import "./index.css"
+import Auth from "./components/auth";
+import thunk from 'redux-thunk';
 
 // Setup Keycloak instance as needed
-const keycloak = new Keycloak("/keycloak.json");
-const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+const store = createStore(reducer, applyMiddleware(thunk));
 ReactDOM.render(
-  <KeycloakProvider keycloak={keycloak}>
-    <Provider store={store}>
+  <Provider store={store}>
+    <Auth>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </Provider>
-  </KeycloakProvider>,
+    </Auth>
+  </Provider>,
   document.getElementById("root")
 );
 
