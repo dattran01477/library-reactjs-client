@@ -139,13 +139,13 @@ export class BookCart extends Component {
     let bookCart = this.props.bookCartObject;
     let bookItems = [];
     bookCart.map(item => {
-      if (item.hasOwnProperty("id"))
+      if (item.hasOwnProperty("_id"))
         bookItems.push(
           <tr className="row-table">
             <td>{item.name}</td>
-            <td>{item.numberPages}</td>
+            <td>{item.number_page}</td>
             <td>
-              <Button onClick={e => this.handleDelButton(item.id, e)}>
+              <Button className="btn-danger" onClick={e => this.handleDelButton(item.id, e)}>
                 Xóa
               </Button>
             </td>
@@ -165,7 +165,7 @@ export class BookCart extends Component {
     }
     return (
       <div>
-        <h1>Thông tin mượn sách</h1>
+        <h3>Thông tin mượn sách</h3>
         <hr />
 
         <div className="jumbotron" style={divStyle}>
@@ -183,13 +183,13 @@ export class BookCart extends Component {
             <Button onClick={(e) => { this.handleSubmit("Quan", this.props.bookCart, "Dat", e) }}>Xác nhận</Button>
           </div>
         </div>
-        <Button
+        {/* <Button
           onClick={e => {
             this.handleSubmit("Quan", this.props.bookCart, "Dat", e);
           }}
         >
           Xác nhận
-        </Button>
+        </Button> */}
       </div>
     );
   }
@@ -200,8 +200,8 @@ export class BookCart extends Component {
 // });
 const mapStateToProps = (state, ownProps) => {
   return {
-    bookCart: state.tempCart,
-    bookCartObject: state.tempCartObject
+    bookCart: state.books.tempCart,
+    bookCartObject: state.books.tempCartObject
   };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {

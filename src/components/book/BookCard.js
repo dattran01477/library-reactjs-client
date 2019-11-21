@@ -41,13 +41,14 @@ class Book extends Component {
     }
     return (
       <div className="Book">
-        <BookCover img={this.props.thumbnail}></BookCover>
+        <BookCover img={this.props.img}></BookCover>
         <BookInfo
           name={this.props.name}
           description={this.props.description}
         ></BookInfo>
         {/* {like}
         <Likes people={this.props.people}></Likes> */}
+        <BrrowButton idBook={this.props.bookId}/>
       </div>
     );
   }

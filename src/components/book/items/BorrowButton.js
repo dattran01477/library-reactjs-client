@@ -43,7 +43,7 @@ class BrrowButton extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        tempCart: state.tempCart
+        tempCart: state.books.tempCart
     }
 }
 

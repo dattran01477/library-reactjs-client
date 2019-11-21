@@ -40,20 +40,24 @@ export class BookCardContainer extends Component {
   render() {
     const { isLoading } = this.state;
     let bookCards = [];
-    this.props.bookResults &&
-      this.props.bookResults.content.map(item => {
+    console.log(this.props.bookResults);
+    let json = this.props.bookResults;
+    json.map(item => {
+      if(item.hasOwnProperty("_id")){
         let x = "/book/" + item._id;
         bookCards.push(
           
           <Link to={x} key={item._id}>
             <BookCard
               key={item._id}
+              bookId={item._id}
               name={item.name}
               img={item.thumbnail}
               description={item.long_description || "Không có mô tả"}
             ></BookCard>
             </Link>
         );
+      }
       });
     return (
       <Page
@@ -68,10 +72,9 @@ export class BookCardContainer extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  ...state.books,
-  ...state.auth
-});
+const mapStateToProps = state => {
+  return {bookResults: state.books.bookResults};
+}
 
 const mapDispatchToProps = dispatch => ({
   fetchBooksToStore: data => dispatch(actFetchBooks(data))
