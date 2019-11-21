@@ -4,6 +4,7 @@ import BookCover from "./items/BookCover";
 import BookInfo from "./items/BookInfo";
 import "./items/bookStyle.css";
 import Likes from "./items/Likes";
+import BrrowButton from './items/BorrowButton'
 
 class Book extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class Book extends Component {
     }
     return (
       <div className="Book">
-        <BookCover img={this.props.img}></BookCover>
+        <BookCover img={this.props.thumbnail}></BookCover>
         <BookInfo
           name={this.props.name}
           description={this.props.description}

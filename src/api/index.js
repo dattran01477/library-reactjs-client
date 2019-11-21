@@ -5,7 +5,7 @@ const call = axios.create({
     baseURL: BASE_API,
     headers: {
         'accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
     }
 });
 

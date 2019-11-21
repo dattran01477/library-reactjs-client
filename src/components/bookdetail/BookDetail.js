@@ -1,12 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
-import { Row } from "react-bootstrap";
 import { connect } from "react-redux";
-import {  
-  useParams
-} from "react-router-dom";
 import { callApiAsPromise } from "../../api";
 import { actFetchBookDetail } from "../../data/actions/book";
+import store from './../../index'
 
 export class BookDetail extends Component {
   constructor(props) {
@@ -20,12 +17,11 @@ export class BookDetail extends Component {
   }
   getBookDetailByCriteria = () => {
     let id = this.props.match.params.id
-    let x="books/"+id
+    let x="books/"+id;
     callApiAsPromise("GET", x, null, null)
       .then(res => {
         this.setState({ isLoading: false });
         this.props.fetchBookDetailTest(res.data);
-        // this.props.fetchBooksCarouselToStore(res.data);
       })
       .catch(err => {
         alert(err);
@@ -33,34 +29,31 @@ export class BookDetail extends Component {
   };
   render() {
     let id = this.props.match.params.id
-    console.log(id);
+    let book = this.props.bookDetail;
+    
     return (
       <div>
-      {this.props.bookDetail}
+        <img alt="anh sach" src ={book.thumbnail}/>
+        <br/>
+        {book.name}
+        <br/>
+        Số trang: {book.numberPages}
+        <br/>
+        Mô tả: {book.shortDescription}
+        
     </div>
     );
   }
 }
 
-// const mapStateToProps = (state, ownProps) => {
-//   return {
-//     bookDetail: state.bookDetail
-//   }
-// }
-
-const mapStateToProps = state => ({
-  ...state.books
-});
-// const mapDispatchToProps = (dispatch, ownProps) => ({
-//   fetchBookDetail: data => dispatch(actFetchBookDetail(data))
-// });
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  console.log("chay dispatch");
-  return {
-    fetchBookDetailTest: () => {
-      dispatch(actFetchBookDetail(ownProps.data))
-    }
-  }
+const mapStateToProps = state => {
+  return {bookDetail:state.bookDetail};
 }
-export default connect(mapStateToProps, mapDispatchToProps)(BookDetail);
+
+const mapDispatchToProps = dispatch => ({
+   fetchBookDetailTest: data => dispatch(actFetchBookDetail(data))
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+  )(BookDetail);

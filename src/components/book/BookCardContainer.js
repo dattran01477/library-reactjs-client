@@ -9,7 +9,12 @@ import { callApiAsPromise } from "../../api";
 import { actFetchBooks, actFetchBooksCarousel } from "../../data/actions/book";
 import Page from "../page";
 import BookCard from "./BookCard";
-
+import {
+  Link,
+  useParams
+} from "react-router-dom";
+import { validate } from "@babel/types";
+import { AddTempCart } from "../../data/actions/cart";
 export class BookCardContainer extends Component {
   constructor(props) {
     super(props);
@@ -28,8 +33,8 @@ export class BookCardContainer extends Component {
       .then(res => {
         console.log(res.data);
         this.setState({ isLoading: false });
-        this.props.fetchBooksToStore(res.data);
-        this.props.fetchBooksCarouselToStore(res.data);
+        this.props.fetchBooksToStore(res.data.content);
+        // this.props.fetchBooksCarouselToStore(res.data);
       })
       .catch(err => {
         alert(err);
@@ -74,8 +79,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchBooksToStore: data => dispatch(actFetchBooks(data)),
-  fetchBooksCarouselToStore: data => dispatch(actFetchBooksCarousel(data))
+  fetchBooksToStore: data => dispatch(actFetchBooks(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookCardContainer);
