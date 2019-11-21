@@ -40,7 +40,7 @@ class MainApp extends Component {
           }}
         />
         <div className="main-content" ref="mainContent">
-          <Header />
+         
           <Switch>{this.getRoutes(routes)}</Switch>
         </div>
       </>

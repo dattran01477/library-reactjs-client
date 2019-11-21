@@ -49,9 +49,8 @@ export class BookCardContainer extends Component {
       <Page
         header={<div class="font-bold text-xl mb-2">Tủ sách của bạn</div>}
         content={
-          <div className="flex md:flex-row-reverse flex-wrap justify-center">
+          <div className="flex md:flex-row flex-wrap">
             {bookCards}
-            {console.log(this.props.auth)}
           </div>
         }
       ></Page>
