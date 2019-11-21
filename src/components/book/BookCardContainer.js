@@ -1,10 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  Link,
-  useParams
-} from "react-router-dom";
 import { callApiAsPromise } from "../../api";
 import { actFetchBooks, actFetchBooksCarousel } from "../../data/actions/book";
 import Page from "../page";

@@ -5,12 +5,14 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { applyMiddleware, createStore } from "redux";
 import createSagaMiddleware from "redux-saga";
-import thunk from 'redux-thunk'
+import App from "./App";
+import reducer from "./data/reducer";
+import "./index.css";
 import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter } from "react-router-dom";
-import reducer from "./data/reducer/book";
+import Auth from "./components/auth";
+import thunk from 'redux-thunk';
 
-const sagaMiddleware = createSagaMiddleware();
+// Setup Keycloak instance as needed
 const store = createStore(reducer, applyMiddleware(thunk));
 store.subscribe(()=>console.log(store.getState()));
 ReactDOM.render(

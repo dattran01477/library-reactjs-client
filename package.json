@@ -26,15 +26,11 @@
     "redux-saga": "^1.1.1",
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1",
-<<<<<<< HEAD
-    "styled-components": "^4.4.0",
-    "tailwindcss": "^1.1.2"
-=======
     "styled-components": "^4.4.1",
     "sockjs-client": "^1.4.0",
     "stompjs": "^2.3.3",
-    "typescript": "^3.7.2"
->>>>>>> origin/quan-borrow-book
+    "typescript": "^3.7.2",
+    "tailwindcss": "^1.1.2"
   },
   "scripts": {
     "start": "npm-run-all --parallel watch:css start:react",

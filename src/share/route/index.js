@@ -10,13 +10,6 @@ var routes = [
     layout: ""
   },
   {
-    path: "/user",
-    name: "Quản lý đọc giả",
-    icon: "ni ni-bullet-list-67 text-red",
-    component: Users,
-    layout: ""
-  },
-  {
     path: "/book/:id",
     name: "Quản lý mượn trả",
     icon: "ni ni-bullet-list-67 text-red",
