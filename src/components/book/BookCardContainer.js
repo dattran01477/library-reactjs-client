@@ -1,6 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import {
+  Link,
+  useParams
+} from "react-router-dom";
 import { callApiAsPromise } from "../../api";
 import { actFetchBooks, actFetchBooksCarousel } from "../../data/actions/book";
 import Page from "../page";
@@ -14,9 +18,15 @@ export class BookCardContainer extends Component {
     };
   }
 
+  componentDidMount() {
+    this.getBookByCriteria();
+  }
+  
   getBookByCriteria = () => {
+    console.log("hello")
     callApiAsPromise("GET", "books", null, null)
       .then(res => {
+        console.log(res.data);
         this.setState({ isLoading: false });
         this.props.fetchBooksToStore(res.data);
         this.props.fetchBooksCarouselToStore(res.data);
@@ -31,18 +41,17 @@ export class BookCardContainer extends Component {
     let bookCards = [];
     this.props.bookResults &&
       this.props.bookResults.content.map(item => {
+        let x = "/book/" + item._id;
         bookCards.push(
-          <div className>
+          
+          <Link to={x} key={item._id}>
             <BookCard
-              key={item.id}
+              key={item._id}
               name={item.name}
-              img={item.smallImageLink}
-              author={item.author || {}}
-              rate={item.starTotal || {}}
-              voters={item.voters || []}
-              people={item.people || []}
+              img={item.thumbnail}
+              description={item.long_description || "Không có mô tả"}
             ></BookCard>
-          </div>
+            </Link>
         );
       });
     return (

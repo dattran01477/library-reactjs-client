@@ -43,12 +43,10 @@ class Book extends Component {
         <BookCover img={this.props.img}></BookCover>
         <BookInfo
           name={this.props.name}
-          author={this.props.author}
-          rate={this.props.rate}
-          voters={this.props.voters}
+          description={this.props.description}
         ></BookInfo>
-        {like}
-        <Likes people={this.props.people}></Likes>
+        {/* {like}
+        <Likes people={this.props.people}></Likes> */}
       </div>
     );
   }
