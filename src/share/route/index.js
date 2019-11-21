@@ -1,6 +1,7 @@
 import Books from "../../components/book/BookCardContainer";
 import BookDetail from "../../components/bookdetail/BookDetail"
 import BookCart from "../../components/bookcart/BookCart"
+import Users from "../../components/bookdetail/BookDetailContainer";
 var routes = [
   {
     path: "/books",
@@ -10,17 +11,10 @@ var routes = [
     layout: ""
   },
   {
-    path: "/book/:id",
-    name: "Quản lý mượn trả",
-    icon: "ni ni-bullet-list-67 text-red",
-    component: BookDetail,
-    layout: ""
-  },
-  {
     path: "/user",
-    name: "Quản lý sách",
+    name: "Chi tiết sách",
     icon: "ni ni-bullet-list-67 text-red",
-    component: Books,
+    component: Users,
     layout: ""
   },
   {
