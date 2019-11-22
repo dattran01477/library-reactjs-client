@@ -23,6 +23,10 @@ import {
   UncontrolledDropdown
 } from "reactstrap";
 
+import { Menu, Icon, Avatar } from "antd";
+
+const { SubMenu } = Menu;
+
 var ps;
 
 class Sidebar extends Component {
@@ -33,6 +37,10 @@ class Sidebar extends Component {
     super(props);
     this.activeRoute.bind(this);
   }
+
+  handleClick = e => {
+    console.log("click ", e);
+  };
   // verifies if routeName is the one active (in browser input)
   activeRoute(routeName) {
     return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
@@ -87,7 +95,7 @@ class Sidebar extends Component {
         expand="md"
         id="sidenav-main"
       >
-        <Container fluid>
+        <Container>
           {/* Toggler */}
           <button
             className="navbar-toggler"
@@ -106,62 +114,7 @@ class Sidebar extends Component {
               />
             </NavbarBrand>
           ) : null}
-          {/* User */}
-          <Nav className="align-items-center d-md-none">
-            <UncontrolledDropdown nav>
-              <DropdownToggle nav className="nav-link-icon">
-                <i className="ni ni-bell-55" />
-              </DropdownToggle>
-              <DropdownMenu
-                aria-labelledby="navbar-default_dropdown_1"
-                className="dropdown-menu-arrow"
-                right
-              >
-                <DropdownItem>Action</DropdownItem>
-                <DropdownItem>Another action</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>Something else here</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            <UncontrolledDropdown nav>
-              <DropdownToggle nav>
-                <Media className="align-items-center">
-                  <span className="avatar avatar-sm rounded-circle">
-                    <img
-                      alt="..."
-                      src="../../../assets/img/theme/team-1-800x800.jpg"
-                    />
-                  </span>
-                </Media>
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-arrow" right>
-                <DropdownItem className="noti-title" header tag="div">
-                  <h6 className="text-overflow m-0">Welcome!</h6>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-single-02" />
-                  <span>My profile</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-settings-gear-65" />
-                  <span>Settings</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-calendar-grid-58" />
-                  <span>Activity</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-support-16" />
-                  <span>Support</span>
-                </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
-                  <i className="ni ni-user-run" />
-                  <span>Logout</span>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          </Nav>
+
           {/* Collapse */}
           <Collapse navbar isOpen={this.state.collapseOpen}>
             {/* Collapse header */}
@@ -212,29 +165,107 @@ class Sidebar extends Component {
             <Nav navbar>{this.createLinks(routes)}</Nav>
             {/* Divider */}
             <hr className="my-3" />
-            {/* Heading */}
-            <h6 className="navbar-heading text-muted">Documentation</h6>
-            {/* Navigation */}
-            <Nav className="mb-md-3" navbar>
-              <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/documentation/overview?ref=adr-admin-sidebar">
-                  <i className="ni ni-spaceship" />
-                  Getting started
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/documentation/colors?ref=adr-admin-sidebar">
-                  <i className="ni ni-palette" />
-                  Foundation
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/documentation/alerts?ref=adr-admin-sidebar">
-                  <i className="ni ni-ui-04" />
-                  Components
-                </NavLink>
-              </NavItem>
-            </Nav>
+
+            {/* Top tác giả */}
+            <div className="text-center ">
+              <p className="font-bold">Top Tác Giả</p>
+              <div className="text-gray-700 font-light">
+                <div className="flex flex-row my-2">
+                  <div className="w-1/5">
+                    <Avatar size="large" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/5290/9781529028485.jpg" />
+                  </div>
+                  <div className="w-4/5 ">
+                    <span className="inline-block align-middle font-normal text-sm">
+                      Nam Cao
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-row my-2">
+                  <div className="w-1/5">
+                    <Avatar size="large" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/5098/9781509853311.jpg" />
+                  </div>
+                  <div className="w-4/5 ">
+                    <span className="inline-block align-middle font-normal text-sm">
+                      Tố Hữu
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-row my-2">
+                  <div className="w-1/5">
+                    <Avatar size="large" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9780/7181/9780718187767.jpg"/>
+                  </div>
+                  <div className="w-4/5 ">
+                    <span className="inline-block align-middle font-normal text-sm">
+                      Hồ Xuân Hương
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-row my-2">
+                  <div className="w-1/5">
+                    <Avatar size="large" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9780/7515/9780751569643.jpg"/>
+                  </div>
+                  <div className="w-4/5 ">
+                    <span className="inline-block align-middle font-normal text-sm">
+                      Bà Huyện Thanh Quan
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* divide */}
+            <hr className="my-3" />
+
+            {/* Top sách mượn */}
+            <div className="text-center">
+              <p className="font-bold">Top Sách Mượn Trong Tuần</p>
+              <div className="flex flex-row my-2">
+                <div className="w-1/5">
+                  <Avatar shape="square" size="large" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/7876/9781787632196.jpg" />
+                </div>
+                <div className="w-4/5 ">
+                  <span className="inline-block align-middle font-normal text-sm">
+                    Tôi đi code dạo
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-row my-2">
+                <div className="w-1/5">
+                  <Avatar shape="square" size="large" icon="user" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9780/5713/9780571356829.jpg"/>
+                </div>
+                <div className="w-4/5 ">
+                  <span className="inline-block align-middle font-normal text-sm">
+                    Ngủ rồi mới biết thế nào là sướng
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-row my-2">
+                <div className="w-1/5">
+                  <Avatar shape="square" size="large" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/9126/9781912626076.jpg"/>
+                </div>
+                <div className="w-4/5 ">
+                  <span className="inline-block align-middle font-normal text-sm">
+                    Anh nhớ cành cây nhỏ
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-row my-2">
+                <div className="w-1/5">
+                  <Avatar shape="square" size="large" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/4063/9781406358094.jpg" />
+                </div>
+                <div className="w-4/5 ">
+                  <span className="inline-block align-middle font-normal text-sm">
+                    Tình là giấc mộng say
+                  </span>
+                </div>
+              </div>
+            </div>
           </Collapse>
         </Container>
       </Navbar>

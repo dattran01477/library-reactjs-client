@@ -1,23 +1,11 @@
+import { Avatar, Button, Divider, Icon, Input, List, Skeleton, Tabs } from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import "react-table/react-table.css";
 import { callApiAsPromise } from "../../api";
 import { actFetchBookDetail } from "../../data/actions/book";
-import ReactTable from "react-table";
-import "react-table/react-table.css";
 import Page from "../page";
-import {
-  Tabs,
-  Card,
-  Divider,
-  Input,
-  Button,
-  Skeleton,
-  Switch,
-  List,
-  Avatar,
-  Icon
-} from "antd";
 const { TabPane } = Tabs;
 
 const IconText = ({ type, text }) => (
@@ -72,9 +60,9 @@ export class BookDetail extends Component {
           content={
             <div className="flex flex-col">
               <div className="flex flex-row p-16">
-                <div className="w-1/5 border-2 mx-4 shadow-xl h-64 w-64">
+                <div className="w-1/5 shadow-xl h-64 w-32">
                   <img
-                    className="object-fill h-64 w-full"
+                    className="object-fill h-64 w-64"
                     src="https://bacb4tvkhoclamnguoi.files.wordpress.com/2017/10/codedao.png"
                     alt="banner images"
                   />
