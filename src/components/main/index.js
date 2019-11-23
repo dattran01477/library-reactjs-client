@@ -7,6 +7,7 @@ import "../../assets/vendor/nucleo/css/nucleo.css";
 import routes from "../../share/route";
 import SideMenu from "../sidebar";
 import { Layout, Menu, Icon, Button, Avatar } from "antd";
+import { Link } from "react-router-dom";
 
 const { Header, Footer, Sider, Content } = Layout;
 const { SubMenu } = Menu;
@@ -56,8 +57,8 @@ class MainApp extends Component {
           </Sider>
 
           <Layout className="ml-4">
-            <Header className="bg-white shadow-2xl">
-              <div className=" w-full">
+            <Header className="bg-white shadow-2xl px-0">
+              <div className="bg-white h-full w-full border-b shadow-2xl ">
                 <div className="flex flex-row justify-end">
                   <Menu
                     onClick={this.handleClick}
@@ -118,7 +119,9 @@ class MainApp extends Component {
                       }
                     >
                       <Menu.ItemGroup>
-                        <Menu.Item key="setting:1">Quản lý thông tin</Menu.Item>
+                        <Menu.Item key="setting:1">
+                          <Link to="/userinfo">Quản lý thông tin</Link>
+                        </Menu.Item>
                         <Menu.Item key="setting:2">
                           Trạng thái phiếu mượn
                         </Menu.Item>
@@ -155,20 +158,24 @@ class MainApp extends Component {
                   <div className="font-bold mb-2">Link </div>
                   <div className="text-gray-400">
                     <div>
-                      <a>Youtube  <Icon type="youtube" /></a>
-                     
+                      <a>
+                        Youtube <Icon type="youtube" />
+                      </a>
                     </div>
                     <div>
-                      <a>FaceBook <Icon type="facebook" /></a>
-                      
+                      <a>
+                        FaceBook <Icon type="facebook" />
+                      </a>
                     </div>
                     <div>
-                      <a>Porn Hub <Icon type="google-plus" /></a>
-                      
+                      <a>
+                        Porn Hub <Icon type="google-plus" />
+                      </a>
                     </div>
                     <div>
-                      <a>Git Hub  <Icon type="github" /></a>
-                     
+                      <a>
+                        Git Hub <Icon type="github" />
+                      </a>
                     </div>
                   </div>
                 </div>

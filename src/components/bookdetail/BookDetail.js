@@ -1,4 +1,14 @@
-import { Avatar, Button, Divider, Icon, Input, List, Skeleton, Tabs } from "antd";
+import {
+  Avatar,
+  Button,
+  Divider,
+  Icon,
+  Input,
+  List,
+  Skeleton,
+  Tabs,
+  PageHeader
+} from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -15,7 +25,6 @@ const IconText = ({ type, text }) => (
   </span>
 );
 
-
 export class BookDetail extends Component {
   constructor(props) {
     super(props);
@@ -27,8 +36,8 @@ export class BookDetail extends Component {
     this.getBookDetailByCriteria();
   }
   getBookDetailByCriteria = () => {
-    let id = this.props.match.params.id
-    let x="books/"+id;
+    let id = this.props.match.params.id;
+    let x = "books/" + id;
     callApiAsPromise("GET", x, null, null)
       .then(res => {
         this.setState({ isLoading: false });
@@ -56,7 +65,14 @@ export class BookDetail extends Component {
     return (
       <div>
         <Page
-          header={<div class="font-bold text-xl mb-2">Chi tiết sách</div>}
+          header={
+            <PageHeader
+              className="w-full border-b"
+              onBack={() => null}
+              title="Trang Chủ"
+              subTitle="Tôi đi code dạo"
+            />
+          }
           content={
             <div className="flex flex-col">
               <div className="flex flex-row p-16">
@@ -105,7 +121,7 @@ export class BookDetail extends Component {
               </div>
               <Tabs onChange={this.callback} type="card">
                 <TabPane tab="Content" key="1" className="p-2">
-                Sách do abc viết về kinh nghiệm của mình
+                  Sách do abc viết về kinh nghiệm của mình
                 </TabPane>
                 <TabPane tab="Review" key="2" className="p-2">
                   <List
@@ -169,13 +185,10 @@ export class BookDetail extends Component {
 }
 
 const mapStateToProps = state => {
-  return {bookDetail:state.books.bookDetail};
-}
+  return { bookDetail: state.books.bookDetail };
+};
 
 const mapDispatchToProps = dispatch => ({
-   fetchBookDetailTest: data => dispatch(actFetchBookDetail(data))
+  fetchBookDetailTest: data => dispatch(actFetchBookDetail(data))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-  )(BookDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(BookDetail);
