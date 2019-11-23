@@ -6,7 +6,7 @@ class UserContainer extends Component {
   render() {
     return (
       <Router>
-        <Route path="/userinfo" component={UserInfo} key="UserInfo" />
+        <Route path="/app/userinfo" component={UserInfo} key="UserInfo" />
       </Router>
     );
   }

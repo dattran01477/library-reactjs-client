@@ -167,23 +167,31 @@ class Sidebar extends Component {
             <hr className="my-3" />
 
             {/* Top tác giả */}
-            <div className="text-center ">
+            <div>
               <p className="font-bold">Top Tác Giả</p>
               <div className="text-gray-700 font-light">
                 <div className="flex flex-row my-2">
-                  <div className="w-1/5">
-                    <Avatar size="large" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/5290/9781529028485.jpg" />
+                  <div className="w-1/5 mr-2">
+                    <span>
+                      <Avatar
+                        size="large"
+                        src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/5290/9781529028485.jpg"
+                      />
+                    </span>
                   </div>
                   <div className="w-4/5 ">
-                    <span className="inline-block align-middle font-normal text-sm">
+                    <span className="font-normal text-sm">
                       Nam Cao
                     </span>
                   </div>
                 </div>
 
                 <div className="flex flex-row my-2">
-                  <div className="w-1/5">
-                    <Avatar size="large" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/5098/9781509853311.jpg" />
+                  <div className="w-1/5 mr-2">
+                    <Avatar
+                      size="large"
+                      src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/5098/9781509853311.jpg"
+                    />
                   </div>
                   <div className="w-4/5 ">
                     <span className="inline-block align-middle font-normal text-sm">
@@ -193,8 +201,11 @@ class Sidebar extends Component {
                 </div>
 
                 <div className="flex flex-row my-2">
-                  <div className="w-1/5">
-                    <Avatar size="large" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9780/7181/9780718187767.jpg"/>
+                  <div className="w-1/5 mr-2">
+                    <Avatar
+                      size="large"
+                      src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9780/7181/9780718187767.jpg"
+                    />
                   </div>
                   <div className="w-4/5 ">
                     <span className="inline-block align-middle font-normal text-sm">
@@ -204,8 +215,11 @@ class Sidebar extends Component {
                 </div>
 
                 <div className="flex flex-row my-2">
-                  <div className="w-1/5">
-                    <Avatar size="large" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9780/7515/9780751569643.jpg"/>
+                  <div className="w-1/5 mr-2">
+                    <Avatar
+                      size="large"
+                      src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9780/7515/9780751569643.jpg"
+                    />
                   </div>
                   <div className="w-4/5 ">
                     <span className="inline-block align-middle font-normal text-sm">
@@ -220,11 +234,15 @@ class Sidebar extends Component {
             <hr className="my-3" />
 
             {/* Top sách mượn */}
-            <div className="text-center">
+            <div >
               <p className="font-bold">Top Sách Mượn Trong Tuần</p>
               <div className="flex flex-row my-2">
-                <div className="w-1/5">
-                  <Avatar shape="square" size="large" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/7876/9781787632196.jpg" />
+                <div className="w-1/5 mr-2">
+                  <Avatar
+                    shape="square"
+                    size="large"
+                    src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/7876/9781787632196.jpg"
+                  />
                 </div>
                 <div className="w-4/5 ">
                   <span className="inline-block align-middle font-normal text-sm">
@@ -234,8 +252,13 @@ class Sidebar extends Component {
               </div>
 
               <div className="flex flex-row my-2">
-                <div className="w-1/5">
-                  <Avatar shape="square" size="large" icon="user" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9780/5713/9780571356829.jpg"/>
+                <div className="w-1/5 mr-2">
+                  <Avatar
+                    shape="square"
+                    size="large"
+                    icon="user"
+                    src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9780/5713/9780571356829.jpg"
+                  />
                 </div>
                 <div className="w-4/5 ">
                   <span className="inline-block align-middle font-normal text-sm">
@@ -245,8 +268,12 @@ class Sidebar extends Component {
               </div>
 
               <div className="flex flex-row my-2">
-                <div className="w-1/5">
-                  <Avatar shape="square" size="large" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/9126/9781912626076.jpg"/>
+                <div className="w-1/5 mr-2">
+                  <Avatar
+                    shape="square"
+                    size="large"
+                    src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/9126/9781912626076.jpg"
+                  />
                 </div>
                 <div className="w-4/5 ">
                   <span className="inline-block align-middle font-normal text-sm">
@@ -256,8 +283,12 @@ class Sidebar extends Component {
               </div>
 
               <div className="flex flex-row my-2">
-                <div className="w-1/5">
-                  <Avatar shape="square" size="large" src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/4063/9781406358094.jpg" />
+                <div className="w-1/5 mr-2">
+                  <Avatar
+                    shape="square"
+                    size="large"
+                    src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/4063/9781406358094.jpg"
+                  />
                 </div>
                 <div className="w-4/5 ">
                   <span className="inline-block align-middle font-normal text-sm">

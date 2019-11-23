@@ -5,28 +5,28 @@ import User from "../../components/user/UserContainer";
 import BookDetailContainer from "../../components/bookdetail/BookDetailContainer";
 var routes = [
   {
-    path: "/books",
+    path: "/app/books",
     name: "Kệ sách",
     icon: "ni ni-bullet-list-67 text-red",
     component: Books,
     layout: ""
   },
   {
-    path: "/userinfo",
+    path: "/app/userinfo",
     name: "Thông tin user",
     icon: "ni ni-bullet-list-67 text-red",
     component: User,
     layout: ""
   },
   {
-    path: "/book",
+    path: "/app/book",
     name: "Chi tiết sách",
     icon: "ni ni-bullet-list-67 text-red",
     component: BookDetail,
     layout: ""
   },
   {
-    path: "/book-cart",
+    path: "/app/book-cart",
     name: "Cart",
     icon: "ni ni-bullet-list-67 text-red",
     component: BookCart,

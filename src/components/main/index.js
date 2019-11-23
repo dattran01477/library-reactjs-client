@@ -14,7 +14,8 @@ const { SubMenu } = Menu;
 
 class MainApp extends Component {
   state = {
-    current: "mail"
+    current: "mail",
+    isAuthentication: false
   };
 
   handleClick = e => {
@@ -101,7 +102,7 @@ class MainApp extends Component {
                     </Menu.Item>
 
                     <Menu.Item key="login">
-                      <Button>Login</Button>
+                      <Button><Link to="/login">Login</Link></Button>
                     </Menu.Item>
                     <Menu.Item key="register">
                       <Button>Register</Button>
