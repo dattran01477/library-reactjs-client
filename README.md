@@ -1,3 +1,9 @@
+Cho project môn Công nghệ phần mềm mới.
+Checkout qua nhánh Clien-MERN.
+
+git checkout Clien-MERN
+git pull
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
