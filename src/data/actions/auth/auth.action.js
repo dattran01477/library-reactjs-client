@@ -3,6 +3,7 @@ import { BASE_API } from "../../../share/constants";
 
 export const SAVE_KEYCLOAK = "SAVE_KEYCLOAK";
 export const FETCH_EXCHANGE_SERVER = "FETCH_EXCHANGE_SERVER";
+export const SET_AUTHENTICATION = "SET_AUTHENTICATION";
 export const LOGOUT = "LOGOUT";
 
 export function saveKeycloak(keycloak) {
@@ -30,4 +31,14 @@ export function exchangeAuthWithServer() {
         authDetail: response.data
       })
     );
+}
+
+export function setAuthentication(isAuthentication){
+  if(isAuthentication===false){
+    localStorage.removeItem("jwt");
+  }
+  return {
+    type: SET_AUTHENTICATION,
+    isAuthentication: isAuthentication
+  };
 }

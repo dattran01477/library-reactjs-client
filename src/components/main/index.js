@@ -8,6 +8,8 @@ import routes from "../../share/route";
 import SideMenu from "../sidebar";
 import { Layout, Menu, Icon, Button, Avatar } from "antd";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import * as Action from "../../data/actions/auth/auth.action";
 
 const { Header, Footer, Sider, Content } = Layout;
 const { SubMenu } = Menu;
@@ -100,13 +102,22 @@ class MainApp extends Component {
                         Liên lạc
                       </a>
                     </Menu.Item>
+                    {console.log(this.props)}
+                    {(this.props.authentication && (
+                      <Menu.Item key="register">
+                        <Button onClick={event=>this.props.setIsAuthentication(false)}>
+                          Logout
+                        </Button>
+                      </Menu.Item>
+                    )) || (
+                      <Menu.Item key="login">
+                        <Button>
+                          <Link to="/login">Login</Link>
+                        </Button>
+                        <Button>Register</Button>
+                      </Menu.Item>
+                    )}
 
-                    <Menu.Item key="login">
-                      <Button><Link to="/login">Login</Link></Button>
-                    </Menu.Item>
-                    <Menu.Item key="register">
-                      <Button>Register</Button>
-                    </Menu.Item>
                     <SubMenu
                       title={
                         <span className="submenu-title-wrapper">
@@ -223,4 +234,13 @@ class MainApp extends Component {
   }
 }
 
-export default MainApp;
+const mapStateToProps = state => ({
+  ...state.auth
+});
+
+const mapDispatchToProps = dispatch => ({
+  setIsAuthentication: isAuthentication =>
+    dispatch(Action.setAuthentication(isAuthentication))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainApp);
