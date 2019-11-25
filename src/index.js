@@ -10,6 +10,7 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import Login from "./components/login";
 import Auth2 from "./components/auth/auth2";
+import Auth from "./components/auth/index";
 
 // Setup Keycloak instance as needed
 const store = createStore(reducer, applyMiddleware(thunk));
@@ -19,10 +20,10 @@ ReactDOM.render(
     {/* <Auth> */}
 
     <BrowserRouter>
-      <Auth2>
+      <Auth>
         <Route path="/app" component={App} key="app" />
         <Route path="/login" component={Login} key="login" />
-      </Auth2>
+      </Auth>
     </BrowserRouter>
 
     {/* </Auth> */}
