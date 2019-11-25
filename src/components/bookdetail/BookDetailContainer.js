@@ -51,9 +51,9 @@ export default class user extends Component {
           content={
             <div className="flex flex-col">
               <div className="flex flex-row p-16">
-                <div className="w-1/5 border-2 mx-4 shadow-xl h-64 w-64">
+                <div className="w-1/5   shadow-xl h-64 w-64">
                   <img
-                    className="object-fill h-64 w-full"
+                    className="object-fill h-64 w-64"
                     src="https://images-na.ssl-images-amazon.com/images/I/51ub94TBqPL.jpg"
                     alt="banner images"
                   />

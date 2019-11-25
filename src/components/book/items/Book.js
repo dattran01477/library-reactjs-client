@@ -49,6 +49,7 @@ class Book extends Component {
         ></BookInfo>
         {like}
         <Likes people={this.props.people}></Likes>
+        <BrrowButton/>
       </div>
     );
   }
