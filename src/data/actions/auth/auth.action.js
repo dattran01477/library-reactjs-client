@@ -22,7 +22,7 @@ export function saveUser(user) {
 }
 
 export function exchangeAuthWithServer() {
-  const request = Axios.get(`${BASE_API}auth`);
+  const request = Axios.get(`${BASE_API}/auth`);
 
   return dispatch =>
     request.then(response =>

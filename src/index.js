@@ -14,16 +14,15 @@ import Auth from "./components/auth/index";
 
 // Setup Keycloak instance as needed
 const store = createStore(reducer, applyMiddleware(thunk));
-store.subscribe(() => console.log(store.getState()));
 ReactDOM.render(
   <Provider store={store}>
     {/* <Auth> */}
 
     <BrowserRouter>
-      <Auth>
+     
         <Route path="/app" component={App} key="app" />
         <Route path="/login" component={Login} key="login" />
-      </Auth>
+     
     </BrowserRouter>
 
     {/* </Auth> */}

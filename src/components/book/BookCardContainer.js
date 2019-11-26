@@ -1,63 +1,56 @@
+import { Carousel, Tabs } from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { callApiAsPromise } from "../../api";
-import { actFetchBooks, actFetchBooksCarousel } from "../../data/actions/book";
+import { Link } from "react-router-dom";
+import { actFetchBooks } from "../../data/actions/book";
 import Page from "../page";
 import BookCard from "./BookCard";
-import { Carousel, Tabs } from "antd";
-import { Link, useParams } from "react-router-dom";
-import { validate } from "@babel/types";
-import { AddTempCart } from "../../data/actions/cart";
+import * as Action from "../../data/actions/action-type";
 
 const { TabPane } = Tabs;
+const Books = ({ data }) => {
+  console.log(data);
+  let bookCards=[];
+  data&&data.map(item => {
+    bookCards.push(
+      <BookCard
+        key={item.id}
+        bookId={item.id}
+        name={item.name}
+        img={item.thumbnail}
+        description={item.longDescription || "Không có mô tả"}
+      ></BookCard>
+    );
+  });
+
+  return bookCards;
+};
+
 export class BookCardContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true
+      isLoading: false,
+      books: []
     };
   }
 
-  componentDidMount() {
-    this.getBookByCriteria();
+  componentWillMount() {
+    console.log("1")
+    this.props.getBooks(null);
   }
 
-  getBookByCriteria = () => {
-    console.log("hello");
-    callApiAsPromise("GET", "books", null, null)
-      .then(res => {
-        console.log(res.data);
-        this.setState({ isLoading: false });
-        this.props.fetchBooksToStore(res.data.content);
-        // this.props.fetchBooksCarouselToStore(res.data);
-      })
-      .catch(err => {
-        alert(err);
-      });
-  };
+  componentDidMount() {
+    console.log("2");
+    this.setState({ books: this.props.data.content });
+  }
+
+  
 
   render() {
-    const { isLoading } = this.state;
-    let bookCards = [];
-    console.log(this.props.bookResults);
-    let json = this.props.bookResults;
-    json.map(item => {
-      if (item.hasOwnProperty("_id")) {
-        let x = "/book/" + item._id;
-        bookCards.push(
-          <Link to={x} key={item._id}>
-            <BookCard
-              key={item._id}
-              bookId={item._id}
-              name={item.name}
-              img={item.thumbnail}
-              description={item.long_description || "Không có mô tả"}
-            ></BookCard>
-          </Link>
-        );
-      }
-    });
+    let { books } = this.state;
+
     return (
       <Page
         header={
@@ -95,9 +88,9 @@ export class BookCardContainer extends Component {
           </div>
         }
         content={
-          <Tabs >
+          <Tabs>
             <TabPane tab="Sách Mới Nhất" key="1">
-              <div className="flex md:flex-row flex-wrap">{bookCards}</div>
+        <div className="flex md:flex-row flex-wrap"><Books data={books}/></div>
             </TabPane>
             <TabPane tab="Sách Hay Cho Bạn" key="2">
               Content of tab 2
@@ -112,12 +105,12 @@ export class BookCardContainer extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return { bookResults: state.books.bookResults };
-};
+const mapStateToProps = state => ({
+  ...state.books
+});
 
 const mapDispatchToProps = dispatch => ({
-  fetchBooksToStore: data => dispatch(actFetchBooks(data))
+  getBooks: searchCriteria => dispatch(Action.getBooks())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookCardContainer);
