@@ -1,26 +1,22 @@
+import {
+  Avatar,
+  Button,
+  Divider,
+  Icon,
+  Input,
+  List,
+  Skeleton,
+  Tabs,
+  PageHeader
+} from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import "react-table/react-table.css";
 import { callApiAsPromise } from "../../api";
 import { actFetchBookDetail } from "../../data/actions/book";
-import ReactTable from "react-table";
-import "react-table/react-table.css";
 import Page from "../page";
-import {
-  Tabs,
-  Card,
-  Divider,
-  Input,
-  Button,
-  Skeleton,
-  Switch,
-  List,
-  Avatar,
-  Layout,
-  Icon
-} from "antd";
 const { TabPane } = Tabs;
-const { Header, Footer, Sider, Content } = Layout;
 
 const IconText = ({ type, text }) => (
   <span>
@@ -28,7 +24,6 @@ const IconText = ({ type, text }) => (
     {text}
   </span>
 );
-
 
 export class BookDetail extends Component {
   constructor(props) {
@@ -41,8 +36,8 @@ export class BookDetail extends Component {
     this.getBookDetailByCriteria();
   }
   getBookDetailByCriteria = () => {
-    let id = this.props.match.params.id
-    let x="books/"+id;
+    let id = this.props.match.params.id;
+    let x = "books/" + id;
     callApiAsPromise("GET", x, null, null)
       .then(res => {
         this.setState({ isLoading: false });
@@ -70,13 +65,20 @@ export class BookDetail extends Component {
     return (
       <div>
         <Page
-          header={<div class="font-bold text-xl mb-2">Chi tiết sách</div>}
+          header={
+            <PageHeader
+              className="w-full border-b"
+              onBack={() => null}
+              title="Trang Chủ"
+              subTitle="Tôi đi code dạo"
+            />
+          }
           content={
             <div className="flex flex-col">
               <div className="flex flex-row p-16">
-                <div className="w-1/5 border-2 mx-4 shadow-xl h-64 w-64">
+                <div className="w-1/5 shadow-xl h-64 w-32">
                   <img
-                    className="object-fill h-64 w-full"
+                    className="object-fill h-64 w-64"
                     src="https://bacb4tvkhoclamnguoi.files.wordpress.com/2017/10/codedao.png"
                     alt="banner images"
                   />
@@ -119,7 +121,7 @@ export class BookDetail extends Component {
               </div>
               <Tabs onChange={this.callback} type="card">
                 <TabPane tab="Content" key="1" className="p-2">
-                Sách do abc viết về kinh nghiệm của mình
+                  Sách do abc viết về kinh nghiệm của mình
                 </TabPane>
                 <TabPane tab="Review" key="2" className="p-2">
                   <List
@@ -183,13 +185,10 @@ export class BookDetail extends Component {
 }
 
 const mapStateToProps = state => {
-  return {bookDetail:state.books.bookDetail};
-}
+  return { bookDetail: state.books.bookDetail };
+};
 
 const mapDispatchToProps = dispatch => ({
-   fetchBookDetailTest: data => dispatch(actFetchBookDetail(data))
+  fetchBookDetailTest: data => dispatch(actFetchBookDetail(data))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-  )(BookDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(BookDetail);

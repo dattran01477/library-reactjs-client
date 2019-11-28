@@ -5,10 +5,12 @@ import { callApiAsPromise } from "../../api";
 import { actFetchBooks, actFetchBooksCarousel } from "../../data/actions/book";
 import Page from "../page";
 import BookCard from "./BookCard";
+import { Carousel, Tabs } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { validate } from "@babel/types";
 import { AddTempCart } from "../../data/actions/cart";
-import { Carousel } from "antd";
+
+const { TabPane } = Tabs;
 export class BookCardContainer extends Component {
   constructor(props) {
     super(props);
@@ -57,29 +59,55 @@ export class BookCardContainer extends Component {
       }
     });
     return (
-      <>
-        <Page
-          content={
-            <div>
-              <Carousel autoplay>
-                <div>
-                  <h3>1</h3>
-                </div>
-                <div>
-                  <h3>2</h3>
-                </div>
-                <div>
-                  <h3>3</h3>
-                </div>
-                <div>
-                  <h3>4</h3>
-                </div>
-              </Carousel>
+      <Page
+        header={
+          <div class="mb-2 justify-center">
+            <Carousel autoplay>
+              <div className="w-full">
+                <img
+                  className="w-full h-full"
+                  src="http://mikeloomis.co/wp-content/uploads/2015/06/Slider-1-BOOKS.jpg"
+                  alt="anh1"
+                />
+              </div>
+              <div className="w-full">
+                <img
+                  className="w-full"
+                  src="http://mikeloomis.co/wp-content/uploads/2015/06/Slider-1-BOOKS.jpg"
+                  alt="anh1"
+                />
+              </div>
+              <div className="w-full">
+                <img
+                  className="w-full"
+                  src="http://mikeloomis.co/wp-content/uploads/2015/06/Slider-1-BOOKS.jpg"
+                  alt="anh1"
+                />
+              </div>
+              <div className="w-full">
+                <img
+                  className="w-full"
+                  src="http://mikeloomis.co/wp-content/uploads/2015/06/Slider-1-BOOKS.jpg"
+                  alt="anh1"
+                />
+              </div>
+            </Carousel>
+          </div>
+        }
+        content={
+          <Tabs >
+            <TabPane tab="Sách Mới Nhất" key="1">
               <div className="flex md:flex-row flex-wrap">{bookCards}</div>
-            </div>
-          }
-        ></Page>
-      </>
+            </TabPane>
+            <TabPane tab="Sách Hay Cho Bạn" key="2">
+              Content of tab 2
+            </TabPane>
+            <TabPane tab="Sách Tình Yêu" key="3">
+              Content of tab 3
+            </TabPane>
+          </Tabs>
+        }
+      ></Page>
     );
   }
 }

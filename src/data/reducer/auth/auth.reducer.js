@@ -2,10 +2,11 @@ import * as Action from "../../actions/action-type";
 
 const initState = {
   keycloak: null,
-  auth: null
+  auth: null,
+  authentication: false
 };
 
-function books(state = initState, action) {
+function auth(state = initState, action) {
   switch (action.type) {
     case Action.SAVE_KEYCLOAK:
       return {
@@ -17,9 +18,15 @@ function books(state = initState, action) {
         ...state,
         auth: action.authDetail
       };
+    case Action.SET_AUTHENTICATION:
+      console.log(action.isAuthentication);
+      return {
+        ...state,
+        authentication: action.isAuthentication
+      };
     default:
       return state;
   }
 }
 
-export default books;
+export default auth;
