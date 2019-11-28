@@ -7,22 +7,23 @@ import { actFetchBooks } from "../../data/actions/book";
 import Page from "../page";
 import BookCard from "./BookCard";
 import * as Action from "../../data/actions/action-type";
+import BookItem from "./BookItem";
 
 const { TabPane } = Tabs;
 const Books = ({ data }) => {
-  console.log(data);
-  let bookCards=[];
-  data&&data.map(item => {
-    bookCards.push(
-      <BookCard
-        key={item.id}
-        bookId={item.id}
-        name={item.name}
-        img={item.thumbnail}
-        description={item.longDescription || "Không có mô tả"}
-      ></BookCard>
-    );
-  });
+  let bookCards = [];
+  data &&
+    data.map(item => {
+      bookCards.push(
+        <BookCard
+          key={item.id}
+          bookId={item.id}
+          name={item.name}
+          img={item.thumbnail}
+          description={item.longDescription || "Không có mô tả"}
+        ></BookCard>
+      );
+    });
 
   return bookCards;
 };
@@ -37,19 +38,12 @@ export class BookCardContainer extends Component {
   }
 
   componentWillMount() {
-    console.log("1")
     this.props.getBooks(null);
+    this.setState({ ...this.state, books: this.props.data });
   }
-
-  componentDidMount() {
-    console.log("2");
-    this.setState({ books: this.props.data.content });
-  }
-
-  
 
   render() {
-    let { books } = this.state;
+    let books = this.props.data.content;
 
     return (
       <Page
@@ -90,7 +84,13 @@ export class BookCardContainer extends Component {
         content={
           <Tabs>
             <TabPane tab="Sách Mới Nhất" key="1">
-        <div className="flex md:flex-row flex-wrap"><Books data={books}/></div>
+              <div className="flex md:flex-row flex-wrap p-2">
+                <BookItem />
+                <BookItem />
+                <BookItem />
+                <BookItem />
+                <BookItem />
+              </div>
             </TabPane>
             <TabPane tab="Sách Hay Cho Bạn" key="2">
               Content of tab 2

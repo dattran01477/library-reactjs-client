@@ -4,7 +4,7 @@ import BookCover from "./items/BookCover";
 import BookInfo from "./items/BookInfo";
 import "./items/bookStyle.css";
 import Likes from "./items/Likes";
-import BrrowButton from './items/BorrowButton'
+import BrrowButton from "./items/BorrowButton";
 
 class Book extends Component {
   constructor(props) {
@@ -46,9 +46,6 @@ class Book extends Component {
           name={this.props.name}
           description={this.props.description}
         ></BookInfo>
-        {/* {like}
-        <Likes people={this.props.people}></Likes> */}
-        <BrrowButton idBook={this.props.bookId}/>
       </div>
     );
   }
