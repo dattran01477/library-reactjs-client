@@ -2,12 +2,12 @@ import { Carousel, Tabs } from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { actFetchBooks } from "../../data/actions/book";
+import * as Action from "../../data/actions/action-type";
 import Page from "../page";
 import BookCard from "./BookCard";
-import * as Action from "../../data/actions/action-type";
 import BookItem from "./BookItem";
+import { dataBook } from "./data";
+import { openMessage } from "../message/Message";
 
 const { TabPane } = Tabs;
 const Books = ({ data }) => {
@@ -39,11 +39,29 @@ export class BookCardContainer extends Component {
 
   componentWillMount() {
     this.props.getBooks(null);
-    this.setState({ ...this.state, books: this.props.data });
+    // this.setState({ ...this.state, books: this.props.data });
+    this.setState({ ...this.state, books: dataBook });
+  }
+
+  onClickBorrowing = item => {
+    let cartItemCurrent = [...this.props.cartItem];
+    cartItemCurrent.push(item);
+    this.props.addToCart(cartItemCurrent);
+    openMessage("Thêm vào giỏ mượn thành công!");
+  };
+
+  checkExistInCart(item, cartItem) {
+    for (let i = 0; i < cartItem.length; i++) {
+      if (item.id === cartItem[i].id) {
+        return true;
+      }
+    }
+    return false;
   }
 
   render() {
-    let books = this.props.data.content;
+    let { books } = this.state;
+    const { cartItem } = this.props;
 
     return (
       <Page
@@ -85,11 +103,19 @@ export class BookCardContainer extends Component {
           <Tabs>
             <TabPane tab="Sách Mới Nhất" key="1">
               <div className="flex md:flex-row flex-wrap p-2">
-                <BookItem />
-                <BookItem />
-                <BookItem />
-                <BookItem />
-                <BookItem />
+                {books &&
+                  books.map(item => (
+                    <BookItem
+                      totalBorrowings={item.totalBorrowings}
+                      totalBooks={item.totalBooks}
+                      title={item.title}
+                      content={item.content}
+                      thumnail={item.thumnail}
+                      item={item}
+                      disableBorrowing={this.checkExistInCart(item, cartItem)}
+                      onClickBorrowing={this.onClickBorrowing}
+                    />
+                  ))}
               </div>
             </TabPane>
             <TabPane tab="Sách Hay Cho Bạn" key="2">
@@ -110,7 +136,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getBooks: searchCriteria => dispatch(Action.getBooks())
+  getBooks: searchCriteria => dispatch(Action.getBooks()),
+  addToCart: cart => dispatch(Action.addToCart(cart))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookCardContainer);

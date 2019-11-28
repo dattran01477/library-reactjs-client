@@ -2,7 +2,8 @@ import * as Action from "../../actions/action-type";
 
 const initState = {
   data: {},
-  searchCriteria: {}
+  searchCriteria: {},
+  cartItem: []
 };
 
 function book(state = initState, action) {
@@ -11,6 +12,11 @@ function book(state = initState, action) {
       return {
         ...state,
         data: action.payload
+      };
+    case Action.ADD_ITEM:
+      return {
+        ...state,
+        cartItem: action.cartItem
       };
     default:
       return state;

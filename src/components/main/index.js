@@ -6,10 +6,12 @@ import "../../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 import "../../assets/vendor/nucleo/css/nucleo.css";
 import routes from "../../share/route";
 import SideMenu from "../sidebar";
-import { Layout, Menu, Icon, Button, Avatar } from "antd";
+import { Layout, Menu, Icon, Button, Avatar, Badge } from "antd";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as Action from "../../data/actions/auth/auth.action";
+import CartHeader from "../cart/CartHeader";
+import CartContent from "../cart/CartContentMenu";
 
 const { Header, Footer, Sider, Content } = Layout;
 const { SubMenu } = Menu;
@@ -60,7 +62,7 @@ class MainApp extends Component {
           </Sider>
 
           <Layout className="ml-4">
-            <Header className="bg-white shadow-2xl px-0">
+            <Header className="bg-white shadow-2xl px-0 p-2">
               <div className="bg-white h-full w-full border-b shadow-2xl ">
                 <div className="flex flex-row justify-end">
                   <Menu
@@ -102,21 +104,6 @@ class MainApp extends Component {
                         Liên lạc
                       </a>
                     </Menu.Item>
-                    {console.log(this.props)}
-                    {(this.props.authentication && (
-                      <Menu.Item key="register">
-                        <Button onClick={event=>this.props.setIsAuthentication(false)}>
-                          Logout
-                        </Button>
-                      </Menu.Item>
-                    )) || (
-                      <Menu.Item key="login">
-                        <Button>
-                          <Link to="/login">Login</Link>
-                        </Button>
-                        <Button>Register</Button>
-                      </Menu.Item>
-                    )}
 
                     <SubMenu
                       title={
@@ -140,6 +127,29 @@ class MainApp extends Component {
                         <Menu.Item key="setting:2">Logout</Menu.Item>
                       </Menu.ItemGroup>
                     </SubMenu>
+
+                    <SubMenu title={<CartHeader className="p-2" />}>
+                      <CartContent />
+                    </SubMenu>
+
+                    {(this.props.authentication && (
+                      <Menu.Item key="register">
+                        <Button
+                          onClick={event =>
+                            this.props.setIsAuthentication(false)
+                          }
+                        >
+                          Logout
+                        </Button>
+                      </Menu.Item>
+                    )) || (
+                      <Menu.Item key="login">
+                        <Button>
+                          <Link to="/login">Login</Link>
+                        </Button>
+                        <Button>Register</Button>
+                      </Menu.Item>
+                    )}
                   </Menu>
                 </div>
               </div>
