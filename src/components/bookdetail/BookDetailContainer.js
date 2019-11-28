@@ -12,10 +12,12 @@ import {
   Switch,
   List,
   Avatar,
+  Layout,
   Icon
 } from "antd";
 
 const { TabPane } = Tabs;
+const { Header, Footer, Sider, Content } = Layout;
 
 const IconText = ({ type, text }) => (
   <span>
