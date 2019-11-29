@@ -8,6 +8,7 @@ import BookCard from "./BookCard";
 import BookItem from "./BookItem";
 import { dataBook } from "./data";
 import { openMessage } from "../message/Message";
+import { Pagination } from "antd";
 
 const { TabPane } = Tabs;
 const Books = ({ data }) => {
@@ -100,7 +101,7 @@ export class BookCardContainer extends Component {
           </div>
         }
         content={
-          <Tabs>
+          <Tabs className="p-2">
             <TabPane tab="Sách Mới Nhất" key="1">
               <div className="flex md:flex-row flex-wrap p-2">
                 {books &&
@@ -117,6 +118,7 @@ export class BookCardContainer extends Component {
                     />
                   ))}
               </div>
+              <Pagination className="float-right" defaultCurrent={6} total={1000}/>
             </TabPane>
             <TabPane tab="Sách Hay Cho Bạn" key="2">
               Content of tab 2

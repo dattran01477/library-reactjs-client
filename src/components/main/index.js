@@ -9,13 +9,16 @@ import SideMenu from "../sidebar";
 import { Layout, Menu, Icon, Button, Avatar, Badge } from "antd";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import * as Action from "../../data/actions/auth/auth.action";
+import * as Action from "../../data/actions/action-type";
 import CartHeader from "../cart/CartHeader";
 import CartContent from "../cart/CartContentMenu";
+import Cookies from "universal-cookie";
+import * as Constant from "../../share/constants";
+import { stat } from "fs";
 
 const { Header, Footer, Sider, Content } = Layout;
 const { SubMenu } = Menu;
-
+const cookies = new Cookies();
 class MainApp extends Component {
   state = {
     current: "mail",
@@ -23,11 +26,17 @@ class MainApp extends Component {
   };
 
   handleClick = e => {
-    console.log("click ", e);
     this.setState({
       current: e.key
     });
   };
+
+  componentDidMount() {
+    let cartItem = cookies.get(Constant.CART_NAME);
+    if (cartItem != null) {
+      this.props.setCart(cartItem);
+    }
+  }
 
   getRoutes = routes => {
     return routes.map((prop, key) => {
@@ -42,7 +51,6 @@ class MainApp extends Component {
   };
 
   processLogin = () => {
-    console.log("click");
     KeycloakService.init();
   };
   render() {
@@ -130,6 +138,12 @@ class MainApp extends Component {
 
                     <SubMenu title={<CartHeader className="p-2" />}>
                       <CartContent />
+                      <Menu.Item key="gotoBorrowingCart">
+                        <Button type="primary">
+                          Tiến hành đặt sách
+                          <Icon type="right" />
+                        </Button>
+                      </Menu.Item>
                     </SubMenu>
 
                     {(this.props.authentication && (
@@ -250,7 +264,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setIsAuthentication: isAuthentication =>
-    dispatch(Action.setAuthentication(isAuthentication))
+    dispatch(Action.setAuthentication(isAuthentication)),
+  setCart: cartItem => dispatch(Action.addToCart(cartItem))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainApp);

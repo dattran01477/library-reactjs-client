@@ -1,16 +1,22 @@
 import React, { Component } from "react";
-import { Icon, Menu, Button } from "antd";
+import { Icon, Menu, Button, Avatar } from "antd";
 import { connect } from "react-redux";
 import * as Action from "../../data/actions/action-type";
 
 class CartContent extends Component {
-  BookCartItem = ({ cartItem, handleDelete }) => {
-    return results;
-  };
+  // BookCartItem = ({ cartItem, handleDelete }) => {
+  //   return results;
+  // };
 
   handleDeleteCart(id, cartItemProps) {
     let cartItem = [...cartItemProps];
-    cartItem = cartItem.map(item => item.id != id);
+    cartItem = cartItem.filter(item => {
+      if (item.id !== id) {
+        return item;
+      }
+    });
+    console.log(cartItem);
+    this.props.addCart(cartItem);
   }
 
   render() {
@@ -20,15 +26,19 @@ class CartContent extends Component {
     cartItem &&
       cartItem.map(item =>
         results.push(
-          <Menu.Item key="cart" className="p-2">
+          <Menu.Item key={item.id} className="p-2">
             <div className="flex flex-row">
-              <div className="w-8/12">
-                <p>{item.title}</p>
+              <div className="w-8/12 flex flex-row">
+                <span className="mx-2">
+                  <Avatar shape="square" size="large" src={item.thumnail} />
+                </span>
+
+                <p className=" font-light">{item.title}</p>
               </div>
               <div className="w-4/12">
                 <Button
-                  className="float-right"
-                  onClick={event => this.handleDelete(item.id, cartItem)}
+                  className="float-right rounded-full"
+                  onClick={event => this.handleDeleteCart(item.id, cartItem)}
                 >
                   <Icon type="delete" />
                 </Button>
@@ -38,7 +48,7 @@ class CartContent extends Component {
         )
       );
 
-    return  results ;
+    return <div>{results}</div>;
   }
 }
 
