@@ -39,9 +39,11 @@ export class BookCardContainer extends Component {
   }
 
   componentWillMount() {
-    this.props.getBooks(null);
     // this.setState({ ...this.state, books: this.props.data });
-    this.setState({ ...this.state, books: dataBook });
+  }
+
+  componentDidMount() {
+    this.props.getBooks(null);
   }
 
   onClickBorrowing = item => {
@@ -53,7 +55,7 @@ export class BookCardContainer extends Component {
 
   checkExistInCart(item, cartItem) {
     for (let i = 0; i < cartItem.length; i++) {
-      if (item.id === cartItem[i].id) {
+      if (item._id === cartItem[i]._id) {
         return true;
       }
     }
@@ -61,7 +63,8 @@ export class BookCardContainer extends Component {
   }
 
   render() {
-    let { books } = this.state;
+    let books = this.props.data.content;
+    
     const { cartItem } = this.props;
 
     return (
@@ -107,18 +110,22 @@ export class BookCardContainer extends Component {
                 {books &&
                   books.map(item => (
                     <BookItem
-                      totalBorrowings={item.totalBorrowings}
-                      totalBooks={item.totalBooks}
-                      title={item.title}
-                      content={item.content}
-                      thumnail={item.thumnail}
+                      totalBorrowings={5}
+                      totalBooks={item.amount_book}
+                      title={item.name}
+                      content={item.short_description}
+                      thumnail={item.thumbnail}
                       item={item}
                       disableBorrowing={this.checkExistInCart(item, cartItem)}
                       onClickBorrowing={this.onClickBorrowing}
                     />
                   ))}
               </div>
-              <Pagination className="float-right" defaultCurrent={6} total={1000}/>
+              <Pagination
+                className="float-right"
+                defaultCurrent={6}
+                total={1000}
+              />
             </TabPane>
             <TabPane tab="Sách Hay Cho Bạn" key="2">
               Content of tab 2

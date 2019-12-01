@@ -6,8 +6,7 @@ export const ADD_ITEM = "ADD_ITEM";
 export const CART_NAME = "borrowingCart";
 
 export function getBooks() {
-  const request = Axios.get(`${BASE_API}/books`);
-
+  const request = Axios.get(`${BASE_API}/api/books`);
   return dispatch =>
     request.then(response =>
       dispatch({

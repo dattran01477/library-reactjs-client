@@ -3,6 +3,7 @@ import { Icon } from "antd";
 import Page from "../page";
 import Background from "../../assets/img/background/login.png";
 import Logo from "../../assets/img/brand/argon-react.png";
+import * as Action from "../../data/actions/action-type";
 
 const sectionStyle = {
   width: "100%",
@@ -10,6 +11,26 @@ const sectionStyle = {
 };
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      form: {
+        username: "",
+        password: ""
+      }
+    };
+  }
+
+  onLogin = () => {
+    Action.login(this.state.form);
+  };
+
+  onChange = event => {
+    let formTmp = { ...this.state.form };
+    formTmp[event.target.name] = event.target.value;
+    this.setState({ form: formTmp });
+  };
+
   render() {
     return (
       <Page
@@ -40,7 +61,10 @@ class Login extends Component {
                     className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                     id="inline-full-name"
                     type="text"
-                    defaultValue="Jane Doe"
+                    name="username"
+                    defaultValue=""
+                    value={this.state.form.username}
+                    onChange={this.onChange}
                   />
                 </div>
               </div>
@@ -58,7 +82,10 @@ class Login extends Component {
                     className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                     id="inline-username"
                     type="password"
+                    name="password"
                     placeholder="******************"
+                    value={this.state.form.password}
+                    onChange={this.onChange}
                   />
                 </div>
               </div>
@@ -75,6 +102,7 @@ class Login extends Component {
                     <button
                       className="mb-4 shadow bg-blue-400 hover:bg-blue-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                       type="button"
+                      onClick={this.onLogin}
                     >
                       Đăng Nhập
                     </button>
@@ -92,7 +120,7 @@ class Login extends Component {
                     <span className="mx-2">
                       <Icon type="facebook" />
                     </span>
-                    <a>
+                    <a href="https://restapilibrary.herokuapp.com/auth/facebook">
                       <p>Đăng Nhập Bằng Facebook</p>
                     </a>
                   </div>

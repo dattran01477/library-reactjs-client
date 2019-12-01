@@ -20,7 +20,7 @@ var routes = [
     layout: ""
   },
   {
-    path: "/app/book",
+    path: "/app/book/:id",
     name: "Chi tiết sách",
     icon: "ni ni-bullet-list-67 text-red",
     component: BookDetail,

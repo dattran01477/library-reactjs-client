@@ -47,7 +47,7 @@ class CartDetail extends Component {
   handleDeleteCart = id => {
     let cartItem = [...this.props.cartItem];
     cartItem = cartItem.filter(item => {
-      if (item.id !== id) {
+      if (item._id !== id) {
         return item;
       }
     });
@@ -71,16 +71,16 @@ class CartDetail extends Component {
         <div className="shadow-md hover:shadow-2xl border rounded flex flex-row m-2 p-2">
           <div className="w-9/12 flex flex-row">
             <div>
-              <Avatar shape="square" size="large" src={item.thumnail} />
+              <Avatar shape="square" size="large" src={item.thumbnail} />
             </div>
             <Divider type="vertical" className="h-full" />
-            <div>{item.title}</div>
+            <div>{item.name}</div>
           </div>
           <div className="w-3/12">
             <Button
               className="float-right"
               icon="delete"
-              onClick={event => handleDeleteCart(item.id)}
+              onClick={event => handleDeleteCart(item._id)}
             />
           </div>
         </div>
@@ -89,7 +89,7 @@ class CartDetail extends Component {
     return (
       (lsBookCartItems.length > 0 &&
         lsBookCartItems.map(item => (
-          <BookCartRow key={item.id} item={item} />
+          <BookCartRow key={item._id} item={item} />
         ))) ||
       "Không có sách mượn"
     );
