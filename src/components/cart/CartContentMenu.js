@@ -4,9 +4,6 @@ import { connect } from "react-redux";
 import * as Action from "../../data/actions/action-type";
 
 class CartContent extends Component {
-  // BookCartItem = ({ cartItem, handleDelete }) => {
-  //   return results;
-  // };
 
   handleDeleteCart(id, cartItemProps) {
     let cartItem = [...cartItemProps];
@@ -15,7 +12,6 @@ class CartContent extends Component {
         return item;
       }
     });
-    console.log(cartItem);
     this.props.addCart(cartItem);
   }
 

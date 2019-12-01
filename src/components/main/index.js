@@ -1,29 +1,31 @@
+import { Avatar, Button, Icon, Layout, Menu } from "antd";
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
+import { Link, Route, Switch } from "react-router-dom";
+import Cookies from "universal-cookie";
 import KeycloakService from "../../app/services/keycloakService/keycloakService";
 import "../../assets/scss/argon-dashboard-react.scss";
 import "../../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 import "../../assets/vendor/nucleo/css/nucleo.css";
-import routes from "../../share/route";
-import SideMenu from "../sidebar";
-import { Layout, Menu, Icon, Button, Avatar, Badge } from "antd";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 import * as Action from "../../data/actions/action-type";
-import CartHeader from "../cart/CartHeader";
-import CartContent from "../cart/CartContentMenu";
-import Cookies from "universal-cookie";
 import * as Constant from "../../share/constants";
-import { stat } from "fs";
+import routes from "../../share/route";
+import CartHeader from "../cart/CartHeader";
+import SideMenu from "../sidebar";
+import { categories } from "../../data/fake-data/categories";
 
 const { Header, Footer, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 const cookies = new Cookies();
 class MainApp extends Component {
-  state = {
-    current: "mail",
-    isAuthentication: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      current: "mail",
+      isAuthentication: false,
+      categoriesData: JSON.parse(categories)
+    };
+  }
 
   handleClick = e => {
     this.setState({
@@ -54,6 +56,8 @@ class MainApp extends Component {
     KeycloakService.init();
   };
   render() {
+    const { categoriesData } = this.state;
+
     return (
       <>
         <Layout>
@@ -62,7 +66,7 @@ class MainApp extends Component {
               {...this.props}
               routes={routes}
               logo={{
-                innerLink: "/admin/index",
+                innerLink: "/app/books",
                 imgSrc: require("../../assets/img/brand/argon-react.png"),
                 imgAlt: "..."
               }}
@@ -82,10 +86,19 @@ class MainApp extends Component {
                       <Icon type="mail" />
                       Nội quy thư viện
                     </Menu.Item>
-                    <Menu.Item key="app">
-                      <Icon type="appstore" />
-                      Danh mục sách
-                    </Menu.Item>
+                    <SubMenu
+                      key="app"
+                      title={
+                        <span className="submenu-title-wrapper">
+                          <Icon type="appstore" />
+                          Danh mục sách
+                        </span>
+                      }
+                    >
+                      {categoriesData.content.map(item => (
+                        <Menu.Item key={item.id}>{item.name}</Menu.Item>
+                      ))}
+                    </SubMenu>
                     <SubMenu
                       title={
                         <span className="submenu-title-wrapper">
@@ -119,7 +132,7 @@ class MainApp extends Component {
                           <Avatar
                             className="text-center"
                             size="large"
-                            icon="user"
+                            src="https://experience.sap.com/fiori-design-web/wp-content/uploads/sites/5/2017/02/Avatar-Sizes-Custom-1.png"
                           />
                           <span>Thanh Dat</span>
                         </span>
@@ -127,7 +140,7 @@ class MainApp extends Component {
                     >
                       <Menu.ItemGroup>
                         <Menu.Item key="setting:1">
-                          <Link to="/userinfo">Quản lý thông tin</Link>
+                          <Link to="app/userinfo">Quản lý thông tin</Link>
                         </Menu.Item>
                         <Menu.Item key="setting:2">
                           Trạng thái phiếu mượn
@@ -137,12 +150,11 @@ class MainApp extends Component {
                     </SubMenu>
 
                     <SubMenu title={<CartHeader className="p-2" />}>
-                      <CartContent />
+                      {/* <CartContent /> */}
                       <Menu.Item key="gotoBorrowingCart">
-                        <Button type="primary">
-                          Tiến hành đặt sách
-                          <Icon type="right" />
-                        </Button>
+                        <Link to="/app/book-cart" exact />
+                        Tiến hành đặt sách
+                        <Icon type="right" />
                       </Menu.Item>
                     </SubMenu>
 
@@ -168,7 +180,7 @@ class MainApp extends Component {
                 </div>
               </div>
             </Header>
-            <Content className="bg-white">
+            <Content className="bg-white h-full">
               <div className="main-content mx-2" ref="mainContent">
                 <Switch>{this.getRoutes(routes)}</Switch>
               </div>

@@ -33,7 +33,7 @@ export class BookDetail extends Component {
     };
   }
   componentDidMount() {
-    this.getBookDetailByCriteria();
+
   }
   getBookDetailByCriteria = () => {
     let id = this.props.match.params.id;
@@ -112,7 +112,7 @@ export class BookDetail extends Component {
                       </div>
                     </div>
                     <div>
-                      <Button type="primary my-4" icon="shopping-cart">
+                      <Button type="danger" className="my-4" icon="shopping-cart">
                         Thêm vào giỏ mượn
                       </Button>
                     </div>

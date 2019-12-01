@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Button } from "antd";
 import injectSheet from "react-jss";
-import data from "./data"
+import data from "./data";
+import { withRouter } from "react-router";
 
 const styles = {
   bookItem: {
@@ -20,23 +21,25 @@ class BookItem extends Component {
       classes: props.classes
     };
   }
+
+  gotoBookDetail = id => {
+    this.props.history.push(`/app/book/${id}`);
+  };
+
   render() {
     const { classes } = this.state;
     return (
       <div
         className={
           (classes.bookItem,
-          "shadow-xl hover:shadow-2xl max-w-xs w-64 max-h-full h-auto m-4 rounded-lg")
+          "shadow-xl hover:shadow-2xl max-w-xs w-64 max-h-full h-auto m-4 rounded-lg border p-1")
         }
+        onClick={event => this.gotoBookDetail(this.props.item.id)}
       >
         <div className="flex flex-col">
           <div className="flex flex-row justify-center">
             <div className="w-5/12">
-              <img
-                className="rounded-lg"
-                src={this.props.thumnail}
-                alt="me"
-              />
+              <img className="rounded-lg" src={this.props.thumnail} alt="me" />
               <div className="text-md font-thin">
                 <a>4 đánh giá</a>
               </div>
@@ -44,7 +47,10 @@ class BookItem extends Component {
                 className="w-full my-2"
                 type="danger"
                 icon="plus-circle"
-                onClick={event=>this.props.onClickBorrowing(this.props.item)}
+                onClick={event => {
+                  event.stopPropagation();
+                  this.props.onClickBorrowing(this.props.item);
+                }}
                 disabled={this.props.disableBorrowing}
               >
                 Mượn
@@ -74,4 +80,4 @@ class BookItem extends Component {
   }
 }
 
-export default injectSheet(styles)(BookItem);
+export default withRouter(injectSheet(styles)(BookItem));

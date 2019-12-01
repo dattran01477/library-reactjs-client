@@ -5,6 +5,7 @@ export const FETCH_BOOK_FAILURE = "FETCH_BOOK_FAILURE";
 export const FETCH_BOOK_CAROUSEL_SUCCESS = "FETCH_BOOK_CAROUSEL_SUCCESS";
 export * from "./auth/auth.action";
 export * from "./book/book.action";
+export * from "./borrowing/borrowing.action"
 
 export const FETCH_DETAIL_BOOK = "FETCH_DETAIL_BOOK";
 export const FETCH_BOOK_DETAIL = "FETCH_BOOK_DETAIL";

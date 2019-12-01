@@ -10,7 +10,7 @@ export class BookCardContainer extends Component {
           {(this.props.header && this.props.header) || "Header"}
           {this.props.description && this.props.description}
         </div>
-        <div className="flex flex-col ">
+        <div className="flex flex-col">
           {this.props.content && this.props.content}
         </div>
       </div>
