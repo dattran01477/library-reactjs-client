@@ -46,6 +46,7 @@ class MainApp extends Component {
         <Route
           path={prop.layout + prop.path}
           component={prop.component}
+          exact
           key={key}
         />
       );
@@ -140,7 +141,7 @@ class MainApp extends Component {
                     >
                       <Menu.ItemGroup>
                         <Menu.Item key="setting:1">
-                          <Link to="app/userinfo">Quản lý thông tin</Link>
+                          <Link to="/app/userinfo">Quản lý thông tin</Link>
                         </Menu.Item>
                         <Menu.Item key="setting:2">
                           Trạng thái phiếu mượn

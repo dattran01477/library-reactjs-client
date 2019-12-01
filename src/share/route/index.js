@@ -4,13 +4,7 @@ import BookCart from "../../components/cart/CartDetail";
 import User from "../../components/user/UserContainer";
 import BookDetailContainer from "../../components/bookdetail/BookDetailContainer";
 var routes = [
-  {
-    path: "/app",
-    name: "Kệ sách",
-    icon: "ni ni-bullet-list-67 text-red",
-    component: Books,
-    layout: ""
-  },
+  
   {
     path: "/app/books",
     name: "Kệ sách",

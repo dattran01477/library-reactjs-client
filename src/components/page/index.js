@@ -6,8 +6,8 @@ export class BookCardContainer extends Component {
   render() {
     return (
       <div class="ml-4 rounded  shadow-md">
-        <div class="px-6 py-4">
-          {(this.props.header && this.props.header) || "Header"}
+        <div class="">
+          {(this.props.header && this.props.header) || ""}
           {this.props.description && this.props.description}
         </div>
         <div className="flex flex-col">

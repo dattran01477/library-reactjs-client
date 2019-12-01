@@ -8,7 +8,9 @@ import decode from "jwt-decode";
 class Auth2 extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      authentication: false
+    };
   }
 
   loggedIn = () => {
@@ -25,7 +27,6 @@ class Auth2 extends Component {
         return true;
       } else return false;
     } catch (err) {
-      console.log("expired check failed! Line 42: AuthService.js");
       return false;
     }
   };
@@ -43,6 +44,7 @@ class Auth2 extends Component {
   logout = () => {
     // Clear user token and profile data from localStorage
     localStorage.removeItem("jwt");
+    this.props.history.push("/login");
   };
 
   getConfirm = () => {
@@ -52,21 +54,25 @@ class Auth2 extends Component {
     return answer;
   };
 
-  componentWillMount() {
+  componentDidMount() {
     var query = queryString.parse(this.props.location.search);
     if (query.token) {
       window.localStorage.setItem("jwt", query.token);
-      this.props.history.push("/app");
     }
-    
-  }
 
-  componentDidMount() {
     if (this.loggedIn()) {
       this.props.setIsAuthentication(true);
-      this.props.history.push("/app");
-    }else{
+      this.setState({ authentication: true });
+      this.props.history.push("/app/books");
+    } else {
       this.props.history.push("/login");
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.authentication !== this.state.authentication) {
+      this.logout();
+      this.setState({ authentication: false });
     }
   }
 

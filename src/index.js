@@ -16,16 +16,12 @@ import Auth from "./components/auth/index";
 const store = createStore(reducer, applyMiddleware(thunk));
 ReactDOM.render(
   <Provider store={store}>
-    {/* <Auth> */}
-
     <BrowserRouter>
-     
+      <Auth2>
         <Route path="/app" component={App} key="app" />
         <Route path="/login" component={Login} key="login" />
-     
+      </Auth2>
     </BrowserRouter>
-
-    {/* </Auth> */}
   </Provider>,
   document.getElementById("root")
 );
