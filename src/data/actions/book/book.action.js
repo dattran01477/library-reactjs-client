@@ -4,9 +4,10 @@ import Cookies from "universal-cookie";
 export const GET_BOOKS = "GET_BOOKS";
 export const ADD_ITEM = "ADD_ITEM";
 export const CART_NAME = "borrowingCart";
+export const CHANGE_CRITERIA = "CHANGE_CRITERIA";
 
-export function getBooks() {
-  const request = Axios.get(`${BASE_API}/api/books`);
+export function getBooks(criteria) {
+  const request = Axios.get(`${BASE_API}/api/books`, { params: criteria });
   return dispatch =>
     request.then(response =>
       dispatch({
@@ -19,9 +20,15 @@ export function getBooks() {
 export function addToCart(cartItem) {
   const cookies = new Cookies();
   cookies.set(CART_NAME, JSON.stringify(cartItem), { path: "/app" });
-  console.log(cookies.get(CART_NAME));
   return {
     type: ADD_ITEM,
     cartItem: cartItem
+  };
+}
+
+export function changeCriteria(criteria) {
+  return {
+    type: CHANGE_CRITERIA,
+    criteria: criteria
   };
 }
