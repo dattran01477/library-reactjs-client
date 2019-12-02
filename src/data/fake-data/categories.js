@@ -1,0 +1,1 @@
+export const categories = `{"content":[{"total_book":0,"rank":1,"_id":"5dbbca9bc8156115288220d0","name":"Sach lap trinh","status":"true","create_date":"2019-11-01T06:03:07.388Z","update_date":"2019-11-01T06:03:07.388Z","__v":0}]}`;

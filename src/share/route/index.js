@@ -1,9 +1,10 @@
 import Books from "../../components/book/BookCardContainer";
 import BookDetail from "../../components/bookdetail/BookDetail";
-import BookCart from "../../components/bookcart/BookCart";
+import BookCart from "../../components/cart/CartDetail";
 import User from "../../components/user/UserContainer";
 import BookDetailContainer from "../../components/bookdetail/BookDetailContainer";
 var routes = [
+  
   {
     path: "/app/books",
     name: "Kệ sách",
@@ -19,7 +20,7 @@ var routes = [
     layout: ""
   },
   {
-    path: "/app/book",
+    path: "/app/book/:id",
     name: "Chi tiết sách",
     icon: "ni ni-bullet-list-67 text-red",
     component: BookDetail,

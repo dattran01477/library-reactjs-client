@@ -19,7 +19,6 @@ function auth(state = initState, action) {
         auth: action.authDetail
       };
     case Action.SET_AUTHENTICATION:
-      console.log(action.isAuthentication);
       return {
         ...state,
         authentication: action.isAuthentication

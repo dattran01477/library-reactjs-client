@@ -1,31 +1,44 @@
+import { Avatar, Button, Icon, Layout, Menu } from "antd";
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
+import { Link, Route, Switch } from "react-router-dom";
+import Cookies from "universal-cookie";
 import KeycloakService from "../../app/services/keycloakService/keycloakService";
 import "../../assets/scss/argon-dashboard-react.scss";
 import "../../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 import "../../assets/vendor/nucleo/css/nucleo.css";
+import * as Action from "../../data/actions/action-type";
+import * as Constant from "../../share/constants";
 import routes from "../../share/route";
+import CartHeader from "../cart/CartHeader";
 import SideMenu from "../sidebar";
-import { Layout, Menu, Icon, Button, Avatar } from "antd";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import * as Action from "../../data/actions/auth/auth.action";
+import { categories } from "../../data/fake-data/categories";
 
 const { Header, Footer, Sider, Content } = Layout;
 const { SubMenu } = Menu;
-
+const cookies = new Cookies();
 class MainApp extends Component {
-  state = {
-    current: "mail",
-    isAuthentication: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      current: "mail",
+      isAuthentication: false,
+      categoriesData: JSON.parse(categories)
+    };
+  }
 
   handleClick = e => {
-    console.log("click ", e);
     this.setState({
       current: e.key
     });
   };
+
+  componentDidMount() {
+    let cartItem = cookies.get(Constant.CART_NAME);
+    if (cartItem != null) {
+      this.props.setCart(cartItem);
+    }
+  }
 
   getRoutes = routes => {
     return routes.map((prop, key) => {
@@ -33,6 +46,7 @@ class MainApp extends Component {
         <Route
           path={prop.layout + prop.path}
           component={prop.component}
+          exact
           key={key}
         />
       );
@@ -40,10 +54,11 @@ class MainApp extends Component {
   };
 
   processLogin = () => {
-    console.log("click");
     KeycloakService.init();
   };
   render() {
+    const { categoriesData } = this.state;
+
     return (
       <>
         <Layout>
@@ -52,7 +67,7 @@ class MainApp extends Component {
               {...this.props}
               routes={routes}
               logo={{
-                innerLink: "/admin/index",
+                innerLink: "/app/books",
                 imgSrc: require("../../assets/img/brand/argon-react.png"),
                 imgAlt: "..."
               }}
@@ -60,7 +75,7 @@ class MainApp extends Component {
           </Sider>
 
           <Layout className="ml-4">
-            <Header className="bg-white shadow-2xl px-0">
+            <Header className="bg-white shadow-2xl px-0 p-2">
               <div className="bg-white h-full w-full border-b shadow-2xl ">
                 <div className="flex flex-row justify-end">
                   <Menu
@@ -72,10 +87,19 @@ class MainApp extends Component {
                       <Icon type="mail" />
                       Nội quy thư viện
                     </Menu.Item>
-                    <Menu.Item key="app">
-                      <Icon type="appstore" />
-                      Danh mục sách
-                    </Menu.Item>
+                    <SubMenu
+                      key="app"
+                      title={
+                        <span className="submenu-title-wrapper">
+                          <Icon type="appstore" />
+                          Danh mục sách
+                        </span>
+                      }
+                    >
+                      {categoriesData.content.map(item => (
+                        <Menu.Item key={item.id}>{item.name}</Menu.Item>
+                      ))}
+                    </SubMenu>
                     <SubMenu
                       title={
                         <span className="submenu-title-wrapper">
@@ -102,10 +126,46 @@ class MainApp extends Component {
                         Liên lạc
                       </a>
                     </Menu.Item>
-                    {console.log(this.props)}
+
+                    <SubMenu
+                      title={
+                        <span className="submenu-title-wrapper">
+                          <Avatar
+                            className="text-center"
+                            size="large"
+                            src="https://experience.sap.com/fiori-design-web/wp-content/uploads/sites/5/2017/02/Avatar-Sizes-Custom-1.png"
+                          />
+                          <span>Thanh Dat</span>
+                        </span>
+                      }
+                    >
+                      <Menu.ItemGroup>
+                        <Menu.Item key="setting:1">
+                          <Link to="/app/userinfo">Quản lý thông tin</Link>
+                        </Menu.Item>
+                        <Menu.Item key="setting:2">
+                          Trạng thái phiếu mượn
+                        </Menu.Item>
+                        <Menu.Item key="setting:2">Logout</Menu.Item>
+                      </Menu.ItemGroup>
+                    </SubMenu>
+
+                    <SubMenu title={<CartHeader className="p-2" />}>
+                      {/* <CartContent /> */}
+                      <Menu.Item key="gotoBorrowingCart">
+                        <Link to="/app/book-cart" exact />
+                        Tiến hành đặt sách
+                        <Icon type="right" />
+                      </Menu.Item>
+                    </SubMenu>
+
                     {(this.props.authentication && (
                       <Menu.Item key="register">
-                        <Button onClick={event=>this.props.setIsAuthentication(false)}>
+                        <Button
+                          onClick={event =>
+                            this.props.setIsAuthentication(false)
+                          }
+                        >
                           Logout
                         </Button>
                       </Menu.Item>
@@ -117,34 +177,11 @@ class MainApp extends Component {
                         <Button>Register</Button>
                       </Menu.Item>
                     )}
-
-                    <SubMenu
-                      title={
-                        <span className="submenu-title-wrapper">
-                          <Avatar
-                            className="text-center"
-                            size="large"
-                            icon="user"
-                          />
-                          <span>Thanh Dat</span>
-                        </span>
-                      }
-                    >
-                      <Menu.ItemGroup>
-                        <Menu.Item key="setting:1">
-                          <Link to="/userinfo">Quản lý thông tin</Link>
-                        </Menu.Item>
-                        <Menu.Item key="setting:2">
-                          Trạng thái phiếu mượn
-                        </Menu.Item>
-                        <Menu.Item key="setting:2">Logout</Menu.Item>
-                      </Menu.ItemGroup>
-                    </SubMenu>
                   </Menu>
                 </div>
               </div>
             </Header>
-            <Content className="bg-white">
+            <Content className="bg-white h-full">
               <div className="main-content mx-2" ref="mainContent">
                 <Switch>{this.getRoutes(routes)}</Switch>
               </div>
@@ -240,7 +277,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setIsAuthentication: isAuthentication =>
-    dispatch(Action.setAuthentication(isAuthentication))
+    dispatch(Action.setAuthentication(isAuthentication)),
+  setCart: cartItem => dispatch(Action.addToCart(cartItem))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainApp);

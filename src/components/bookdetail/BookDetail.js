@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import "react-table/react-table.css";
 import { callApiAsPromise } from "../../api";
 import { actFetchBookDetail } from "../../data/actions/book";
+import * as Action from "../../data/actions/action-type";
 import Page from "../page";
 const { TabPane } = Tabs;
 
@@ -29,26 +30,32 @@ export class BookDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true
+      isLoading: true,
+      detail: null
     };
   }
   componentDidMount() {
     this.getBookDetailByCriteria();
   }
+
   getBookDetailByCriteria = () => {
     let id = this.props.match.params.id;
-    let x = "books/" + id;
-    callApiAsPromise("GET", x, null, null)
-      .then(res => {
-        this.setState({ isLoading: false });
-        this.props.fetchBookDetailTest(res.data);
-      })
-      .catch(err => {
-        alert(err);
-      });
+    this.props.getBookDetail(id);
   };
+
+  componentDidUpdate() {
+    if (this.props.bookDetail !== null && this.state.detail === null) {
+      console.log("aaa");
+      this.setState({
+        ...this.state,
+        detail: this.props.bookDetail.content[0]
+      });
+    }
+  }
   render() {
     const listData = [];
+    const { detail } = this.state;
+
     for (let i = 0; i < 3; i++) {
       listData.push({
         href: "http://ant.design",
@@ -62,133 +69,149 @@ export class BookDetail extends Component {
       });
     }
 
-    return (
-      <div>
-        <Page
-          header={
-            <PageHeader
-              className="w-full border-b"
-              onBack={() => null}
-              title="Trang Chủ"
-              subTitle="Tôi đi code dạo"
-            />
-          }
-          content={
-            <div className="flex flex-col">
-              <div className="flex flex-row p-16">
-                <div className="w-1/5 shadow-xl h-64 w-32">
-                  <img
-                    className="object-fill h-64 w-64"
-                    src="https://bacb4tvkhoclamnguoi.files.wordpress.com/2017/10/codedao.png"
-                    alt="banner images"
-                  />
-                </div>
-                <Divider type="vertical" className="h-64" />
-                <div className="w-3/5 mx-4 ">
-                  <div className="font-extrabold">Tôi đi code dạo</div>
-                  <div>
-                    <div className="text-xs">- Category: Lập trình</div>
-                    <div className="text-xs">- Code: 123456</div>
-                    <div className="text-xs">- Status: ACTIVE</div>
-                    <div className="text-xs">- Author: abc</div>
-                    <div className="text-xs">- Publisher: Tuoi Tre</div>
+    if (detail !== null) {
+      return (
+        <div>
+          {console.log(detail)}
+          <Page
+            header={
+              <PageHeader
+                className="w-full border-b"
+                onBack={() => null}
+                title="Trang Chủ"
+                subTitle={detail.book.name}
+              />
+            }
+            content={
+              <div className="flex flex-col">
+                <div className="flex flex-row p-16">
+                  <div className="w-1/5 shadow-xl h-64 w-32">
+                    <img
+                      className="object-fill h-64 w-64"
+                      src={detail.book.thumbnail}
+                      alt="banner images"
+                    />
                   </div>
-                  <Divider type="horizontal" className="w-50" />
-                  <div className="flex flex-col">
-                    <div className="flex flex-row">
-                      <div className="w-3/6">
-                        <span className="w-10/12 text-sm mx-2">Số Lượng: </span>
-                        <Input
-                          className="w-2/12"
-                          size="small"
-                          placeholder="0"
-                        />
-                      </div>
-                      <div className="w-3/6 ">
-                        <span className="text-sm mx-2">update:</span>
-                        <span className="text-xs text-gray-600 mx-2">
-                          21/11/2019
-                        </span>
-                      </div>
-                    </div>
+                  <Divider type="vertical" className="h-64" />
+                  <div className="w-3/5 mx-4 ">
+                    <div className="font-extrabold">{detail.book.name}</div>
                     <div>
-                      <Button type="primary my-4" icon="shopping-cart">
-                        Thêm vào giỏ mượn
-                      </Button>
+                      <div className="text-xs">- Category: Lập trình</div>
+                      <div className="text-xs">- Code: {detail.book.isbn}</div>
+                      <div className="text-xs">- Status: Khả dụng</div>
+                      <div className="text-xs">
+                        - Author: {detail.author.name}
+                      </div>
+                      <div className="text-xs">
+                        - Publisher: {detail.publisher.note}
+                      </div>
+                    </div>
+                    <Divider type="horizontal" className="w-50" />
+                    <div className="flex flex-col">
+                      <div className="flex flex-row">
+                        <div className="w-3/6">
+                          <span className="w-10/12 text-sm mx-2">
+                            Số Lượng:
+                          </span>
+                          <Input
+                            className="w-2/12"
+                            size="small"
+                            placeholder="0"
+                            value={detail.book.amount_book}
+                          />
+                        </div>
+                        <div className="w-3/6 ">
+                          <span className="text-sm mx-2">update:</span>
+                          <span className="text-xs text-gray-600 mx-2">
+                            {detail.book.update_date}
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <Button
+                          type="danger"
+                          className="my-4"
+                          icon="shopping-cart"
+                        >
+                          Thêm vào giỏ mượn
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <Tabs onChange={this.callback} type="card">
+                  <TabPane tab="Content" key="1" className="p-2">
+                    {detail.book.long_description}
+                  </TabPane>
+                  <TabPane tab="Review" key="2" className="p-2">
+                    <List
+                      itemLayout="vertical"
+                      size="large"
+                      dataSource={listData}
+                      renderItem={item => (
+                        <List.Item
+                          key={item.title}
+                          actions={
+                            true && [
+                              <IconText
+                                type="star-o"
+                                text="156"
+                                key="skeleton-star-o"
+                              />,
+                              <IconText
+                                type="like-o"
+                                text="156"
+                                key="skeleton-like-o"
+                              />,
+                              <IconText
+                                type="message"
+                                text="2"
+                                key="skeleton-message"
+                              />
+                            ]
+                          }
+                          extra={
+                            true && (
+                              <img
+                                width={272}
+                                alt="logo"
+                                src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                              />
+                            )
+                          }
+                        >
+                          <Skeleton loading={false} active avatar>
+                            <List.Item.Meta
+                              avatar={<Avatar src={item.avatar} />}
+                              title={<a href={item.href}>{item.title}</a>}
+                              description={item.description}
+                            />
+                            {item.content}
+                          </Skeleton>
+                        </List.Item>
+                      )}
+                    />
+                  </TabPane>
+                  <TabPane tab="More Info" key="3" className="p-2">
+                    Content of Tab Pane 3
+                  </TabPane>
+                </Tabs>
               </div>
-              <Tabs onChange={this.callback} type="card">
-                <TabPane tab="Content" key="1" className="p-2">
-                  Sách do abc viết về kinh nghiệm của mình
-                </TabPane>
-                <TabPane tab="Review" key="2" className="p-2">
-                  <List
-                    itemLayout="vertical"
-                    size="large"
-                    dataSource={listData}
-                    renderItem={item => (
-                      <List.Item
-                        key={item.title}
-                        actions={
-                          true && [
-                            <IconText
-                              type="star-o"
-                              text="156"
-                              key="skeleton-star-o"
-                            />,
-                            <IconText
-                              type="like-o"
-                              text="156"
-                              key="skeleton-like-o"
-                            />,
-                            <IconText
-                              type="message"
-                              text="2"
-                              key="skeleton-message"
-                            />
-                          ]
-                        }
-                        extra={
-                          true && (
-                            <img
-                              width={272}
-                              alt="logo"
-                              src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                            />
-                          )
-                        }
-                      >
-                        <Skeleton loading={false} active avatar>
-                          <List.Item.Meta
-                            avatar={<Avatar src={item.avatar} />}
-                            title={<a href={item.href}>{item.title}</a>}
-                            description={item.description}
-                          />
-                          {item.content}
-                        </Skeleton>
-                      </List.Item>
-                    )}
-                  />
-                </TabPane>
-                <TabPane tab="More Info" key="3" className="p-2">
-                  Content of Tab Pane 3
-                </TabPane>
-              </Tabs>
-            </div>
-          }
-        ></Page>
-      </div>
-    );
+            }
+          ></Page>
+        </div>
+      );
+    }
+
+    return <div></div>;
   }
 }
 
-const mapStateToProps = state => {
-  return { bookDetail: state.books.bookDetail };
-};
+const mapStateToProps = state => ({
+  ...state.bookDetail
+});
 
 const mapDispatchToProps = dispatch => ({
-  fetchBookDetailTest: data => dispatch(actFetchBookDetail(data))
+  getBookDetail: id => dispatch(Action.getBookDetail(id))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(BookDetail);

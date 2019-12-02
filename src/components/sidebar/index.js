@@ -161,11 +161,7 @@ class Sidebar extends Component {
                 </InputGroupAddon>
               </InputGroup>
             </Form>
-            {/* Navigation */}
-            <Nav navbar>{this.createLinks(routes)}</Nav>
-            {/* Divider */}
-            <hr className="my-3" />
-
+        
             {/* Top tác giả */}
             <div>
               <p className="font-bold">Top Tác Giả</p>
