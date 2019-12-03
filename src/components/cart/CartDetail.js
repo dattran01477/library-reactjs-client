@@ -1,21 +1,11 @@
-import React, { Component, useState, useEffect } from "react";
-import Page from "../page";
-import {
-  PageHeader,
-  Icon,
-  Button,
-  Divider,
-  Tabs,
-  Table,
-  Avatar,
-  Steps
-} from "antd";
+import { Avatar, Button, Divider, PageHeader, Steps } from "antd";
+import React, { Component } from "react";
+import Barcode from "react-barcode";
+import { Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as Action from "../../data/actions/action-type";
-import uuidv4 from "uuid/v4";
-import Barcode from "react-barcode";
-import auth from "../auth";
-import { Modal } from "react-bootstrap";
+import Page from "../page";
+import { CART_NAME } from "../../share/constants";
 
 const { Step } = Steps;
 
@@ -42,6 +32,7 @@ class CartDetail extends Component {
   closeBorrowPopup = () => {
     this.setState({ showPopUp: false });
     this.props.createBorrowing(null);
+    this.props.history.push("/app/books")
   };
 
   handleDeleteCart = id => {
@@ -61,6 +52,7 @@ class CartDetail extends Component {
       cartDefault.book_id.push(item.id);
     });
 
+    this.props.addCart([]);
     this.setState({ showPopUp: true });
     this.props.createBorrowing(cartDefault);
   };

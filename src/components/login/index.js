@@ -4,6 +4,7 @@ import Page from "../page";
 import Background from "../../assets/img/background/login.png";
 import Logo from "../../assets/img/brand/argon-react.png";
 import * as Action from "../../data/actions/action-type";
+import { connect } from "react-redux";
 
 const sectionStyle = {
   width: "100%",
@@ -22,7 +23,7 @@ class Login extends Component {
   }
 
   onLogin = () => {
-    Action.login(this.state.form);
+    this.props.handleLogin(this.state.form);
   };
 
   onChange = event => {
@@ -35,7 +36,10 @@ class Login extends Component {
     return (
       <Page
         content={
-          <div className="w-full h-screen p-16 bg-scroll" style={sectionStyle}>
+          <div
+            className="w-full h-screen p-16 object-cover"
+            style={sectionStyle}
+          >
             <form className="w-full max-w-sm shadow-2xl p-2 mx-auto my-auto border bg-white rounded ">
               <div>
                 <img className="h-16 w-32 mx-auto" alt="logo" src={Logo} />
@@ -134,4 +138,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = state => ({
+  ...state.auth
+});
+
+const mapDispatchToProps = dispatch => ({
+  handleLogin: form => dispatch(Action.login(form))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

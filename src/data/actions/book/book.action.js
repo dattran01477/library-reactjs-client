@@ -19,7 +19,6 @@ export function getBooks() {
 export function addToCart(cartItem) {
   const cookies = new Cookies();
   cookies.set(CART_NAME, JSON.stringify(cartItem), { path: "/app" });
-  console.log(cookies.get(CART_NAME));
   return {
     type: ADD_ITEM,
     cartItem: cartItem

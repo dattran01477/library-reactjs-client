@@ -161,11 +161,7 @@ class MainApp extends Component {
 
                     {(this.props.authentication && (
                       <Menu.Item key="register">
-                        <Button
-                          onClick={event =>
-                            this.props.setIsAuthentication(false)
-                          }
-                        >
+                        <Button onClick={event => this.props.setIsLogout(true)}>
                           Logout
                         </Button>
                       </Menu.Item>
@@ -278,7 +274,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   setIsAuthentication: isAuthentication =>
     dispatch(Action.setAuthentication(isAuthentication)),
-  setCart: cartItem => dispatch(Action.addToCart(cartItem))
+  setCart: cartItem => dispatch(Action.addToCart(cartItem)),
+  setIsLogout: isLogout => dispatch(Action.setIsLogout(true))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainApp);

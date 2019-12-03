@@ -70,9 +70,19 @@ class Auth2 extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.authentication !== this.state.authentication) {
+    if (this.props.isLogout === true) {
       this.logout();
-      this.setState({ authentication: false });
+      this.props.setIsLogout(false);
+    }
+    if (this.props.refeshVerifyLogin === true) {
+      if (this.loggedIn()) {
+        this.props.setIsAuthentication(true);
+        this.setState({ authentication: true });
+        this.props.history.push("/app/books");
+      } else {
+        this.props.history.push("/login");
+      }
+      this.props.setRefeshVerifyLogin(false);
     }
   }
 
@@ -90,7 +100,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   saveUser: data => dispatch(Action.saveUser(data)),
   setIsAuthentication: isAuthentication =>
-    dispatch(Action.setAuthentication(isAuthentication))
+    dispatch(Action.setAuthentication(isAuthentication)),
+  setRefeshVerifyLogin: isCheck =>
+    dispatch(Action.setRefreshVerifyLogin(isCheck)),
+  setIsLogout: isLogout => dispatch(Action.setIsLogout(isLogout))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Auth2));

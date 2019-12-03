@@ -37,11 +37,6 @@ export class BookCardContainer extends Component {
       books: []
     };
   }
-
-  componentWillMount() {
-    // this.setState({ ...this.state, books: this.props.data });
-  }
-
   componentDidMount() {
     this.props.getBooks(null);
   }

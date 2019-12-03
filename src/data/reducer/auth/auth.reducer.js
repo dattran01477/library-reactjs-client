@@ -3,7 +3,10 @@ import * as Action from "../../actions/action-type";
 const initState = {
   keycloak: null,
   auth: null,
-  authentication: false
+  authentication: false,
+  refeshVerifyLogin: false,
+  isLogin: false,
+  isLogout: false
 };
 
 function auth(state = initState, action) {
@@ -22,6 +25,16 @@ function auth(state = initState, action) {
       return {
         ...state,
         authentication: action.isAuthentication
+      };
+    case Action.SET_REFRESH_CHECK_VERIFY:
+      return {
+        ...state,
+        refeshVerifyLogin: action.refeshVerifyLogin
+      };
+    case Action.SET_LOGOUT:
+      return {
+        ...state,
+        isLogout: action.isLogout
       };
     default:
       return state;

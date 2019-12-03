@@ -6,8 +6,9 @@ import Login from "../../../components/login";
 export const SAVE_KEYCLOAK = "SAVE_KEYCLOAK";
 export const FETCH_EXCHANGE_SERVER = "FETCH_EXCHANGE_SERVER";
 export const SET_AUTHENTICATION = "SET_AUTHENTICATION";
-export const LOGOUT = "LOGOUT";
+export const SET_LOGOUT = "SET_LOGOUT";
 export const LOGIN = "LOGIN";
+export const SET_REFRESH_CHECK_VERIFY = "SET_REFRESH_CHECK_VERIFY";
 
 export function saveKeycloak(keycloak) {
   Axios.defaults.headers.common["Authorization"] = "Bearer " + keycloak.token;
@@ -46,12 +47,26 @@ export function setAuthentication(isAuthentication) {
   };
 }
 
+export function setRefreshVerifyLogin(isCheckVerify) {
+  return {
+    type: SET_REFRESH_CHECK_VERIFY,
+    refeshVerifyLogin: isCheckVerify
+  };
+}
+
+export function setIsLogout(isLogout) {
+  return {
+    type: SET_LOGOUT,
+    isLogout: isLogout
+  };
+}
+
 export function login(form) {
   const config = {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      'Access-Control-Allow-Origin' : '*',
-      'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
     }
   };
 
@@ -61,9 +76,20 @@ export function login(form) {
     config
   );
 
-
-    request.then(response => 
-      console.log(response)
-    )
-    
+  return dispatch =>
+    request.then(response => {
+      console.log(response);
+      if (response.data.data !== null) {
+        localStorage.setItem("jwt", response.data.token);
+        dispatch({
+          type: SET_REFRESH_CHECK_VERIFY,
+          refeshVerifyLogin: true
+        });
+      } else {
+        dispatch({
+          type: SET_REFRESH_CHECK_VERIFY,
+          refeshVerifyLogin: false
+        });
+      }
+    });
 }
