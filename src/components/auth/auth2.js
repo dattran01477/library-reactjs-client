@@ -50,8 +50,16 @@ class Auth2 extends Component {
   getConfirm = () => {
     // Using jwt-decode npm package to decode the token
     let answer = decode(this.getToken());
-    console.log("Recieved answer!");
     return answer;
+  };
+
+  getUserInfo = () => {
+    try {
+      const decoded = decode(localStorage.getItem("jwt"));
+      this.props.fetchUserInfo(decoded.info._id);
+    } catch (err) {
+      return false;
+    }
   };
 
   componentDidMount() {
@@ -62,6 +70,7 @@ class Auth2 extends Component {
 
     if (this.loggedIn()) {
       this.props.setIsAuthentication(true);
+      this.getUserInfo();
       this.setState({ authentication: true });
       this.props.history.push("/app/books");
     } else {
@@ -90,7 +99,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   saveUser: data => dispatch(Action.saveUser(data)),
   setIsAuthentication: isAuthentication =>
-    dispatch(Action.setAuthentication(isAuthentication))
+    dispatch(Action.setAuthentication(isAuthentication)),
+  fetchUserInfo: idUser => dispatch(Action.getUserInfo(idUser))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Auth2));

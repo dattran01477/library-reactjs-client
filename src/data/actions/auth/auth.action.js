@@ -67,3 +67,15 @@ export function login(form) {
     )
     
 }
+
+export function getUserInfo(idUser){
+  const request = Axios.get(`${BASE_API}/api/profiles/${idUser}`);
+
+  return dispatch =>
+    request.then(response =>
+      dispatch({
+        type: FETCH_EXCHANGE_SERVER,
+        authDetail: response.data
+      })
+    );
+}
