@@ -9,6 +9,7 @@ import BookItem from "./BookItem";
 import { dataBook } from "./data";
 import { openMessage } from "../message/Message";
 import { Pagination } from "antd";
+import { NUMBER_OBJECT_PAGE } from "../../share/constants";
 
 const { TabPane } = Tabs;
 const Books = ({ data }) => {
@@ -34,12 +35,21 @@ export class BookCardContainer extends Component {
     super(props);
     this.state = {
       isLoading: false,
-      books: []
+      books: [],
+      criteria: {
+        limit: 5,
+        skip: 0
+      }
     };
   }
   componentDidMount() {
-    this.props.getBooks(null);
+    this.getBook();
   }
+
+  getBook = () => {
+    this.props.getBooks(this.props.searchCriteria);
+    this.setState({ ...this.state, criteria: this.props.searchCriteria });
+  };
 
   onClickBorrowing = item => {
     let cartItemCurrent = [...this.props.cartItem];
@@ -57,9 +67,25 @@ export class BookCardContainer extends Component {
     return false;
   }
 
+  onChangePage = page => {
+    this.props.setCriteria({
+      limit: NUMBER_OBJECT_PAGE,
+      skip: (page - 1) * NUMBER_OBJECT_PAGE
+    });
+  };
+
+  componentDidUpdate() {
+    if (
+      this.props.searchCriteria.skip !== this.state.criteria.skip ||
+      this.props.searchCriteria.limit !== this.state.criteria.limit
+    ) {
+      this.getBook();
+    }
+  }
+
   render() {
     let books = this.props.data.content;
-    
+
     const { cartItem } = this.props;
 
     return (
@@ -118,8 +144,9 @@ export class BookCardContainer extends Component {
               </div>
               <Pagination
                 className="float-right"
-                defaultCurrent={6}
-                total={1000}
+                defaultCurrent={1}
+                total={100}
+                onChange={page => this.onChangePage(page)}
               />
             </TabPane>
             <TabPane tab="Sách Hay Cho Bạn" key="2">
@@ -140,8 +167,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getBooks: searchCriteria => dispatch(Action.getBooks()),
-  addToCart: cart => dispatch(Action.addToCart(cart))
+  getBooks: searchCriteria => dispatch(Action.getBooks(searchCriteria)),
+  addToCart: cart => dispatch(Action.addToCart(cart)),
+  setCriteria: criteria => dispatch(Action.changeCriteria(criteria))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookCardContainer);
