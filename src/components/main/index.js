@@ -267,7 +267,7 @@ class MainApp extends Component {
               </Footer>
             </Layout>
           </Layout>
-        )}
+        ) }
       </>
     );
   }

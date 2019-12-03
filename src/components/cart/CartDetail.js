@@ -1,33 +1,23 @@
-import React, { Component, useState, useEffect } from "react";
-import Page from "../page";
-import {
-  PageHeader,
-  Icon,
-  Button,
-  Divider,
-  Tabs,
-  Table,
-  Avatar,
-  Steps
-} from "antd";
-import { connect } from "react-redux";
-import * as Action from "../../data/actions/action-type";
-import uuidv4 from "uuid/v4";
+import { Avatar, Button, Divider, PageHeader, Steps } from "antd";
+import React, { Component } from "react";
 import Barcode from "react-barcode";
-import auth from "../auth";
 import { Modal } from "react-bootstrap";
+import { connect } from "react-redux";
+import uuid from "uuid/v1";
+import * as Action from "../../data/actions/action-type";
+import Page from "../page";
 
 const { Step } = Steps;
 
-const borrowItemDefault = {
-  id: "5dda0199c954720018518236",
+const borrowingCard = {
   book_id: [],
-  user_id: "5dda0199c954720018518236",
+  user_id: "",
   type: "borrow",
-  status: "active",
-  editor_id: "5dda0199c954720018518236",
-  receiveDate: "5/12/2019",
-  status: "chấp thuận"
+  borrow_date: "active",
+  create_date: "",
+  update_date: "",
+  user_id: "",
+  status: ""
 };
 
 class CartDetail extends Component {
@@ -35,9 +25,25 @@ class CartDetail extends Component {
     super(props);
     this.state = {
       steptCurrent: 1,
-      showPopUp: false
+      showPopUp: false,
+      borrowing: borrowingCard
     };
   }
+
+  componentDidMount() {
+    this.updateBorowing();
+  }
+
+  updateBorowing = () => {
+    let borrowingTmp = { ...this.state.borrowing };
+    borrowingTmp.user_id = this.props.auth.user._id;
+    this.props.cartItem.map(item => {
+      borrowingTmp.book_id.push(item._id);
+    });
+    borrowingTmp.status = "Active";
+    borrowingTmp.type = "Mượn Giáo Trính";
+    this.setState({ ...this.state, borrowing: borrowingTmp });
+  };
 
   closeBorrowPopup = () => {
     this.setState({ showPopUp: false });
@@ -52,18 +58,22 @@ class CartDetail extends Component {
       }
     });
     this.props.addCart(cartItem);
+    this.updateBorowing();
   };
 
   handleCreateBorrowing = () => {
     const cartItem = [...this.props.cartItem];
-    let cartDefault = { ...borrowItemDefault };
-    cartItem.map(item => {
-      cartDefault.book_id.push(item.id);
-    });
-
+    let borrowingTmp = { ...this.state.borrowing };
     this.setState({ showPopUp: true });
-    this.props.createBorrowing(cartDefault);
+    cartItem.map(item => {
+      borrowingTmp.book_id.push(item._id);
+    });
+    this.props.createBorrowing(borrowingTmp);
   };
+
+  componentDidUpdate() {
+    console.log(this.props.borrowItem);
+  }
 
   BookCartDetailBodyLeft = ({ lsBookCartItems, handleDeleteCart }) => {
     function BookCartRow({ item }) {
@@ -102,7 +112,9 @@ class CartDetail extends Component {
         <div>
           <div className="flex flex-row m-2">
             <span className="font-light w-5/12">Họ Tên Sinh Viên:</span>
-            <p className="w-7/12 text-sm font-medium">Trần Thành Đạt</p>
+            <p className="w-7/12 text-sm font-medium">
+              {this.props.auth.user.name}
+            </p>
           </div>
           <div className="flex flex-row m-2">
             <span className="font-light w-5/12">Số Lượng Sách:</span>
@@ -111,14 +123,8 @@ class CartDetail extends Component {
             </p>
           </div>
           <div className="flex flex-row m-2">
-            <span className="font-light w-5/12">Thời Gian Mượn Tối Đa:</span>
-            <p className="w-7/12 text-sm font-medium">
-              2 Tháng kể từ ngày mượn
-            </p>
-          </div>
-          <div className="flex flex-row m-2">
             <span className="font-light w-5/12">Địa Điểm Nhận Sách:</span>
-            <p className="w-7/12 text-sm font-medium">Thư Viện DH SPKT</p>
+            <p className="w-7/12 text-sm font-medium">Thư Viện Đại Học SPKT</p>
           </div>
         </div>
         <Button
@@ -181,17 +187,18 @@ class CartDetail extends Component {
                       <Barcode
                         width={1}
                         height={50}
-                        value={this.props.borrowItem.id}
+                        value={this.props.borrowItem._id}
                       />
                     </div>
                     <div className="flex flex-col">
                       <div>Loại phiếu mượn: Mượn giáo trình</div>
                       <div>
-                        Ngày nhận sách: {this.props.borrowItem.receiveDate}
+                        Ngày nhận sách:
+                        {this.props.borrowItem.create_date}
                       </div>
                       <div>Địa chỉ: DH SPKT</div>
                       <div>Tình trạng:</div>
-                      <div>Thời gian có giá trị: </div>
+                      <div>Thời gian có giá trị: trước khi kết thúc học kỳ 2 tuần</div>
 
                       <span className="text-xs">
                         *Sau thời gian có giá trị nếu bạn không tời nhâận sách
@@ -226,7 +233,8 @@ class CartDetail extends Component {
 
 const mapStateToProps = state => ({
   ...state.books,
-  ...state.borrowing
+  ...state.borrowing,
+  ...state.auth
 });
 
 const mapDispatchToProps = dispatch => ({
