@@ -10,6 +10,7 @@ import { dataBook } from "./data";
 import { openMessage } from "../message/Message";
 import { Pagination } from "antd";
 import { NUMBER_OBJECT_PAGE } from "../../share/constants";
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 
 const { TabPane } = Tabs;
 const Books = ({ data }) => {
@@ -48,13 +49,13 @@ export class BookCardContainer extends Component {
   }
 
   isBorrowedBook = Bookid => {
-    this.props.auth.borrowings.map(item => {
-      item.book_id.map(itemChild => {
-        if (Bookid === itemChild) {
+    for (let i = 0; i < this.props.auth.borrowings.length; i++) {
+      for (let j = 0; j < this.props.auth.borrowings[i].book_id.length; j++) {
+        if (this.props.auth.borrowings[i].book_id[j] == Bookid) {
           return true;
         }
-      });
-    });
+      }
+    }
     return false;
   };
 
