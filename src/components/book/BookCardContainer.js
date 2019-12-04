@@ -10,6 +10,7 @@ import { dataBook } from "./data";
 import { openMessage } from "../message/Message";
 import { Pagination } from "antd";
 import { NUMBER_OBJECT_PAGE } from "../../share/constants";
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 
 const { TabPane } = Tabs;
 const Books = ({ data }) => {
@@ -42,6 +43,22 @@ export class BookCardContainer extends Component {
       }
     };
   }
+
+  componentWillMount() {
+    // this.setState({ ...this.state, books: this.props.data });
+  }
+
+  isBorrowedBook = Bookid => {
+    for (let i = 0; i < this.props.auth.borrowings.length; i++) {
+      for (let j = 0; j < this.props.auth.borrowings[i].book_id.length; j++) {
+        if (this.props.auth.borrowings[i].book_id[j] == Bookid) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
   componentDidMount() {
     this.getBook();
   }
@@ -129,18 +146,24 @@ export class BookCardContainer extends Component {
             <TabPane tab="Sách Mới Nhất" key="1">
               <div className="flex md:flex-row flex-wrap p-2">
                 {books &&
-                  books.map(item => (
-                    <BookItem
-                      totalBorrowings={5}
-                      totalBooks={item.amount_book}
-                      title={item.name}
-                      content={item.short_description}
-                      thumnail={item.thumbnail}
-                      item={item}
-                      disableBorrowing={this.checkExistInCart(item, cartItem)}
-                      onClickBorrowing={this.onClickBorrowing}
-                    />
-                  ))}
+                  books.map(
+                    item =>
+                      this.isBorrowedBook(item._id) === false && (
+                        <BookItem
+                          totalBorrowings={5}
+                          totalBooks={item.amount_book}
+                          title={item.name}
+                          content={item.short_description}
+                          thumnail={item.thumbnail}
+                          item={item}
+                          disableBorrowing={this.checkExistInCart(
+                            item,
+                            cartItem
+                          )}
+                          onClickBorrowing={this.onClickBorrowing}
+                        />
+                      )
+                  )}
               </div>
               <Pagination
                 className="float-right"
@@ -163,7 +186,8 @@ export class BookCardContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state.books
+  ...state.books,
+  ...state.auth
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Page from "../page";
 import { PageHeader, Icon, Button, Divider, Tabs, Table } from "antd";
 import { dataUser } from "./data";
+import { connect } from "react-redux";
 const { TabPane } = Tabs;
 
 const dataSource = [
@@ -63,7 +64,7 @@ class UserInfo extends Component {
     };
   }
   render() {
-    const { data } = this.state;
+    const data = this.props.auth;
     return (
       <Page
         header={
@@ -227,4 +228,10 @@ class UserInfo extends Component {
   }
 }
 
-export default UserInfo;
+const mapStateToProps = state => ({
+  ...state.auth
+});
+
+const mapDispatchToProps = dispatch => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);
