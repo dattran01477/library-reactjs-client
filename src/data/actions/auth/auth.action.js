@@ -78,9 +78,8 @@ export function login(form) {
 
   return dispatch =>
     request.then(response => {
-      console.log(response);
       if (response.data.data !== null) {
-        localStorage.setItem("jwt", response.data.token);
+        localStorage.setItem("jwt", response.data.data.token);
         dispatch({
           type: SET_REFRESH_CHECK_VERIFY,
           refeshVerifyLogin: true

@@ -7,7 +7,9 @@ import {
   List,
   Skeleton,
   Tabs,
-  PageHeader
+  PageHeader,
+  Comment,
+  Form 
 } from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
@@ -18,6 +20,7 @@ import { actFetchBookDetail } from "../../data/actions/book";
 import * as Action from "../../data/actions/action-type";
 import Page from "../page";
 const { TabPane } = Tabs;
+const { TextArea } = Input;
 
 const IconText = ({ type, text }) => (
   <span>
@@ -25,6 +28,8 @@ const IconText = ({ type, text }) => (
     {text}
   </span>
 );
+
+
 
 export class BookDetail extends Component {
   constructor(props) {
@@ -34,6 +39,20 @@ export class BookDetail extends Component {
       detail: null
     };
   }
+
+  Editor = ({ onChange, onSubmit, submitting, value }) => (
+    <div>
+      <Form.Item>
+        <TextArea rows={4} onChange={onChange} value={value} />
+      </Form.Item>
+      <Form.Item>
+        <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
+          Add Comment
+        </Button>
+      </Form.Item>
+    </div>
+  );
+
   componentDidMount() {
     this.getBookDetailByCriteria();
   }
@@ -72,7 +91,6 @@ export class BookDetail extends Component {
     if (detail !== null) {
       return (
         <div>
-          {console.log(detail)}
           <Page
             header={
               <PageHeader
@@ -85,9 +103,9 @@ export class BookDetail extends Component {
             content={
               <div className="flex flex-col">
                 <div className="flex flex-row p-16">
-                  <div className="w-1/5 shadow-xl h-64 w-32">
+                  <div className=" shadow-xl h-64 w-48">
                     <img
-                      className="object-fill h-64 w-64"
+                      className=" h-64 w-48"
                       src={detail.book.thumbnail}
                       alt="banner images"
                     />
@@ -144,6 +162,22 @@ export class BookDetail extends Component {
                     {detail.book.long_description}
                   </TabPane>
                   <TabPane tab="Review" key="2" className="p-2">
+                    <Comment
+                      avatar={
+                        <Avatar
+                          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                          alt="Han Solo"
+                        />
+                      }
+                      content={
+                        <this.Editor
+                          // onChange={this.handleChange}
+                          // onSubmit={this.handleSubmit}
+                          // submitting={submitting}
+                          // value={value}
+                        />
+                      }
+                    />
                     <List
                       itemLayout="vertical"
                       size="large"

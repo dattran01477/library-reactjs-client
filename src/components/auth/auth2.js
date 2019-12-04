@@ -16,7 +16,7 @@ class Auth2 extends Component {
   loggedIn = () => {
     // Checks if there is a saved token and it's still valid
     const token = this.getToken(); // Getting token from localstorage
-    return !!token && !this.isTokenExpired(token); // handwaiving here
+    return !!token && !this.isTokenExpired(token) && this.getUserInfo(); // handwaiving here
   };
 
   isTokenExpired = token => {
@@ -56,7 +56,10 @@ class Auth2 extends Component {
   getUserInfo = () => {
     try {
       const decoded = decode(localStorage.getItem("jwt"));
+      console.log(decoded)
       this.props.fetchUserInfo(decoded.info._id);
+
+      return true;
     } catch (err) {
       return false;
     }
@@ -70,7 +73,6 @@ class Auth2 extends Component {
 
     if (this.loggedIn()) {
       this.props.setIsAuthentication(true);
-      this.getUserInfo();
       this.setState({ authentication: true });
       this.props.history.push("/app/books");
     } else {
