@@ -47,6 +47,11 @@ function auth(state = initState, action) {
         ...state,
         isSuccess: action.isSuccess
       };
+    case Action.CHAGE_PASSWORD:
+      return {
+        ...state,
+        isSuccess: action.isSuccess
+      };
     default:
       return state;
   }

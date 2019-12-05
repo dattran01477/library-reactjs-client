@@ -166,10 +166,18 @@ export function sendEmailResetPassword(email) {
   return dispatch =>
     request.then(response => {
       {
-        console.log(response.data);
-        dispatch({
-          type: CHAGE_PASSWORD
-        });
+        if (response.data.status === "fail") {
+          dispatch({
+            type: CHAGE_PASSWORD,
+            isSuccess: false
+          });
+        }
+        if (response.data.status === "success") {
+          dispatch({
+            type: CHAGE_PASSWORD,
+            isSuccess: true
+          });
+        }
       }
     });
 }
@@ -191,8 +199,6 @@ export function ChangePassword(id, password) {
 
   return dispatch =>
     request.then(response => {
-      console.log(response.data);
-
       dispatch({
         type: CHAGE_PASSWORD
       });

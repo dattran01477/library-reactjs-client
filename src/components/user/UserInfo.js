@@ -458,8 +458,7 @@ const mapDispatchToProps = dispatch => ({
   getBorrowingDetail: borrowingDetailID =>
     dispatch(Action.getBorrowingDetail(borrowingDetailID)),
   saveInfoUser: (form, userId) => dispatch(Action.updateProfile(form, userId)),
-  setRefeshVerifyLogin: isCheck =>
-    dispatch(Action.setRefreshVerifyLogin(isCheck))
+  getUserInfo: () => dispatch(Action.getUserInfo())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);

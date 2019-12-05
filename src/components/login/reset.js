@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as Action from "../../data/actions/action-type";
+import { openMessage } from "../message/Message";
+import { withRouter } from "react-router";
 
 class ResetPass extends Component {
   constructor(props) {
@@ -12,6 +14,14 @@ class ResetPass extends Component {
   sendMailVerify = () => {
     this.props.handleLogin(this.state.email);
   };
+
+  componentDidUpdate = () => {
+    if (this.props.isSuccess) {
+      openMessage("Gửi tin nhắn thành công vui lòng kiểm tra hộp thư");
+      this.props.history.push("/login");
+    }
+  };
+
   render() {
     return (
       <form className="w-full max-w-sm shadow-2xl p-2 mx-auto my-auto border bg-white rounded ">
@@ -63,4 +73,6 @@ const mapDispatchToProps = dispatch => ({
   handleLogin: email => dispatch(Action.sendEmailResetPassword(email))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResetPass);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ResetPass)
+);

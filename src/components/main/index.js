@@ -138,7 +138,11 @@ class MainApp extends Component {
                             <Avatar
                               className="text-center"
                               size="large"
-                              src={this.props.auth.user.avater}
+                              src={
+                                (this.props.auth &&
+                                  this.props.auth.user.avater) ||
+                                "https://experience.sap.com/fiori-design-web/wp-content/uploads/sites/5/2017/02/Avatar-Sizes-Custom-1.png"
+                              }
                             />
                             <span>{this.props.auth.user.name}</span>
                           </span>
