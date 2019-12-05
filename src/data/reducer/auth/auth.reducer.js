@@ -6,7 +6,8 @@ const initState = {
   authentication: false,
   refeshVerifyLogin: false,
   isLogin: false,
-  isLogout: false
+  isLogout: false,
+  isSuccess: false
 };
 
 function auth(state = initState, action) {
@@ -35,6 +36,16 @@ function auth(state = initState, action) {
       return {
         ...state,
         isLogout: action.isLogout
+      };
+    case Action.REGISTER:
+      return {
+        ...state,
+        isSuccess: action.isSuccess
+      };
+    case Action.SET_ISSUCCESS:
+      return {
+        ...state,
+        isSuccess: action.isSuccess
       };
     default:
       return state;

@@ -8,11 +8,11 @@ import "../../assets/scss/argon-dashboard-react.scss";
 import "../../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 import "../../assets/vendor/nucleo/css/nucleo.css";
 import * as Action from "../../data/actions/action-type";
+import { categories } from "../../data/fake-data/categories";
 import * as Constant from "../../share/constants";
 import routes from "../../share/route";
 import CartHeader from "../cart/CartHeader";
 import SideMenu from "../sidebar";
-import { categories } from "../../data/fake-data/categories";
 
 const { Header, Footer, Sider, Content } = Layout;
 const { SubMenu } = Menu;
@@ -88,6 +88,7 @@ class MainApp extends Component {
                         <Icon type="mail" />
                         Nội quy thư viện
                       </Menu.Item>
+
                       <SubMenu
                         key="app"
                         title={
@@ -127,6 +128,9 @@ class MainApp extends Component {
                           Liên lạc
                         </a>
                       </Menu.Item>
+                      <Menu.Item key="introteam">
+                        <Link to="/app/contribute">Giới thiệu team</Link>
+                      </Menu.Item>
 
                       <SubMenu
                         title={
@@ -134,7 +138,7 @@ class MainApp extends Component {
                             <Avatar
                               className="text-center"
                               size="large"
-                              src="https://experience.sap.com/fiori-design-web/wp-content/uploads/sites/5/2017/02/Avatar-Sizes-Custom-1.png"
+                              src={this.props.auth.user.avater}
                             />
                             <span>{this.props.auth.user.name}</span>
                           </span>
@@ -159,7 +163,6 @@ class MainApp extends Component {
                           <Icon type="right" />
                         </Menu.Item>
                       </SubMenu>
-
                       {(this.props.authentication && (
                         <Menu.Item key="register">
                           <Button
@@ -265,7 +268,7 @@ class MainApp extends Component {
               </Footer>
             </Layout>
           </Layout>
-        ) }
+        )}
       </>
     );
   }

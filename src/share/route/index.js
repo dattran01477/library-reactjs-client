@@ -2,6 +2,7 @@ import Books from "../../components/book/BookCardContainer";
 import BookDetail from "../../components/bookdetail/BookDetail";
 import BookCart from "../../components/cart/CartDetail";
 import User from "../../components/user/UserContainer";
+import IntroduceTeam from "../../components/contribute"
 import BookDetailContainer from "../../components/bookdetail/BookDetailContainer";
 var routes = [
   
@@ -31,6 +32,13 @@ var routes = [
     name: "Cart",
     icon: "ni ni-bullet-list-67 text-red",
     component: BookCart,
+    layout: ""
+  },
+  {
+    path: "/app/contribute",
+    name: "contribute",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: IntroduceTeam,
     layout: ""
   }
   // ,

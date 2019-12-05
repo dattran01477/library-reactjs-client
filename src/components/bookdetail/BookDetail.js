@@ -1,22 +1,8 @@
-import {
-  Avatar,
-  Button,
-  Divider,
-  Icon,
-  Input,
-  List,
-  Skeleton,
-  Tabs,
-  PageHeader,
-  Comment,
-  Form 
-} from "antd";
+import { Avatar, Button, Comment, Divider, Form, Icon, Input, List, PageHeader, Skeleton, Tabs } from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "react-table/react-table.css";
-import { callApiAsPromise } from "../../api";
-import { actFetchBookDetail } from "../../data/actions/book";
 import * as Action from "../../data/actions/action-type";
 import Page from "../page";
 const { TabPane } = Tabs;
@@ -29,16 +15,27 @@ const IconText = ({ type, text }) => (
   </span>
 );
 
-
-
 export class BookDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
-      detail: null
+      detail: null,
+      comment: ""
     };
   }
+
+  handleSubmitComment = () => {
+    this.props.addComent({
+      book_detail_id: this.state.detail._id,
+      user: this.props.auth.user._id,
+      comment: this.state.comment
+    });
+  };
+
+  handleChangeComment = e => {
+    this.setState({ ...this.state, comment: e.target.value });
+  };
 
   Editor = ({ onChange, onSubmit, submitting, value }) => (
     <div>
@@ -46,8 +43,13 @@ export class BookDetail extends Component {
         <TextArea rows={4} onChange={onChange} value={value} />
       </Form.Item>
       <Form.Item>
-        <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
-          Add Comment
+        <Button
+          htmlType="submit"
+          loading={submitting}
+          onClick={onSubmit}
+          type="primary"
+        >
+          Bình Luận
         </Button>
       </Form.Item>
     </div>
@@ -89,6 +91,7 @@ export class BookDetail extends Component {
     }
 
     if (detail !== null) {
+      const reviews = detail.reviews;
       return (
         <div>
           <Page
@@ -158,10 +161,10 @@ export class BookDetail extends Component {
                   </div>
                 </div>
                 <Tabs onChange={this.callback} type="card">
-                  <TabPane tab="Content" key="1" className="p-2">
+                  <TabPane tab="Nội Dung" key="1" className="p-2">
                     {detail.book.long_description}
                   </TabPane>
-                  <TabPane tab="Review" key="2" className="p-2">
+                  <TabPane tab="Đánh Giá" key="2" className="p-2">
                     <Comment
                       avatar={
                         <Avatar
@@ -171,20 +174,19 @@ export class BookDetail extends Component {
                       }
                       content={
                         <this.Editor
-                          // onChange={this.handleChange}
-                          // onSubmit={this.handleSubmit}
-                          // submitting={submitting}
-                          // value={value}
+                          onChange={this.handleChangeComment}
+                          onSubmit={this.handleSubmitComment}
+                          value={this.state.comment}
                         />
                       }
                     />
                     <List
                       itemLayout="vertical"
                       size="large"
-                      dataSource={listData}
+                      dataSource={reviews}
                       renderItem={item => (
                         <List.Item
-                          key={item.title}
+                          key={item._id}
                           actions={
                             true && [
                               <IconText
@@ -216,17 +218,17 @@ export class BookDetail extends Component {
                         >
                           <Skeleton loading={false} active avatar>
                             <List.Item.Meta
-                              avatar={<Avatar src={item.avatar} />}
-                              title={<a href={item.href}>{item.title}</a>}
-                              description={item.description}
+                              avatar={<Avatar src={item.user.avater} />}
+                              title={item.user.name}
+                              description={item.comment}
                             />
-                            {item.content}
+                            {item.comment}
                           </Skeleton>
                         </List.Item>
                       )}
                     />
                   </TabPane>
-                  <TabPane tab="More Info" key="3" className="p-2">
+                  <TabPane tab="Thông Tin Thêm" key="3" className="p-2">
                     Content of Tab Pane 3
                   </TabPane>
                 </Tabs>
@@ -242,10 +244,12 @@ export class BookDetail extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state.bookDetail
+  ...state.bookDetail,
+  ...state.auth
 });
 
 const mapDispatchToProps = dispatch => ({
-  getBookDetail: id => dispatch(Action.getBookDetail(id))
+  getBookDetail: id => dispatch(Action.getBookDetail(id)),
+  addComent:formComment=>dispatch(Action.addComment(formComment))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(BookDetail);

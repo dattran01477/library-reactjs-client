@@ -48,7 +48,7 @@ class CartDetail extends Component {
 
   closeBorrowPopup = () => {
     this.setState({ showPopUp: false });
-    this.props.createBorrowing(null);
+    this.props.createBorrowing(null); 
     this.props.history.push("/app/books")
   };
 

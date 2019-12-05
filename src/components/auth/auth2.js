@@ -1,9 +1,10 @@
-import React, { Component } from "react";
-import * as Action from "../../data/actions/auth/auth.action";
-import { connect } from "react-redux";
-import queryString from "query-string";
-import { withRouter } from "react-router";
 import decode from "jwt-decode";
+import queryString from "query-string";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import * as Action from "../../data/actions/auth/auth.action";
+import { openMessage } from "../message/Message";
 
 class Auth2 extends Component {
   constructor(props) {
@@ -56,7 +57,7 @@ class Auth2 extends Component {
   getUserInfo = () => {
     try {
       const decoded = decode(localStorage.getItem("jwt"));
-      console.log(decoded)
+      console.log(decoded);
       this.props.fetchUserInfo(decoded.info._id);
 
       return true;
@@ -75,8 +76,6 @@ class Auth2 extends Component {
       this.props.setIsAuthentication(true);
       this.setState({ authentication: true });
       this.props.history.push("/app/books");
-    } else {
-      this.props.history.push("/login");
     }
   }
 
@@ -89,7 +88,12 @@ class Auth2 extends Component {
       if (this.loggedIn()) {
         this.props.setIsAuthentication(true);
         this.setState({ authentication: true });
-        this.props.history.push("/app/books");
+        if (this.props.auth.user.email === "abc@gmail.com") {
+          openMessage("Vui lòng cập nhật tài khoản trước khi sử dụng!");
+          this.props.history.push("/app/userinfo");
+        } else {
+          this.props.history.push("/app/books");
+        }
       } else {
         this.props.history.push("/login");
       }

@@ -1,7 +1,9 @@
 import Axios from "axios";
 import { BASE_API } from "../../../share/constants";
 import { Promise } from "q";
+import qs from "querystring"
 export const GET_BOOK_DETAIL = "GET_BOOK_DETAIL";
+export const ADD_COMMENT = "ADD_COMMENT";
 export function getBookDetail(bookId) {
   const request = Axios.get(`${BASE_API}/api/bookDetails/book/${bookId}`);
   return dispatch =>
@@ -11,4 +13,29 @@ export function getBookDetail(bookId) {
         bookDetail: response.data
       })
     );
+}
+
+export function addComment(commentForm) {
+  const config = {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+    }
+  };
+
+  const request = Axios.post(
+    `${BASE_API}/api/bookDetails/comment`,
+    qs.stringify(commentForm),
+    config
+  );
+
+  return dispatch =>
+    request.then(response => {
+      console.log(response.data);
+      dispatch({
+        type: ADD_COMMENT,
+        refeshVerifyLogin: true
+      });
+    });
 }

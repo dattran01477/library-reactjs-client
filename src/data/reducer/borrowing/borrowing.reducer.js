@@ -2,7 +2,8 @@ import * as Action from "../../actions/action-type";
 import axios from "axios";
 
 const initState = {
-  borrowItem: null
+  borrowItem: null,
+  borrowDetail: null
 };
 
 function borrowing(state = initState, action) {
@@ -11,6 +12,11 @@ function borrowing(state = initState, action) {
       return {
         ...state,
         borrowItem: action.borrowItem
+      };
+    case Action.GET_BORROWING_DETAIL:
+      return {
+        ...state,
+        borrowDetail: action.borrowingDetail
       };
     default:
       return {
