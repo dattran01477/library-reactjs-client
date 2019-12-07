@@ -34,27 +34,35 @@ class BookItem extends Component {
           (classes.bookItem,
           "shadow-xl hover:shadow-2xl max-w-xs w-64 max-h-full h-auto m-4 rounded-lg border p-1")
         }
-        onClick={event => this.gotoBookDetail(this.props.item.id)}
+        onClick={event => this.gotoBookDetail(this.props.item._id)}
       >
         <div className="flex flex-col">
           <div className="flex flex-row justify-center">
             <div className="w-5/12">
-              <img className="rounded-lg" src={this.props.thumnail} alt="me" />
-              <div className="text-md font-thin">
-                <a>4 đánh giá</a>
+              <div className="h-40">
+                <img
+                  className="rounded-lg"
+                  src={this.props.thumnail}
+                  alt="me"
+                />
               </div>
-              <Button
-                className="w-full my-2"
-                type="danger"
-                icon="plus-circle"
-                onClick={event => {
-                  event.stopPropagation();
-                  this.props.onClickBorrowing(this.props.item);
-                }}
-                disabled={this.props.disableBorrowing}
-              >
-                Mượn
-              </Button>
+              <div className="h-24">
+                <div className="text-md font-thin">
+                  <a>4 đánh giá</a>
+                </div>
+                <Button
+                  className="w-full my-2"
+                  type="danger"
+                  icon="plus-circle"
+                  onClick={event => {
+                    event.stopPropagation();
+                    this.props.onClickBorrowing(this.props.item);
+                  }}
+                  disabled={this.props.disableBorrowing}
+                >
+                  Mượn
+                </Button>
+              </div>
             </div>
             <div className="w-7/12 p-2">
               <div className="text-left">
@@ -68,7 +76,7 @@ class BookItem extends Component {
                   Số lược mượn: {this.props.totalBorrowings}
                 </div>
                 <div className="my-2">
-                  {this.props.content && this.props.content.substring(0, 100)}
+                  {this.props.content && this.props.content.substring(0, 50)}
                   ...
                 </div>
               </div>

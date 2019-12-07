@@ -7,7 +7,7 @@ export const dataBook = [
     content:
       "Christmas is coming, the goose is getting fat . . . but 1.4 million NHS staff are heading off to work. In this perfect present for anyone who has ever set foot in a hospital, Adam Kay delves back into his diaries for a hilarious, horrifying and sometimes heartbreaking peek behind the blue curtain at Christmastime",
     thumnail:
-      "https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/4059/9781405923538.jpg"
+      "https://images-na.ssl-images-amazon.com/images/I/51SdQprzWvL._SX351_BO1,204,203,200_.jpg"
   },
   {
     id: 2,

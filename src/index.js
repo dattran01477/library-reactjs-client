@@ -9,6 +9,7 @@ import reducer from "./data/reducer";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import Login from "./components/login";
+import ResetPass from "./components/resetpass";
 import Auth2 from "./components/auth/auth2";
 import Auth from "./components/auth/index";
 
@@ -16,16 +17,14 @@ import Auth from "./components/auth/index";
 const store = createStore(reducer, applyMiddleware(thunk));
 ReactDOM.render(
   <Provider store={store}>
-    {/* <Auth> */}
-
     <BrowserRouter>
-     
+      <Auth2>
         <Route path="/app" component={App} key="app" />
         <Route path="/login" component={Login} key="login" />
+        <Route path="/reset" component={ResetPass} key="reset" />
+      </Auth2>
      
     </BrowserRouter>
-
-    {/* </Auth> */}
   </Provider>,
   document.getElementById("root")
 );
