@@ -5,8 +5,6 @@ import { Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as Action from "../../data/actions/action-type";
 import Page from "../page";
-import { CART_NAME } from "../../share/constants";
-import uuid from "uuid/v1";
 
 const { Step } = Steps;
 
@@ -17,7 +15,6 @@ const borrowingCard = {
   borrow_date: "active",
   create_date: "",
   update_date: "",
-  user_id: "",
   status: ""
 };
 
@@ -38,9 +35,7 @@ class CartDetail extends Component {
   updateBorowing = () => {
     let borrowingTmp = { ...this.state.borrowing };
     borrowingTmp.user_id = this.props.auth.user._id;
-    this.props.cartItem.map(item => {
-      borrowingTmp.book_id.push(item._id);
-    });
+    this.props.cartItem.map(item => borrowingTmp.book_id.push(item._id));
     borrowingTmp.status = "Active";
     borrowingTmp.type = "Mượn Giáo Trính";
     this.setState({ ...this.state, borrowing: borrowingTmp });
@@ -48,8 +43,8 @@ class CartDetail extends Component {
 
   closeBorrowPopup = () => {
     this.setState({ showPopUp: false });
-    this.props.createBorrowing(null); 
-    this.props.history.push("/app/books")
+    this.props.createBorrowing(null);
+    this.props.history.push("/app/books");
   };
 
   handleDeleteCart = id => {
@@ -58,6 +53,7 @@ class CartDetail extends Component {
       if (item._id !== id) {
         return item;
       }
+      return null;
     });
     this.props.addCart(cartItem);
     this.updateBorowing();
@@ -67,15 +63,9 @@ class CartDetail extends Component {
     const cartItem = [...this.props.cartItem];
     let borrowingTmp = { ...this.state.borrowing };
     this.setState({ showPopUp: true });
-    cartItem.map(item => {
-      borrowingTmp.book_id.push(item._id);
-    });
+    cartItem.map(item => borrowingTmp.book_id.push(item._id));
     this.props.createBorrowing(borrowingTmp);
   };
-
-  componentDidUpdate() {
-    console.log(this.props.borrowItem);
-  }
 
   BookCartDetailBodyLeft = ({ lsBookCartItems, handleDeleteCart }) => {
     function BookCartRow({ item }) {
@@ -162,7 +152,7 @@ class CartDetail extends Component {
               </Steps>
             </div>
 
-            {step == 1 && (
+            {step === 1 && (
               <div className="flex flex-row">
                 <div className="w-8/12">
                   <this.BookCartDetailBodyLeft
@@ -178,7 +168,7 @@ class CartDetail extends Component {
               </div>
             )}
 
-            {step == 2 && (
+            {step === 2 && (
               <Modal show={this.state.showPopUp}>
                 <Modal.Header closeButton>
                   <Modal.Title>Chi Tiết Nhận Sách</Modal.Title>
@@ -200,7 +190,9 @@ class CartDetail extends Component {
                       </div>
                       <div>Địa chỉ: DH SPKT</div>
                       <div>Tình trạng:</div>
-                      <div>Thời gian có giá trị: trước khi kết thúc học kỳ 2 tuần</div>
+                      <div>
+                        Thời gian có giá trị: trước khi kết thúc học kỳ 2 tuần
+                      </div>
 
                       <span className="text-xs">
                         *Sau thời gian có giá trị nếu bạn không tời nhâận sách

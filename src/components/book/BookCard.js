@@ -3,8 +3,6 @@ import { FaHeart, FaHeartBroken } from "react-icons/fa";
 import BookCover from "./items/BookCover";
 import BookInfo from "./items/BookInfo";
 import "./items/bookStyle.css";
-import Likes from "./items/Likes";
-import BrrowButton from "./items/BorrowButton";
 
 class Book extends Component {
   constructor(props) {

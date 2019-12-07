@@ -1,35 +1,14 @@
-import { Carousel, Tabs } from "antd";
+import { Carousel, Pagination, Tabs } from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as Action from "../../data/actions/action-type";
-import Page from "../page";
-import BookCard from "./BookCard";
-import BookItem from "./BookItem";
-import { dataBook } from "./data";
-import { openMessage } from "../message/Message";
-import { Pagination } from "antd";
 import { NUMBER_OBJECT_PAGE } from "../../share/constants";
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
+import { openMessage } from "../message/Message";
+import Page from "../page";
+import BookItem from "./BookItem";
 
 const { TabPane } = Tabs;
-const Books = ({ data }) => {
-  let bookCards = [];
-  data &&
-    data.map(item => {
-      bookCards.push(
-        <BookCard
-          key={item.id}
-          bookId={item.id}
-          name={item.name}
-          img={item.thumbnail}
-          description={item.longDescription || "Không có mô tả"}
-        ></BookCard>
-      );
-    });
-
-  return bookCards;
-};
 
 export class BookCardContainer extends Component {
   constructor(props) {
@@ -51,7 +30,7 @@ export class BookCardContainer extends Component {
   isBorrowedBook = Bookid => {
     for (let i = 0; i < this.props.auth.borrowings.length; i++) {
       for (let j = 0; j < this.props.auth.borrowings[i].book_id.length; j++) {
-        if (this.props.auth.borrowings[i].book_id[j] == Bookid) {
+        if (this.props.auth.borrowings[i].book_id[j] === Bookid) {
           return true;
         }
       }

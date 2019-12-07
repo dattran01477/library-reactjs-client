@@ -57,8 +57,6 @@ class MainApp extends Component {
     KeycloakService.init();
   };
   render() {
-    const { categoriesData } = this.state;
-
     return (
       <>
         {this.props.auth && (
@@ -107,13 +105,7 @@ class MainApp extends Component {
                         </Menu.ItemGroup>
                       </SubMenu>
                       <Menu.Item key="alipay">
-                        <a
-                          href="https://ant.design"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Liên lạc
-                        </a>
+                        <span>Liên lạc</span>
                       </Menu.Item>
                       <Menu.Item key="introteam">
                         <Link to="/app/contribute">Giới thiệu team</Link>
@@ -200,24 +192,24 @@ class MainApp extends Component {
                     <div className="font-bold mb-2">Link </div>
                     <div className="text-gray-400">
                       <div>
-                        <a>
+                        <span>
                           Youtube <Icon type="youtube" />
-                        </a>
+                        </span>
                       </div>
                       <div>
-                        <a>
+                        <span>
                           FaceBook <Icon type="facebook" />
-                        </a>
+                        </span>
                       </div>
                       <div>
-                        <a>
+                        <span>
                           Porn Hub <Icon type="google-plus" />
-                        </a>
+                        </span>
                       </div>
                       <div>
-                        <a>
+                        <span>
                           Git Hub <Icon type="github" />
-                        </a>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -225,16 +217,16 @@ class MainApp extends Component {
                     <div className="font-bold mb-2">Suport</div>
                     <div className="text-gray-400">
                       <div>
-                        <a>Documents</a>
+                        <span>Documents</span>
                       </div>
                       <div>
-                        <a>Forum</a>
+                        <span>Forum</span>
                       </div>
                       <div>
-                        <a>Language</a>
+                        <span>Language</span>
                       </div>
                       <div>
-                        <a>Release</a>
+                        <span>Release</span>
                       </div>
                     </div>
                   </div>
@@ -242,16 +234,16 @@ class MainApp extends Component {
                     <div className="font-bold mb-2">Recommend</div>
                     <div className="text-gray-400">
                       <div>
-                        <a>Wordpress</a>
+                        <span>Wordpress</span>
                       </div>
                       <div>
-                        <a>Woocomerce</a>
+                        <span>Woocomerce</span>
                       </div>
                       <div>
-                        <a>google</a>
+                        <span>google</span>
                       </div>
                       <div>
-                        <a>FAQS</a>
+                        <span>FAQS</span>
                       </div>
                     </div>
                   </div>

@@ -82,7 +82,6 @@ export class BookDetail extends Component {
   };
 
   componentDidUpdate() {
-    console.log(this.props.bookDetail);
     if (this.props.bookDetail !== null && this.state.detail === null) {
       this.setState({
         ...this.state,

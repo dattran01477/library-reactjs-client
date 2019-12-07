@@ -1,13 +1,13 @@
 import {
+  Avatar,
   Button,
   Divider,
   Icon,
+  Input,
   PageHeader,
-  Avatar,
   Table,
   Tabs,
-  Tag,
-  Input
+  Tag
 } from "antd";
 import React, { Component } from "react";
 import Barcode from "react-barcode";
@@ -17,39 +17,6 @@ import * as Action from "../../data/actions/action-type";
 import Page from "../page";
 import { dataUser } from "./data";
 const { TabPane } = Tabs;
-
-const dataSource = [
-  {
-    key: "1",
-    name: "Mike",
-    age: 32,
-    address: "10 Downing Street"
-  },
-  {
-    key: "2",
-    name: "John",
-    age: 42,
-    address: "10 Downing Street"
-  }
-];
-
-const columnsPenalizesCard = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name"
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    key: "age"
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    key: "address"
-  }
-];
 
 class UserInfo extends Component {
   constructor(props) {
@@ -286,25 +253,25 @@ class UserInfo extends Component {
                           <span className="mx-2">
                             <Icon type="facebook" />
                           </span>
-                          <a>
+                          <span>
                             <p className="w-3/5">dat.feed09</p>
-                          </a>
+                          </span>
                         </div>
                         <div className="flex flex-row">
                           <span className="mx-2">
                             <Icon type="instagram" />
                           </span>
-                          <a>
+                          <span>
                             <p className="w-3/5">dattran01477</p>
-                          </a>
+                          </span>
                         </div>
                         <div className="flex flex-row">
                           <span className="mx-2">
                             <Icon type="twitter" />
                           </span>
-                          <a>
+                          <span>
                             <p className="w-3/5">dat.feed0703</p>
-                          </a>
+                          </span>
                         </div>
                       </div>
                     </div>

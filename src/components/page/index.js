@@ -1,6 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
-import { callApiAsPromise } from "../../api";
 
 export class BookCardContainer extends Component {
   render() {

@@ -28,7 +28,7 @@ const IconText = ({ type, text }) => (
 
 export default class user extends Component {
   callback = key => {
-    console.log(key);
+    
   };
 
   render() {

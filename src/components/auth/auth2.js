@@ -98,11 +98,7 @@ class Auth2 extends Component {
         this.props.history.push("/login");
       }
      
-    }
-    
-    
-     
-    
+    } 
   }
 
   render() {

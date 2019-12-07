@@ -47,7 +47,6 @@ class ResetPassForm extends Component {
       openMessage("Token trả về bị sai!");
       this.props.push.history("/login");
     } else {
-      console.log(idUserReset);
       this.setState({ ...this.state, idUser: idUserReset });
     }
   }
@@ -75,10 +74,9 @@ class ResetPassForm extends Component {
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               id="inline-full-name"
-              type="text"
-              name="Email"
-              defaultValue=""
               type="password"
+              name="password"
+              defaultValue=""
               value={this.state.password}
               onChange={e =>
                 this.setState({ ...this.state, password: e.target.value })
@@ -90,10 +88,9 @@ class ResetPassForm extends Component {
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               id="inline-full-name"
-              type="text"
-              name="Email"
-              defaultValue=""
               type="password"
+              name="confirmPassword"
+              defaultValue=""
               value={this.state.confirmPassword}
               onChange={e =>
                 this.setState({

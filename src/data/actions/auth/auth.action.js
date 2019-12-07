@@ -82,7 +82,7 @@ export function login(form) {
   return dispatch =>
     request.then(response => {
       if (response.data.data !== null) {
-        console.log(response.data.data.token)
+      
         localStorage.setItem("jwt", response.data.data.token);
         dispatch({
           type: SET_REFRESH_CHECK_VERIFY,
@@ -166,19 +166,17 @@ export function sendEmailResetPassword(email) {
 
   return dispatch =>
     request.then(response => {
-      {
-        if (response.data.status === "fail") {
-          dispatch({
-            type: CHAGE_PASSWORD,
-            isSuccess: false
-          });
-        }
-        if (response.data.status === "success") {
-          dispatch({
-            type: CHAGE_PASSWORD,
-            isSuccess: true
-          });
-        }
+      if (response.data.status === "fail") {
+        dispatch({
+          type: CHAGE_PASSWORD,
+          isSuccess: false
+        });
+      }
+      if (response.data.status === "success") {
+        dispatch({
+          type: CHAGE_PASSWORD,
+          isSuccess: true
+        });
       }
     });
 }

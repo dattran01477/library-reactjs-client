@@ -39,14 +39,7 @@ var routes = [
     component: IntroduceTeam,
     layout: ""
   }
-  // ,
-  // {
-  //   path:"/book-cart",
-  //   name:"Cart",
-  //   icon:"ni ni-bullet-list-67 text-red",
-  //   component: BookCart,
-  //   layout:""
-  // }
+  
 ];
 
 export default routes;

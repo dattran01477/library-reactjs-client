@@ -1,7 +1,6 @@
 import Axios from "axios";
+import qs from "querystring";
 import { BASE_API } from "../../../share/constants";
-import { Promise } from "q";
-import qs from "querystring"
 export const GET_BOOK_DETAIL = "GET_BOOK_DETAIL";
 export const ADD_COMMENT = "ADD_COMMENT";
 export function getBookDetail(bookId) {

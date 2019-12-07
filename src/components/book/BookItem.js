@@ -1,9 +1,7 @@
-import React, { Component } from "react";
 import { Button } from "antd";
+import React, { Component } from "react";
 import injectSheet from "react-jss";
-import data from "./data";
 import { withRouter } from "react-router";
-
 const styles = {
   bookItem: {
     "&:hover": {
@@ -12,8 +10,6 @@ const styles = {
   }
 };
 
-const content =
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
 class BookItem extends Component {
   constructor(props) {
     super(props);
@@ -48,7 +44,7 @@ class BookItem extends Component {
               </div>
               <div className="h-24">
                 <div className="text-md font-thin">
-                  <a>4 đánh giá</a>
+                  <p>4 đánh giá</p>
                 </div>
                 <Button
                   className="w-full my-2"

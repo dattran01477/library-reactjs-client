@@ -1,33 +1,8 @@
+import { Avatar } from "antd";
 import { PropTypes } from "prop-types";
 import React, { Component } from "react";
 import { Link, NavLink as NavLinkRRD } from "react-router-dom";
-import {
-  Col,
-  Collapse,
-  Container,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Form,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Media,
-  Nav,
-  Navbar,
-  NavbarBrand,
-  NavItem,
-  NavLink,
-  Row,
-  UncontrolledDropdown
-} from "reactstrap";
-
-import { Menu, Icon, Avatar } from "antd";
-
-const { SubMenu } = Menu;
-
-var ps;
+import { Col, Collapse, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Navbar, NavbarBrand, NavItem, NavLink, Row } from "reactstrap";
 
 class Sidebar extends Component {
   state = {
@@ -39,7 +14,7 @@ class Sidebar extends Component {
   }
 
   handleClick = e => {
-    console.log("click ", e);
+   
   };
   // verifies if routeName is the one active (in browser input)
   activeRoute(routeName) {
@@ -76,7 +51,7 @@ class Sidebar extends Component {
     });
   };
   render() {
-    const { bgColor, routes, logo } = this.props;
+    const { logo } = this.props;
     let navbarBrandProps;
     if (logo && logo.innerLink) {
       navbarBrandProps = {
@@ -161,7 +136,7 @@ class Sidebar extends Component {
                 </InputGroupAddon>
               </InputGroup>
             </Form>
-        
+
             {/* Top tác giả */}
             <div>
               <p className="font-bold">Top Tác Giả</p>
@@ -176,9 +151,7 @@ class Sidebar extends Component {
                     </span>
                   </div>
                   <div className="w-4/5 ">
-                    <span className="font-normal text-sm">
-                      Nam Cao
-                    </span>
+                    <span className="font-normal text-sm">Nam Cao</span>
                   </div>
                 </div>
 
@@ -230,7 +203,7 @@ class Sidebar extends Component {
             <hr className="my-3" />
 
             {/* Top sách mượn */}
-            <div >
+            <div>
               <p className="font-bold">Top Sách Mượn Trong Tuần</p>
               <div className="flex flex-row my-2">
                 <div className="w-1/5 mr-2">

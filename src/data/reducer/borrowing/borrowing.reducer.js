@@ -1,5 +1,4 @@
 import * as Action from "../../actions/action-type";
-import axios from "axios";
 
 const initState = {
   borrowItem: null,
