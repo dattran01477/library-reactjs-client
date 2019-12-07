@@ -82,6 +82,7 @@ export function login(form) {
   return dispatch =>
     request.then(response => {
       if (response.data.data !== null) {
+        console.log(response.data.data.token)
         localStorage.setItem("jwt", response.data.data.token);
         dispatch({
           type: SET_REFRESH_CHECK_VERIFY,
@@ -200,7 +201,8 @@ export function ChangePassword(id, password) {
   return dispatch =>
     request.then(response => {
       dispatch({
-        type: CHAGE_PASSWORD
+        type: CHAGE_PASSWORD,
+        isSuccess: true
       });
     });
 }

@@ -15,7 +15,7 @@ export function getBookDetail(bookId) {
     );
 }
 
-export function addComment(commentForm) {
+export function addComment(commentForm,idBook) {
   const config = {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -29,13 +29,9 @@ export function addComment(commentForm) {
     qs.stringify(commentForm),
     config
   );
-
+  
   return dispatch =>
     request.then(response => {
-      console.log(response.data);
-      dispatch({
-        type: ADD_COMMENT,
-        refeshVerifyLogin: true
-      });
+      dispatch(getBookDetail(idBook));
     });
 }

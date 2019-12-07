@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import queryString from "query-string";
 import { withRouter } from "react-router";
 import { openMessage } from "../message/Message";
+import Logo from "../../assets/img/brand/argon-react.png";
 import decode from "jwt-decode";
 const sectionStyle = {
   width: "100%",
@@ -23,7 +24,7 @@ class ResetPassForm extends Component {
   }
 
   isSubmit = () => {
-    return this.state.password === this.state.confirmPassword;
+    return this.state.password === this.state.confirmPassword&&this.state.password.length>5;
   };
 
   onSubmit = () => {
@@ -50,44 +51,68 @@ class ResetPassForm extends Component {
       this.setState({ ...this.state, idUser: idUserReset });
     }
   }
+
+  componentDidUpdate(){
+    if (this.props.isSuccess) {
+      openMessage("Đổi mật khẩu thành công vui lòng đăng nhập bằng mật khẩu mới!");
+      this.props.history.push("/login");
+    }
+  }
   render() {
     return (
       <div className="w-full h-screen p-16 object-cover" style={sectionStyle}>
-        <div className="md:w-2/3">
-          <input
-            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-            id="inline-full-name"
-            type="text"
-            name="Email"
-            defaultValue=""
-            value={this.state.password}
-            onChange={e =>
-              this.setState({ ...this.state, password: e.target.value })
-            }
-            placeholder="Mật khẩu của bạn"
-          />
-        </div>
-        <div className="md:w-2/3">
-          <input
-            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-            id="inline-full-name"
-            type="text"
-            name="Email"
-            defaultValue=""
-            value={this.state.confirmPassword}
-            onChange={e =>
-              this.setState({ ...this.state, confirmPassword: e.target.value })
-            }
-            placeholder="Nhập lại mật khẩu"
-          />
-        </div>
-        <Button
-          type="danger"
-          disabled={!this.isSubmit()}
-          onClick={this.onSubmit}
-        >
-          Thay đổi mật khẩu
-        </Button>
+        <form className="w-full max-w-sm shadow-2xl p-2 mx-auto my-auto border bg-white rounded ">
+          <div>
+            <img className="h-16 w-32 mx-auto" alt="logo" src={Logo} />
+            <label
+              className="block font-bold text-gray-500 text-center text-xs  md:mb-0 mb-4"
+              htmlFor="inline-full-name"
+            >
+              Nhập Mật khẩu mới tại đây
+            </label>
+          </div>
+          <div className="my-2">
+            <input
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              id="inline-full-name"
+              type="text"
+              name="Email"
+              defaultValue=""
+              type="password"
+              value={this.state.password}
+              onChange={e =>
+                this.setState({ ...this.state, password: e.target.value })
+              }
+              placeholder="Mật khẩu mới của bạn"
+            />
+          </div>
+          <div className="my-2">
+            <input
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              id="inline-full-name"
+              type="text"
+              name="Email"
+              defaultValue=""
+              type="password"
+              value={this.state.confirmPassword}
+              onChange={e =>
+                this.setState({
+                  ...this.state,
+                  confirmPassword: e.target.value
+                })
+              }
+              placeholder="Nhập lại mật khẩu"
+            />
+          </div>
+          <Button
+            type="danger"
+            className="ml-auto"
+            disabled={!this.isSubmit()}
+            onClick={this.onSubmit}
+          >
+            Thay đổi mật khẩu
+          </Button>
+        </form>
       </div>
     );
   }

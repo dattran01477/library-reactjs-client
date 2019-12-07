@@ -173,10 +173,33 @@ export class BookCardContainer extends Component {
               />
             </TabPane>
             <TabPane tab="Sách Hay Cho Bạn" key="2">
-              Content of tab 2
-            </TabPane>
-            <TabPane tab="Sách Tình Yêu" key="3">
-              Content of tab 3
+              <div className="flex md:flex-row flex-wrap p-2">
+                {books &&
+                  books.map(
+                    item =>
+                      this.isBorrowedBook(item._id) === false && (
+                        <BookItem
+                          totalBorrowings={5}
+                          totalBooks={item.amount_book}
+                          title={item.name}
+                          content={item.short_description}
+                          thumnail={item.thumbnail}
+                          item={item}
+                          disableBorrowing={this.checkExistInCart(
+                            item,
+                            cartItem
+                          )}
+                          onClickBorrowing={this.onClickBorrowing}
+                        />
+                      )
+                  )}
+              </div>
+              <Pagination
+                className="float-right"
+                defaultCurrent={1}
+                total={100}
+                onChange={page => this.onChangePage(page)}
+              />
             </TabPane>
           </Tabs>
         }

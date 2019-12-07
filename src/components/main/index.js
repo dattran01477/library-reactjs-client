@@ -90,19 +90,6 @@ class MainApp extends Component {
                       </Menu.Item>
 
                       <SubMenu
-                        key="app"
-                        title={
-                          <span className="submenu-title-wrapper">
-                            <Icon type="appstore" />
-                            Danh mục sách
-                          </span>
-                        }
-                      >
-                        {categoriesData.content.map(item => (
-                          <Menu.Item key={item.id}>{item.name}</Menu.Item>
-                        ))}
-                      </SubMenu>
-                      <SubMenu
                         title={
                           <span className="submenu-title-wrapper">
                             <Icon type="setting" />

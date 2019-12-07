@@ -1,4 +1,16 @@
-import { Avatar, Button, Comment, Divider, Form, Icon, Input, List, PageHeader, Skeleton, Tabs } from "antd";
+import {
+  Avatar,
+  Button,
+  Comment,
+  Divider,
+  Form,
+  Icon,
+  Input,
+  List,
+  PageHeader,
+  Skeleton,
+  Tabs
+} from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -21,16 +33,21 @@ export class BookDetail extends Component {
     this.state = {
       isLoading: true,
       detail: null,
-      comment: ""
+      comment: "",
+      isComment: false
     };
   }
 
   handleSubmitComment = () => {
-    this.props.addComent({
-      book_detail_id: this.state.detail._id,
-      user: this.props.auth.user._id,
-      comment: this.state.comment
-    });
+    this.props.addComent(
+      {
+        book_detail_id: this.state.detail._id,
+        user: this.props.auth.user._id,
+        comment: this.state.comment
+      },
+      this.state.detail.book._id
+    );
+    this.setState({ ...this.state, comment: "", isComment: true });
   };
 
   handleChangeComment = e => {
@@ -65,12 +82,24 @@ export class BookDetail extends Component {
   };
 
   componentDidUpdate() {
+    console.log(this.props.bookDetail);
     if (this.props.bookDetail !== null && this.state.detail === null) {
-      console.log("aaa");
       this.setState({
         ...this.state,
         detail: this.props.bookDetail.content[0]
       });
+    }
+    if (this.state.detail !== null) {
+      if (
+        this.props.bookDetail.content[0].reviews.length !==
+        this.state.detail.reviews.length
+      ) {
+        this.setState({
+          ...this.state,
+          detail: this.props.bookDetail.content[0],
+          isComment: false
+        });
+      }
     }
   }
   render() {
@@ -181,6 +210,7 @@ export class BookDetail extends Component {
                       }
                     />
                     <List
+                      className="p-4"
                       itemLayout="vertical"
                       size="large"
                       dataSource={reviews}
@@ -205,15 +235,6 @@ export class BookDetail extends Component {
                                 key="skeleton-message"
                               />
                             ]
-                          }
-                          extra={
-                            true && (
-                              <img
-                                width={272}
-                                alt="logo"
-                                src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                              />
-                            )
                           }
                         >
                           <Skeleton loading={false} active avatar>
@@ -250,6 +271,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getBookDetail: id => dispatch(Action.getBookDetail(id)),
-  addComent:formComment=>dispatch(Action.addComment(formComment))
+  addComent: (formComment, bookId) =>
+    dispatch(Action.addComment(formComment, bookId))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(BookDetail);

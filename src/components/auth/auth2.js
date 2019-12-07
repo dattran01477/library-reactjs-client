@@ -57,7 +57,6 @@ class Auth2 extends Component {
   getUserInfo = () => {
     try {
       const decoded = decode(localStorage.getItem("jwt"));
-      console.log(decoded);
       this.props.fetchUserInfo(decoded.info._id);
 
       return true;
@@ -93,12 +92,17 @@ class Auth2 extends Component {
           this.props.history.push("/app/userinfo");
         } else {
           this.props.history.push("/app/books");
+    
         }
       } else {
         this.props.history.push("/login");
       }
-      this.props.setRefeshVerifyLogin(false);
+     
     }
+    
+    
+     
+    
   }
 
   render() {

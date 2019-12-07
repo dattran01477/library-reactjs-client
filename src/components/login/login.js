@@ -43,7 +43,7 @@ class LoginComponent extends Component {
               className="block text-gray-600  md:text-left font-semibold mb-1 md:mb-0 pl-4"
               htmlFor="inline-full-name"
             >
-              Email
+              Username/email
             </label>
           </div>
           <div className="md:w-2/3">
