@@ -118,12 +118,11 @@ class MainApp extends Component {
                               className="text-center"
                               size="large"
                               src={
-                                (this.props.auth &&
-                                  this.props.auth.user.avater) ||
+                                this.props.auth &&
                                 "https://experience.sap.com/fiori-design-web/wp-content/uploads/sites/5/2017/02/Avatar-Sizes-Custom-1.png"
                               }
                             />
-                            <span>{this.props.auth.user.name}</span>
+                            <span>{this.props.auth.username}</span>
                           </span>
                         }
                       >
@@ -146,10 +145,10 @@ class MainApp extends Component {
                           <Icon type="right" />
                         </Menu.Item>
                       </SubMenu>
-                      {(this.props.authentication && (
-                        <Menu.Item key="register">
+                      {(this.props.keycloak.authenticated && (
+                        <Menu.Item key="logout">
                           <Button
-                            onClick={event => this.props.setIsLogout(true)}
+                            onClick={this.props.keycloak.logout}
                           >
                             Logout
                           </Button>
