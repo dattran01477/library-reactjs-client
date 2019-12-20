@@ -19,7 +19,23 @@ class Auth extends Component {
     }
   }
 
-  saveKeycloak = kcToken => {
+  errorLogin = statusCode => {
+    if (statusCode === 401) {
+      this.props.history.push("/login");
+    }
+  };
+
+  isTokenExpired = exp => {
+    try {
+      if (exp < Date.now() / 1000) {
+        return true;
+      } else return false;
+    } catch (err) {
+      return false;
+    }
+  };
+
+  saveKeycloakLocalStore = kcToken => {
     localStorage.setItem(Contants.JWT, JSON.stringify(kcToken));
   };
 
@@ -29,15 +45,15 @@ class Auth extends Component {
       : null;
   };
 
-  checkSSO = () => {
+  checkSSO = typeLogin => {
     const keycloak = Keycloak("/keycloak.json");
     keycloak
-      .init({ onLoad: "check-sso", promiseType: "native" })
+      .init({ onLoad: typeLogin, promiseType: "native" })
       .then(authentication => {
         if (authentication) {
-          this.saveKeycloak(keycloak);
+          this.saveKeycloakLocalStore(keycloak);
           this.props.saveKeycloak(keycloak);
-          this.props.exchangeAuthWithServer(keycloak.token);
+          this.props.exchangeAuthWithServer(this.errorLogin);
           this.props.history.push("/app/books");
         } else {
           this.props.history.push("/login");
@@ -48,21 +64,26 @@ class Auth extends Component {
   checkLogin = () => {
     let keycloak = this.getKeycloakFromLocalStore();
     if (keycloak !== null) {
-      if (!keycloak.authenticated) {
-        this.checkSSO();
-      } else {
+      if (
+        keycloak.authenticated &&
+        this.isTokenExpired(keycloak.idTokenParsed.exp)
+      ) {
+        this.checkSSO("login-required");
+      } else if (
+        keycloak.authenticated &&
+        !this.isTokenExpired(keycloak.idTokenParsed.exp)
+      ) {
+        this.saveKeycloakLocalStore(keycloak);
         this.props.saveKeycloak(keycloak);
-        this.props.exchangeAuthWithServer(keycloak.token);
-        this.props.history.push("/app/books");
+        this.props.exchangeAuthWithServer(this.errorLogin);
       }
     } else {
-      this.checkSSO();
+      this.checkSSO("check-sso");
     }
   };
 
   render() {
     const { children } = this.props;
-
     return <React.Fragment>{children}</React.Fragment>;
   }
 }
@@ -73,7 +94,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   saveKeycloak: data => dispatch(Action.saveKeycloak(data)),
-  exchangeAuthWithServer: () => dispatch(Action.exchangeAuthWithServer())
+  exchangeAuthWithServer: errorfunc =>
+    dispatch(Action.exchangeAuthWithServer(errorfunc))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Auth));

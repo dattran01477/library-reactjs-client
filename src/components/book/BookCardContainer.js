@@ -28,13 +28,14 @@ export class BookCardContainer extends Component {
   }
 
   isBorrowedBook = Bookid => {
-    for (let i = 0; i < this.props.auth.borrowings.length; i++) {
-      for (let j = 0; j < this.props.auth.borrowings[i].book_id.length; j++) {
-        if (this.props.auth.borrowings[i].book_id[j] === Bookid) {
-          return true;
-        }
-      }
-    }
+    // for (let i = 0; i < this.props.auth.borrowings.length; i++) {
+    //   for (let j = 0; j < this.props.auth.borrowings[i].book_id.length; j++) {
+    //     if (this.props.auth.borrowings[i].book_id[j] === Bookid) {
+    //       return true;
+    //     }
+    //   }
+    // }
+    // return false;
     return false;
   };
 
@@ -42,7 +43,7 @@ export class BookCardContainer extends Component {
     this.getBook();
   }
 
-  getBook = () => {
+  getBook = () => { 
     this.props.getBooks(this.props.searchCriteria);
     this.setState({ ...this.state, criteria: this.props.searchCriteria });
   };
@@ -56,7 +57,7 @@ export class BookCardContainer extends Component {
 
   checkExistInCart(item, cartItem) {
     for (let i = 0; i < cartItem.length; i++) {
-      if (item._id === cartItem[i]._id) {
+      if (item.id === cartItem[i].id) {
         return true;
       }
     }
@@ -81,6 +82,7 @@ export class BookCardContainer extends Component {
 
   render() {
     let books = this.props.data.content;
+    console.log(books)
 
     const { cartItem } = this.props;
 
@@ -127,12 +129,12 @@ export class BookCardContainer extends Component {
                 {books &&
                   books.map(
                     item =>
-                      this.isBorrowedBook(item._id) === false && (
+                      this.isBorrowedBook(item.id) === false && (
                         <BookItem
                           totalBorrowings={5}
-                          totalBooks={item.amount_book}
+                          totalBooks={item.amoutBook}
                           title={item.name}
-                          content={item.short_description}
+                          content={item.shortDescription}
                           thumnail={item.thumbnail}
                           item={item}
                           disableBorrowing={this.checkExistInCart(
@@ -156,7 +158,9 @@ export class BookCardContainer extends Component {
                 {books &&
                   books.map(
                     item =>
+                  
                       this.isBorrowedBook(item._id) === false && (
+                    
                         <BookItem
                           totalBorrowings={5}
                           totalBooks={item.amount_book}

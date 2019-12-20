@@ -7,7 +7,7 @@ export const CART_NAME = "borrowingCart";
 export const CHANGE_CRITERIA = "CHANGE_CRITERIA";
 
 export function getBooks(criteria) {
-  const request = Axios.get(`${BASE_API}/api/books`, { params: criteria });
+  const request = Axios.get(`${BASE_API}/books`, criteria);
   return dispatch =>
     request.then(response =>
       dispatch({

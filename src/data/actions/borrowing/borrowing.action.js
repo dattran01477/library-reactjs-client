@@ -1,7 +1,6 @@
 import Axios from "axios";
-import { BASE_API } from "../../../share/constants";
 import Cookies from "universal-cookie";
-import qs from "querystring";
+import { BASE_API } from "../../../share/constants";
 export const SAVE_BORROWING = "SAVE_BOROWING";
 export const UPDATE_BORROWING = "UPDATE_BORROWING";
 export const BORROWING_NAME = "BORROWING_NAME";
@@ -10,17 +9,7 @@ export const GET_BORROWING_DETAIL = "GET_BORROWING_DETAIL";
 export const CART_NAME = "borrowingCart";
 
 export function saveBorrowing(borrowItem) {
-  const config = {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    }
-  };
-
-  const request = Axios.post(
-    `${BASE_API}/api/borrowings`,
-    qs.stringify(borrowItem),
-    config
-  );
+  const request = Axios.post(`${BASE_API}/borrowing-card`, borrowItem);
 
   return dispatch =>
     request.then(response => {
@@ -28,7 +17,7 @@ export function saveBorrowing(borrowItem) {
       cookies.remove(CART_NAME, { path: "/app" });
       dispatch({
         type: SAVE_BORROWING,
-        borrowItem: response.data.phieumuon
+        borrowItem: response.data
       });
     });
 }

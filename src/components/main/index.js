@@ -148,7 +148,11 @@ class MainApp extends Component {
                       {(this.props.keycloak.authenticated && (
                         <Menu.Item key="logout">
                           <Button
-                            onClick={this.props.keycloak.logout}
+                            onClick={e => {
+                              this.props.keycloak.logout().then(success => {
+                                localStorage.removeItem(Constant.JWT);
+                              });
+                            }}
                           >
                             Logout
                           </Button>

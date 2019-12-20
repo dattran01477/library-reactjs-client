@@ -5,16 +5,15 @@ import { Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as Action from "../../data/actions/action-type";
 import Page from "../page";
+import * as Constant from "../../share/constants";
 
 const { Step } = Steps;
 
 const borrowingCard = {
-  book_id: [],
-  user_id: "",
+  bookId: [],
+  userId: "",
   type: "borrow",
-  borrow_date: "active",
-  create_date: "",
-  update_date: "",
+  borrowDate: new Date(),
   status: ""
 };
 
@@ -34,10 +33,9 @@ class CartDetail extends Component {
 
   updateBorowing = () => {
     let borrowingTmp = { ...this.state.borrowing };
-    borrowingTmp.user_id = this.props.auth.user._id;
-    this.props.cartItem.map(item => borrowingTmp.book_id.push(item._id));
-    borrowingTmp.status = "Active";
-    borrowingTmp.type = "Mượn Giáo Trính";
+    borrowingTmp.userId = this.props.auth.id;
+    this.props.cartItem.map(item => borrowingTmp.bookId.push(item.id));
+    borrowingTmp.status = Constant.BORROW_STATUS.waitting;
     this.setState({ ...this.state, borrowing: borrowingTmp });
   };
 
@@ -50,7 +48,7 @@ class CartDetail extends Component {
   handleDeleteCart = id => {
     let cartItem = [...this.props.cartItem];
     cartItem = cartItem.filter(item => {
-      if (item._id !== id) {
+      if (item.id !== id) {
         return item;
       }
       return null;
@@ -60,10 +58,8 @@ class CartDetail extends Component {
   };
 
   handleCreateBorrowing = () => {
-    const cartItem = [...this.props.cartItem];
     let borrowingTmp = { ...this.state.borrowing };
     this.setState({ showPopUp: true });
-    cartItem.map(item => borrowingTmp.book_id.push(item._id));
     this.props.createBorrowing(borrowingTmp);
   };
 
@@ -82,7 +78,7 @@ class CartDetail extends Component {
             <Button
               className="float-right"
               icon="delete"
-              onClick={event => handleDeleteCart(item._id)}
+              onClick={event => handleDeleteCart(item.id)}
             />
           </div>
         </div>
@@ -91,7 +87,7 @@ class CartDetail extends Component {
     return (
       (lsBookCartItems.length > 0 &&
         lsBookCartItems.map(item => (
-          <BookCartRow key={item._id} item={item} />
+          <BookCartRow key={item.id} item={item} />
         ))) ||
       "Không có sách mượn"
     );
@@ -105,7 +101,7 @@ class CartDetail extends Component {
           <div className="flex flex-row m-2">
             <span className="font-light w-5/12">Họ Tên Sinh Viên:</span>
             <p className="w-7/12 text-sm font-medium">
-              {this.props.auth.user.name}
+              {this.props.auth.username}
             </p>
           </div>
           <div className="flex flex-row m-2">
@@ -169,7 +165,7 @@ class CartDetail extends Component {
             )}
 
             {step === 2 && (
-              <Modal show={this.state.showPopUp}>
+              <Modal show={true}>
                 <Modal.Header closeButton>
                   <Modal.Title>Chi Tiết Nhận Sách</Modal.Title>
                 </Modal.Header>
@@ -179,17 +175,20 @@ class CartDetail extends Component {
                       <Barcode
                         width={1}
                         height={50}
-                        value={this.props.borrowItem._id}
+                        value={this.props.borrowItem.id}
                       />
                     </div>
                     <div className="flex flex-col">
                       <div>Loại phiếu mượn: Mượn giáo trình</div>
                       <div>
                         Ngày nhận sách:
-                        {this.props.borrowItem.create_date}
+                        {this.props.borrowItem.createDate}
                       </div>
                       <div>Địa chỉ: DH SPKT</div>
-                      <div>Tình trạng:</div>
+                      <div>
+                        Tình trạng:
+                        {this.props.borrowItem.status}
+                      </div>
                       <div>
                         Thời gian có giá trị: trước khi kết thúc học kỳ 2 tuần
                       </div>

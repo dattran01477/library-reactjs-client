@@ -44,7 +44,7 @@ class BookItem extends Component {
               </div>
               <div className="h-24">
                 <div className="text-md font-thin">
-                  <p>4 đánh giá</p>
+                  <p>Đánh Giá</p>
                 </div>
                 <Button
                   className="w-full my-2"
