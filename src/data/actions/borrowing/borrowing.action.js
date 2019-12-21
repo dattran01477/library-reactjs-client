@@ -23,7 +23,7 @@ export function saveBorrowing(borrowItem) {
 }
 
 export function getBorrowingDetail(idBorrowing) {
-  const request = Axios.get(`${BASE_API}/api/borrowings/${idBorrowing}`);
+  const request = Axios.get(`${BASE_API}/borrowing-card/${idBorrowing}`);
 
   return dispatch =>
     request.then(response =>

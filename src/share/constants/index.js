@@ -10,3 +10,8 @@ export const BORROW_STATUS = {
   active: "active",
   cancel: "cancel"
 };
+
+export const USER_STATUS = {
+  active: "ACTIVE",
+  disactive: "DISACTIVE"
+};

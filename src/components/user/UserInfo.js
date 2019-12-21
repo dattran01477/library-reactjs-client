@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import * as Action from "../../data/actions/action-type";
 import Page from "../page";
 import { dataUser } from "./data";
+import * as Constant from "../../share/constants";
 const { TabPane } = Tabs;
 
 class UserInfo extends Component {
@@ -33,13 +34,13 @@ class UserInfo extends Component {
   columnsBorrowingCard = [
     {
       title: "Ngày mượn",
-      dataIndex: "create_date",
-      key: "create_date"
+      dataIndex: "createDate",
+      key: "createDate"
     },
     {
       title: "Số sách mượn",
-      dataIndex: "book_id",
-      key: "book_id",
+      dataIndex: "bookId",
+      key: "bookId",
       render: item => item.length
     },
     {
@@ -47,13 +48,13 @@ class UserInfo extends Component {
       dataIndex: "status",
       key: "status",
       render: item => {
-        if (item === "Active") {
+        if (item === Constant.BORROW_STATUS.active) {
           return <Tag color="green">Đã mượn</Tag>;
         }
-        if (item === "Waiting") {
+        if (item === Constant.BORROW_STATUS.waitting) {
           return <Tag color="gold">Đang chờ</Tag>;
         }
-        if (item === "Cancel") {
+        if (item === Constant.BORROW_STATUS.cancel) {
           return <Tag color="red">Hủy</Tag>;
         }
         if (item === "Returned") {
@@ -63,8 +64,8 @@ class UserInfo extends Component {
     },
     {
       title: "hành động",
-      dataIndex: "_id",
-      key: "_id",
+      dataIndex: "id",
+      key: "id",
       render: item => (
         <Button onClick={e => this.handleView(item)} icon="eye">
           Xem chi tiết
@@ -122,6 +123,7 @@ class UserInfo extends Component {
 
   render() {
     const data = this.props.auth;
+    console.log(data);
 
     return (
       <Page
@@ -137,9 +139,9 @@ class UserInfo extends Component {
           <div className="flex flex-row">
             <div className="w-4/12 m-2">
               <div class="max-w-sm rounded overflow-hidden shadow-lg p-4">
-                <div class="font-normal text-base mb-2">{data.user.name}</div>
+                <div class="font-normal text-base mb-2">{data.name}</div>
                 <div className="flex flex-row">
-                  {(data.user.status === "Active" && (
+                  {(data.status === Constant.USER_STATUS.active && (
                     <>
                       <Icon
                         type="check-circle"
@@ -159,15 +161,15 @@ class UserInfo extends Component {
                 <div className="w-full flex justify-center">
                   <img
                     className="w-32 h-32"
-                    src={data.user.avater}
+                    src={data.avatarThumnail}
                     alt="Sunset in the mountains"
                   />
                 </div>
 
                 <div className="text-center mt-2">
-                  <Button type="danger">{data.user.role}</Button>
+                  <Button type="danger">{data.role}</Button>
                   <p class="text-gray-700 text-base text-xs ">
-                    Ngày tham gia: {data.user.create_date}
+                    Ngày tham gia: {data.createDate}
                   </p>
                   <Divider className="w-full" />
                   <div class="p-2">
@@ -227,13 +229,15 @@ class UserInfo extends Component {
                       <div className="w-8/12">
                         <div className="flex flex-row">
                           <p className="w-2/5 font-semibold">Họ và tên: </p>
-                          <p className="w-3/5">{data.user.name}</p>
+                          <p className="w-3/5">
+                            {data.lastName + " " + data.firstName}
+                          </p>
                         </div>
                         <div className="flex flex-row">
                           <p className="w-2/5 font-semibold">
                             Mã số thẻ mượn:{" "}
                           </p>
-                          <p className="w-3/5">{data.user.register_code}</p>
+                          <p className="w-3/5">{data.registerCode}</p>
                         </div>
                         <div className="flex flex-row">
                           <p className="w-2/5 font-semibold">Đơn vị: </p>
@@ -241,11 +245,11 @@ class UserInfo extends Component {
                         </div>
                         <div className="flex flex-row">
                           <p className="w-2/5 font-semibold">Số điện thoại </p>
-                          <p className="w-3/5">{data.user.phone}</p>
+                          <p className="w-3/5">{data.phoneNumber}</p>
                         </div>
                         <div className="flex flex-row">
                           <p className="w-2/5 font-semibold">Email: </p>
-                          <p className="w-3/5">{data.user.email}</p>
+                          <p className="w-3/5">{data.email}</p>
                         </div>
                       </div>
                       <div className="w-4/12">
@@ -254,7 +258,7 @@ class UserInfo extends Component {
                             <Icon type="facebook" />
                           </span>
                           <span>
-                            <p className="w-3/5">dat.feed09</p>
+                            <p className="w-3/5">{data.fbAccount}</p>
                           </span>
                         </div>
                         <div className="flex flex-row">
@@ -262,7 +266,7 @@ class UserInfo extends Component {
                             <Icon type="instagram" />
                           </span>
                           <span>
-                            <p className="w-3/5">dattran01477</p>
+                            <p className="w-3/5">{data.instaAccount}</p>
                           </span>
                         </div>
                         <div className="flex flex-row">
@@ -270,7 +274,7 @@ class UserInfo extends Component {
                             <Icon type="twitter" />
                           </span>
                           <span>
-                            <p className="w-3/5">dat.feed0703</p>
+                            <p className="w-3/5">{data.linkedAccount}</p>
                           </span>
                         </div>
                       </div>
@@ -287,7 +291,7 @@ class UserInfo extends Component {
                               value={
                                 this.state.form.name.length > 0
                                   ? this.state.form.name
-                                  : data.user.name
+                                  : data.name
                               }
                               name="name"
                               onChange={this.onChange}
@@ -301,7 +305,7 @@ class UserInfo extends Component {
                               value={
                                 this.state.form.phone.length > 0
                                   ? this.state.form.phone
-                                  : data.user.phone
+                                  : data.phoneNumber
                               }
                               name="phone"
                               type="number"
@@ -316,7 +320,7 @@ class UserInfo extends Component {
                               value={
                                 this.state.form.email.length > 0
                                   ? this.state.form.email
-                                  : data.user.email
+                                  : data.email
                               }
                               name="email"
                               onChange={this.onChange}
@@ -326,7 +330,6 @@ class UserInfo extends Component {
                       </div>
                     </div>
                   )}
-
                   <div className="my-4">
                     <Tabs defaultActiveKey="1" onChange={e => null}>
                       <TabPane tab="Danh sách phiếu mượn" key="1">
@@ -354,7 +357,7 @@ class UserInfo extends Component {
                               <div className="w-12/12">
                                 <this.BookBorrowingDetail
                                   lsBookCartItems={
-                                    this.props.borrowDetail.book_id
+                                    this.props.borrowDetail.bookId
                                   }
                                 />
                               </div>
@@ -365,7 +368,7 @@ class UserInfo extends Component {
                               <Barcode
                                 width={1}
                                 height={50}
-                                value={this.props.borrowDetail._id}
+                                value={this.props.borrowDetail.Id}
                               />
                             </div>
                             {/* end bar code */}
@@ -374,7 +377,7 @@ class UserInfo extends Component {
                               <div>Loại phiếu mượn: Mượn giáo trình</div>
                               <div>
                                 Ngày nhận sách:
-                                {this.props.borrowDetail.create_date}
+                                {this.props.borrowDetail.createDate}
                               </div>
                               <div>Địa chỉ: DH SPKT</div>
                               <div>

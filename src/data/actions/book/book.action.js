@@ -7,7 +7,7 @@ export const CART_NAME = "borrowingCart";
 export const CHANGE_CRITERIA = "CHANGE_CRITERIA";
 
 export function getBooks(criteria) {
-  const request = Axios.get(`${BASE_API}/books`, criteria);
+  const request = Axios.get(`${BASE_API}/books`, { params: criteria });
   return dispatch =>
     request.then(response =>
       dispatch({
@@ -31,4 +31,22 @@ export function changeCriteria(criteria) {
     type: CHANGE_CRITERIA,
     criteria: criteria
   };
+}
+
+export function getCategories(successFunc) {
+  const request = Axios.get(`${BASE_API}/categories`);
+
+  request.then(response => successFunc(response.data, "categories"));
+}
+
+export function getAuthors(successFunc) {
+  const request = Axios.get(`${BASE_API}/authors`);
+
+  request.then(response => successFunc(response.data, "authors"));
+}
+
+export function getLanguage(successFunc) {
+  const request = Axios.get(`${BASE_API}/languages`);
+
+  request.then(response => successFunc(response.data, "languages"));
 }
