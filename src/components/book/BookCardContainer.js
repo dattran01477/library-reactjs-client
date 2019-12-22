@@ -259,14 +259,14 @@ export class BookCardContainer extends Component {
                 </div>
               </div>
             </div>
-            <div className="flex md:flex-row flex-wrap p-2">
+            <div className="flex md:flex-row flex-wrap p-2 h-full">
               {(books &&
                 books.map(
                   item =>
                     this.isBorrowedBook(item.id) === false && (
                       <BookItem
                         totalBorrowings={5}
-                        totalBooks={item.amoutBook}
+                        totalBooks={item.amountBook}
                         title={item.name}
                         content={item.shortDescription}
                         thumnail={item.thumbnail}

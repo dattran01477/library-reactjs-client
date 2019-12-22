@@ -86,7 +86,9 @@ class MainApp extends Component {
                         <Icon type="mail" />
                         Nội quy thư viện
                       </Menu.Item>
-
+                      <Menu.Item key="returnbook">
+                        <Link to="/app/return-book">Đăng Ký Trả Sách</Link>
+                      </Menu.Item>
                       <SubMenu
                         title={
                           <span className="submenu-title-wrapper">

@@ -182,7 +182,7 @@ class CartDetail extends Component {
                       <div>Loại phiếu mượn: Mượn giáo trình</div>
                       <div>
                         Ngày nhận sách:
-                        {this.props.borrowItem.createDate}
+                        {this.props.borrowItem.borrowDate}
                       </div>
                       <div>Địa chỉ: DH SPKT</div>
                       <div>
