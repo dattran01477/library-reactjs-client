@@ -28,16 +28,22 @@ export function saveUser(user) {
   };
 }
 
-export function exchangeAuthWithServer() {
+export function exchangeAuthWithServer(error) {
   const request = Axios.get(`${BASE_API}/auth`);
 
   return dispatch =>
-    request.then(response =>
-      dispatch({
-        type: FETCH_EXCHANGE_SERVER,
-        authDetail: response.data
-      })
-    );
+    request
+      .then(response =>
+        dispatch({
+          type: FETCH_EXCHANGE_SERVER,
+          authDetail: response.data
+        })
+      )
+      .catch(err => {
+        if (err.response.status === 401) {
+          error(401);
+        }
+      });
 }
 
 export function setAuthentication(isAuthentication) {
@@ -82,7 +88,6 @@ export function login(form) {
   return dispatch =>
     request.then(response => {
       if (response.data.data !== null) {
-      
         localStorage.setItem("jwt", response.data.data.token);
         dispatch({
           type: SET_REFRESH_CHECK_VERIFY,

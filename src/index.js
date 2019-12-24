@@ -5,7 +5,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import App from "./App";
-import Auth2 from "./components/auth/auth2";
+import Auth from "./components/auth/auth";
 import Login from "./components/login";
 import ResetPass from "./components/resetpass";
 import reducer from "./data/reducer";
@@ -17,11 +17,11 @@ const store = createStore(reducer, applyMiddleware(thunk));
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <Auth2>
+      <Auth>
         <Route path="/app" component={App} key="app" />
         <Route path="/login" component={Login} key="login" />
         <Route path="/reset" component={ResetPass} key="reset" />
-      </Auth2>
+      </Auth>
     </BrowserRouter>
   </Provider>,
   document.getElementById("root")

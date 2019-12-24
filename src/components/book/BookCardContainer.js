@@ -1,14 +1,17 @@
-import { Carousel, Pagination, Tabs } from "antd";
+import { Carousel, Pagination, DatePicker, Input, Select, Button } from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { TraceSpinner } from "react-spinners-kit";
 import * as Action from "../../data/actions/action-type";
 import { NUMBER_OBJECT_PAGE } from "../../share/constants";
 import { openMessage } from "../message/Message";
 import Page from "../page";
 import BookItem from "./BookItem";
 
-const { TabPane } = Tabs;
+const { Option } = Select;
+const { Search } = Input;
+const { RangePicker } = DatePicker;
 
 export class BookCardContainer extends Component {
   constructor(props) {
@@ -17,20 +20,31 @@ export class BookCardContainer extends Component {
       isLoading: false,
       books: [],
       criteria: {
-        limit: 5,
-        skip: 0
+        pageIndex: 0,
+        pageSize: 25,
+        query: "",
+        isLoading: false,
+        categoryId: null,
+        authorId: null,
+        languageId: null
+      },
+      selectData: {
+        categories: [],
+        authors: [],
+        languages: []
       }
     };
   }
 
   componentWillMount() {
-    // this.setState({ ...this.state, books: this.props.data });
+    this.setState({ ...this.state, isLoading: true });
   }
 
-  isBorrowedBook = Bookid => {
+  isBorrowingBook = Bookid => {
+    console.log(this.props.auth);
     for (let i = 0; i < this.props.auth.borrowings.length; i++) {
-      for (let j = 0; j < this.props.auth.borrowings[i].book_id.length; j++) {
-        if (this.props.auth.borrowings[i].book_id[j] === Bookid) {
+      for (let j = 0; j < this.props.auth.borrowings[i].bookIds.length; j++) {
+        if (this.props.auth.borrowings[i].bookIds[j] === Bookid) {
           return true;
         }
       }
@@ -39,12 +53,14 @@ export class BookCardContainer extends Component {
   };
 
   componentDidMount() {
-    this.getBook();
+    this.props.getBooks(this.state.criteria);
+    Action.getCategories(this.successSelectData);
+    Action.getAuthors(this.successSelectData);
+    Action.getLanguage(this.successSelectData);
   }
 
-  getBook = () => {
-    this.props.getBooks(this.props.searchCriteria);
-    this.setState({ ...this.state, criteria: this.props.searchCriteria });
+  onSearch = () => {
+    this.props.getBooks(this.state.criteria);
   };
 
   onClickBorrowing = item => {
@@ -56,7 +72,7 @@ export class BookCardContainer extends Component {
 
   checkExistInCart(item, cartItem) {
     for (let i = 0; i < cartItem.length; i++) {
-      if (item._id === cartItem[i]._id) {
+      if (item.id === cartItem[i].id) {
         return true;
       }
     }
@@ -70,17 +86,36 @@ export class BookCardContainer extends Component {
     });
   };
 
+  successSelectData = (data, selectName) => {
+    let selectData = { ...this.state.selectData };
+    selectData[selectName] = data.content;
+    this.setState({ ...this.state, selectData: selectData });
+  };
+
+  onChangeCriteria = (name, value) => {
+    let criteria = this.state.criteria;
+    criteria[name] = value;
+
+    this.props.getBooks(criteria);
+    this.setState({ ...this.state, criteria: criteria });
+  };
+
+  onChangeCriteriaFillter = (name, value) => {
+    let criteria = this.state.criteria;
+    criteria[name] = value;
+
+    this.setState({ ...this.state, criteria: criteria });
+  };
+
   componentDidUpdate() {
-    if (
-      this.props.searchCriteria.skip !== this.state.criteria.skip ||
-      this.props.searchCriteria.limit !== this.state.criteria.limit
-    ) {
-      this.getBook();
+    if (this.isLoading && this.this.props.data.content) {
+      this.setState({ ...this.state, isLoading: true });
     }
   }
 
   render() {
     let books = this.props.data.content;
+    let { categories, authors, languages } = this.state.selectData;
 
     const { cartItem } = this.props;
 
@@ -121,66 +156,142 @@ export class BookCardContainer extends Component {
           </div>
         }
         content={
-          <Tabs className="p-2">
-            <TabPane tab="Sách Mới Nhất" key="1">
-              <div className="flex md:flex-row flex-wrap p-2">
-                {books &&
-                  books.map(
-                    item =>
-                      this.isBorrowedBook(item._id) === false && (
-                        <BookItem
-                          totalBorrowings={5}
-                          totalBooks={item.amount_book}
-                          title={item.name}
-                          content={item.short_description}
-                          thumnail={item.thumbnail}
-                          item={item}
-                          disableBorrowing={this.checkExistInCart(
-                            item,
-                            cartItem
-                          )}
-                          onClickBorrowing={this.onClickBorrowing}
-                        />
-                      )
-                  )}
+          <div>
+            {/* panel filter */}
+            <div className="flex flex-col border-b-2  border-black p-4">
+              <div className="font-bold text-gray-700  border-gray-700  border-b-2  mb-4">
+                Bộ Lọc Tìm Kiếm
               </div>
+              <div className="flex flex-row content-center">
+                <div className="mx-4">
+                  <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Danh Mục
+                    </label>
+                    <Select
+                      defaultValue={this.state.criteria.categoryId}
+                      style={{ width: 120 }}
+                      name="categoryId"
+                      onChange={val =>
+                        this.onChangeCriteriaFillter("categoryId", val)
+                      }
+                    >
+                      {categories.map(item => (
+                        <Option value={item.id} key={item.id}>
+                          {item.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="mx-4">
+                  <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Tác Giả
+                    </label>
+                    <Select
+                      defaultValue={this.state.criteria.authorId}
+                      style={{ width: 120 }}
+                      name="authorId"
+                      onChange={val =>
+                        this.onChangeCriteriaFillter("authorId", val)
+                      }
+                    >
+                      {authors.map(item => (
+                        <Option value={item.id} key={item.id}>
+                          {item.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="mx-4">
+                  <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Ngôn Ngữ
+                    </label>
+                    <Select
+                      defaultValue={this.state.criteria.languageId}
+                      style={{ width: 120 }}
+                      name="languageId"
+                      onChange={val =>
+                        this.onChangeCriteriaFillter("languageId", val)
+                      }
+                    >
+                      {languages.map(item => (
+                        <Option value={item.id} key={item.id}>
+                          {item.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="mx-4">
+                  <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Thời Gian Xuất Bản
+                    </label>
+                    <RangePicker />
+                  </div>
+                </div>
+
+                <Search
+                  placeholder="Tên sách"
+                  onChange={value =>
+                    this.onChangeCriteriaFillter("query", value.target.value)
+                  }
+                  className="w-auto h-8 mt-4"
+                  name="query"
+                />
+
+                <div className="mx-4">
+                  <Button
+                    className="mt-4"
+                    type="primary"
+                    icon="search"
+                    onClick={this.onSearch}
+                  >
+                    Tìm Kiếm
+                  </Button>
+                </div>
+              </div>
+            </div>
+            <div className="flex md:flex-row flex-wrap p-2 h-full">
+              {(books &&
+                books.map(
+                  item =>
+                    this.isBorrowingBook(item.id) === false && (
+                      <BookItem
+                        totalBorrowings={5}
+                        totalBooks={item.amountBook}
+                        title={item.name}
+                        content={item.shortDescription}
+                        thumnail={item.thumbnail}
+                        item={item}
+                        disableBorrowing={this.checkExistInCart(item, cartItem)}
+                        onClickBorrowing={this.onClickBorrowing}
+                      />
+                    )
+                )) || (
+                <div className="mx-auto justify-center">
+                  <TraceSpinner loading={this.state.isLoading}>
+                    Đang tải
+                  </TraceSpinner>
+                </div>
+              )}
+            </div>
+            {this.props.data && (
               <Pagination
                 className="float-right"
                 defaultCurrent={1}
-                total={100}
-                onChange={page => this.onChangePage(page)}
+                total={this.props.data.totalPages * 10}
+                onChange={page => this.onChangeCriteria("pageIndex", page - 1)}
               />
-            </TabPane>
-            <TabPane tab="Sách Hay Cho Bạn" key="2">
-              <div className="flex md:flex-row flex-wrap p-2">
-                {books &&
-                  books.map(
-                    item =>
-                      this.isBorrowedBook(item._id) === false && (
-                        <BookItem
-                          totalBorrowings={5}
-                          totalBooks={item.amount_book}
-                          title={item.name}
-                          content={item.short_description}
-                          thumnail={item.thumbnail}
-                          item={item}
-                          disableBorrowing={this.checkExistInCart(
-                            item,
-                            cartItem
-                          )}
-                          onClickBorrowing={this.onClickBorrowing}
-                        />
-                      )
-                  )}
-              </div>
-              <Pagination
-                className="float-right"
-                defaultCurrent={1}
-                total={100}
-                onChange={page => this.onChangePage(page)}
-              />
-            </TabPane>
-          </Tabs>
+            )}
+          </div>
         }
       ></Page>
     );

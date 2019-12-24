@@ -30,7 +30,7 @@ class BookItem extends Component {
           (classes.bookItem,
           "shadow-xl hover:shadow-2xl max-w-xs w-64 max-h-full h-auto m-4 rounded-lg border p-1")
         }
-        onClick={event => this.gotoBookDetail(this.props.item._id)}
+        onClick={event => this.gotoBookDetail(this.props.item.id)}
       >
         <div className="flex flex-col">
           <div className="flex flex-row justify-center">
@@ -44,7 +44,7 @@ class BookItem extends Component {
               </div>
               <div className="h-24">
                 <div className="text-md font-thin">
-                  <p>4 đánh giá</p>
+                  <p>Đánh Giá</p>
                 </div>
                 <Button
                   className="w-full my-2"

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/img/brand/argon-react.png";
 import * as Action from "../../data/actions/action-type";
+import Keycloak from "keycloak-js";
 
 class LoginComponent extends Component {
   constructor(props) {
@@ -19,6 +20,18 @@ class LoginComponent extends Component {
   onLogin = () => {
     this.props.handleLogin(this.state.form);
   };
+
+  checkLogin=()=> {
+    const keycloak = Keycloak("/keycloak.json");
+    keycloak
+      .init({ onLoad: "login-required", promiseType: "native" })
+      .then(authentication => {
+        if (authentication) {
+          this.props.saveKeycloak(keycloak);
+          this.props.exchangeAuthWithServer(keycloak.token);
+        }
+      });
+  }
 
   onChange = event => {
     let formTmp = { ...this.state.form };
@@ -43,7 +56,7 @@ class LoginComponent extends Component {
               className="block text-gray-600  md:text-left font-semibold mb-1 md:mb-0 pl-4"
               htmlFor="inline-full-name"
             >
-              Username/email
+              Email
             </label>
           </div>
           <div className="md:w-2/3">
@@ -118,6 +131,12 @@ class LoginComponent extends Component {
               <a href="https://restapilibrary.herokuapp.com/auth/facebook">
                 <p>Đăng Nhập Bằng Facebook</p>
               </a>
+            </div>
+            <div onClick={this.checkLogin} className="my-2 cursor-pointer flex flex-row shadow bg-gray-800 hover:bg-gray-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+              <span className="mx-2">
+                <Icon type="key" />
+              </span>
+              <p>Đăng Nhập Bằng Keycloak</p>
             </div>
           </div>
         </div>

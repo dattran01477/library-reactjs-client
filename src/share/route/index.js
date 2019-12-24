@@ -3,6 +3,7 @@ import BookDetail from "../../components/bookdetail/BookDetail";
 import BookCart from "../../components/cart/CartDetail";
 import IntroduceTeam from "../../components/contribute";
 import User from "../../components/user/UserContainer";
+import RegisterReturnbook from "../../components/register-return-book";
 var routes = [
   {
     path: "/app/books",
@@ -38,8 +39,14 @@ var routes = [
     icon: "ni ni-bullet-list-67 text-red",
     component: IntroduceTeam,
     layout: ""
+  },
+  {
+    path: "/app/return-book",
+    name: "returnbook",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: RegisterReturnbook,
+    layout: ""
   }
-  
 ];
 
 export default routes;
