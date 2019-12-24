@@ -75,6 +75,8 @@ class Auth2 extends Component {
       this.props.setIsAuthentication(true);
       this.setState({ authentication: true });
       this.props.history.push("/app/books");
+    }else{
+      this.props.history.push("/login");
     }
   }
 
@@ -97,7 +99,6 @@ class Auth2 extends Component {
       } else {
         this.props.history.push("/login");
       }
-     
     } 
   }
 
