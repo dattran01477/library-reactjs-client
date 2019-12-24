@@ -113,6 +113,15 @@ class MainApp extends Component {
                         <Link to="/app/contribute">Giới thiệu team</Link>
                       </Menu.Item>
 
+                      <SubMenu title={<CartHeader className="p-2" />}>
+                        {/* <CartContent /> */}
+                        <Menu.Item key="gotoBorrowingCart">
+                          <Link to="/app/book-cart" exact />
+                          Tiến hành đặt sách
+                          <Icon type="right" />
+                        </Menu.Item>
+                      </SubMenu>
+
                       <SubMenu
                         title={
                           <span className="submenu-title-wrapper">
@@ -124,7 +133,7 @@ class MainApp extends Component {
                                 "https://experience.sap.com/fiori-design-web/wp-content/uploads/sites/5/2017/02/Avatar-Sizes-Custom-1.png"
                               }
                             />
-                            <span>{this.props.auth.username}</span>
+                            <span className="textBold">{this.props.auth.username}</span>
                           </span>
                         }
                       >
@@ -135,21 +144,11 @@ class MainApp extends Component {
                           <Menu.Item key="setting:2">
                             Trạng thái phiếu mượn
                           </Menu.Item>
-                          <Menu.Item key="setting:2">Logout</Menu.Item>
-                        </Menu.ItemGroup>
-                      </SubMenu>
-
-                      <SubMenu title={<CartHeader className="p-2" />}>
-                        {/* <CartContent /> */}
-                        <Menu.Item key="gotoBorrowingCart">
-                          <Link to="/app/book-cart" exact />
-                          Tiến hành đặt sách
-                          <Icon type="right" />
-                        </Menu.Item>
-                      </SubMenu>
-                      {(this.props.keycloak.authenticated && (
-                        <Menu.Item key="logout">
-                          <Button
+                          <Menu.Item key="register-return book">
+                            <Link to="/app/return-book">Đăng Ký Trả Sách</Link>
+                          </Menu.Item>
+                          <Menu.Item
+                            key="setting"
                             onClick={e => {
                               this.props.keycloak.logout().then(success => {
                                 localStorage.removeItem(Constant.JWT);
@@ -157,16 +156,9 @@ class MainApp extends Component {
                             }}
                           >
                             Logout
-                          </Button>
-                        </Menu.Item>
-                      )) || (
-                        <Menu.Item key="login">
-                          <Button>
-                            <Link to="/login">Login</Link>
-                          </Button>
-                          <Button>Register</Button>
-                        </Menu.Item>
-                      )}
+                          </Menu.Item>
+                        </Menu.ItemGroup>
+                      </SubMenu>
                     </Menu>
                   </div>
                 </div>

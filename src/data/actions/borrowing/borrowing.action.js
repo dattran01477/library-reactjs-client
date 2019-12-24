@@ -8,13 +8,14 @@ export const GET_BORROWING_DETAIL = "GET_BORROWING_DETAIL";
 
 export const CART_NAME = "borrowingCart";
 
-export function saveBorrowing(borrowItem) {
+export function saveBorrowing(borrowItem,successFunc) {
   const request = Axios.post(`${BASE_API}/borrowing-card`, borrowItem);
 
   return dispatch =>
     request.then(response => {
       const cookies = new Cookies();
       cookies.remove(CART_NAME, { path: "/app" });
+      successFunc();
       dispatch({
         type: SAVE_BORROWING,
         borrowItem: response.data

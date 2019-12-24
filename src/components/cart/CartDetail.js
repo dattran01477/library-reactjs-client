@@ -10,7 +10,7 @@ import * as Constant from "../../share/constants";
 const { Step } = Steps;
 
 const borrowingCard = {
-  bookId: [],
+  bookIds: [],
   userId: "",
   type: "borrow",
   borrowDate: new Date(),
@@ -34,7 +34,7 @@ class CartDetail extends Component {
   updateBorowing = () => {
     let borrowingTmp = { ...this.state.borrowing };
     borrowingTmp.userId = this.props.auth.id;
-    this.props.cartItem.map(item => borrowingTmp.bookId.push(item.id));
+    this.props.cartItem.map(item => borrowingTmp.bookIds.push(item.id));
     borrowingTmp.status = Constant.BORROW_STATUS.waitting;
     this.setState({ ...this.state, borrowing: borrowingTmp });
   };
@@ -59,9 +59,16 @@ class CartDetail extends Component {
 
   handleCreateBorrowing = () => {
     let borrowingTmp = { ...this.state.borrowing };
-    this.setState({ showPopUp: true });
-    this.props.createBorrowing(borrowingTmp);
+    this.props.createBorrowing(borrowingTmp, this.createBorrowingSuccess);
   };
+
+  createBorrowingSuccess = () => {
+    this.setState({ showPopUp: true });
+    this.props.addCart([]);
+    this.props.refreshUserInfo(this.errorRefresh);
+  };
+
+  errorRefresh = code => {};
 
   BookCartDetailBodyLeft = ({ lsBookCartItems, handleDeleteCart }) => {
     function BookCartRow({ item }) {
@@ -232,7 +239,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addCart: item => dispatch(Action.addToCart(item)),
-  createBorrowing: item => dispatch(Action.saveBorrowing(item))
+  createBorrowing: (item, successFunc) =>
+    dispatch(Action.saveBorrowing(item, successFunc)),
+  refreshUserInfo: error => dispatch(Action.exchangeAuthWithServer(error))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartDetail);

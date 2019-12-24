@@ -39,8 +39,8 @@ class UserInfo extends Component {
     },
     {
       title: "Số sách mượn",
-      dataIndex: "bookId",
-      key: "bookId",
+      dataIndex: "bookIds",
+      key: "bookIds",
       render: item => item.length
     },
     {
@@ -357,7 +357,7 @@ class UserInfo extends Component {
                               <div className="w-12/12">
                                 <this.BookBorrowingDetail
                                   lsBookCartItems={
-                                    this.props.borrowDetail.bookId
+                                    this.props.borrowDetail.bookIds
                                   }
                                 />
                               </div>

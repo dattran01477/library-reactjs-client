@@ -40,15 +40,15 @@ export class BookCardContainer extends Component {
     this.setState({ ...this.state, isLoading: true });
   }
 
-  isBorrowedBook = Bookid => {
-    // for (let i = 0; i < this.props.auth.borrowings.length; i++) {
-    //   for (let j = 0; j < this.props.auth.borrowings[i].book_id.length; j++) {
-    //     if (this.props.auth.borrowings[i].book_id[j] === Bookid) {
-    //       return true;
-    //     }
-    //   }
-    // }
-    // return false;
+  isBorrowingBook = Bookid => {
+    console.log(this.props.auth);
+    for (let i = 0; i < this.props.auth.borrowings.length; i++) {
+      for (let j = 0; j < this.props.auth.borrowings[i].bookIds.length; j++) {
+        if (this.props.auth.borrowings[i].bookIds[j] === Bookid) {
+          return true;
+        }
+      }
+    }
     return false;
   };
 
@@ -263,7 +263,7 @@ export class BookCardContainer extends Component {
               {(books &&
                 books.map(
                   item =>
-                    this.isBorrowedBook(item.id) === false && (
+                    this.isBorrowingBook(item.id) === false && (
                       <BookItem
                         totalBorrowings={5}
                         totalBooks={item.amountBook}
