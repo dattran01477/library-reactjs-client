@@ -8,7 +8,7 @@ export const GET_BORROWING_DETAIL = "GET_BORROWING_DETAIL";
 
 export const CART_NAME = "borrowingCart";
 
-export function saveBorrowing(borrowItem,successFunc) {
+export function saveBorrowing(borrowItem, successFunc) {
   const request = Axios.post(`${BASE_API}/borrowing-card`, borrowItem);
 
   return dispatch =>
@@ -33,4 +33,16 @@ export function getBorrowingDetail(idBorrowing) {
         borrowingDetail: response.data
       })
     );
+}
+
+export function registerReturnBook(funcSuccess, borrowingId) {
+  const request = Axios.post(
+    `${BASE_API}/borrowing-card/${borrowingId}/register-return`
+  );
+  request.then(response => funcSuccess(response.data));
+}
+
+export function getBorrowingTabs(funcSuccess) {
+  const request = Axios.get(`${BASE_API}/borrowing-card/user/tabs`);
+  request.then(response => funcSuccess(response.data));
 }

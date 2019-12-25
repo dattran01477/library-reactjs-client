@@ -63,8 +63,6 @@ export class BookCart extends Component {
     bookCart.map(id => {
       this.getBookByCriteria(id);
     })
-    //get BookCartSubmitted
-
   }
 
   getBookCartSubmited(userId) {

@@ -1,16 +1,4 @@
-import {
-  Avatar,
-  Button,
-  Comment,
-  Divider,
-  Form,
-  Icon,
-  Input,
-  List,
-  PageHeader,
-  Skeleton,
-  Tabs
-} from "antd";
+import { Avatar, Button, Comment, Divider, Form, Input, List, PageHeader, Skeleton, Tabs } from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -21,13 +9,6 @@ import { openMessage } from "../message/Message";
 import Page from "../page";
 const { TabPane } = Tabs;
 const { TextArea } = Input;
-
-const IconText = ({ type, text }) => (
-  <span>
-    <Icon type={type} style={{ marginRight: 8 }} />
-    {text}
-  </span>
-);
 
 export class BookDetail extends Component {
   constructor(props) {

@@ -136,7 +136,7 @@ class UserInfo extends Component {
           />
         }
         content={
-          <div className="flex flex-row">
+          <div className="flex flex-row ">
             <div className="w-4/12 m-2">
               <div class="max-w-sm rounded overflow-hidden shadow-lg p-4">
                 <div class="font-normal text-base mb-2">{data.name}</div>

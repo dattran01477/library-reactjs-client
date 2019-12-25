@@ -1,4 +1,4 @@
-import { Avatar, Button, Icon, Layout, Menu } from "antd";
+import { Avatar, Icon, Layout, Menu } from "antd";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link, Route, Switch } from "react-router-dom";
@@ -73,7 +73,7 @@ class MainApp extends Component {
               />
             </Sider>
 
-            <Layout className="ml-4">
+            <Layout className="ml-4 h-full">
               <Header className="bg-white shadow-2xl px-0 p-2">
                 <div className="bg-white h-full w-full border-b shadow-2xl ">
                   <div className="flex flex-row justify-end">
@@ -133,7 +133,9 @@ class MainApp extends Component {
                                 "https://experience.sap.com/fiori-design-web/wp-content/uploads/sites/5/2017/02/Avatar-Sizes-Custom-1.png"
                               }
                             />
-                            <span className="textBold">{this.props.auth.username}</span>
+                            <span className="textBold">
+                              {this.props.auth.username}
+                            </span>
                           </span>
                         }
                       >
@@ -168,7 +170,7 @@ class MainApp extends Component {
                   <Switch>{this.getRoutes(routes)}</Switch>
                 </div>
               </Content>
-              <Footer className="bg-gray-900 ont-mono">
+              <Footer className="bg-gray-900 ont-mono  bottom-0">
                 <div className="flex flex-row text-gray-200">
                   <div className="w-4/12 text-center">
                     <div className="font-bold mb-2">Contact</div>

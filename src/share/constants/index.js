@@ -8,7 +8,9 @@ export const JWT = "JWT_LIB";
 export const BORROW_STATUS = {
   waitting: "waitting",
   active: "active",
-  cancel: "cancel"
+  cancel: "cancel",
+  waitting_return: "waitting_return",
+  returned: "returned"
 };
 
 export const USER_STATUS = {
