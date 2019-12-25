@@ -14,23 +14,23 @@ export function getBookDetail(bookId) {
     );
 }
 
-export function addComment(commentForm,idBook) {
-  const config = {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-    }
-  };
-
+export function addComment(commentForm, idBook, successComment) {
   const request = Axios.post(
-    `${BASE_API}/api/bookDetails/comment`,
-    qs.stringify(commentForm),
-    config
+    `${BASE_API}/books/${idBook}/reviews`,
+    commentForm
   );
-  
+
   return dispatch =>
     request.then(response => {
-      dispatch(getBookDetail(idBook));
+      successComment(response.data);
+    });
+}
+
+export function getComment(idBook, successComment) {
+  const request = Axios.get(`${BASE_API}/books/${idBook}/reviews`);
+
+  return dispatch =>
+    request.then(response => {
+      successComment(response.data);
     });
 }
