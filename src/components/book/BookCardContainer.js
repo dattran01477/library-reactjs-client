@@ -8,6 +8,7 @@ import { NUMBER_OBJECT_PAGE } from "../../share/constants";
 import { openMessage } from "../message/Message";
 import Page from "../page";
 import BookItem from "./BookItem";
+import * as Constant from "../../share/constants";
 
 const { Option } = Select;
 const { Search } = Input;
@@ -43,9 +44,11 @@ export class BookCardContainer extends Component {
   isBorrowingBook = Bookid => {
     console.log(this.props.auth);
     for (let i = 0; i < this.props.auth.borrowings.length; i++) {
-      for (let j = 0; j < this.props.auth.borrowings[i].bookIds.length; j++) {
-        if (this.props.auth.borrowings[i].bookIds[j] === Bookid) {
-          return true;
+      if ( this.props.auth.borrowings[i].status !== Constant.BORROW_STATUS.returned ) {
+        for (let j = 0; j < this.props.auth.borrowings[i].bookIds.length; j++) {
+          if (this.props.auth.borrowings[i].bookIds[j] === Bookid) {
+            return true;
+          }
         }
       }
     }

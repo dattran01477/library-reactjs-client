@@ -57,8 +57,11 @@ class UserInfo extends Component {
         if (item === Constant.BORROW_STATUS.cancel) {
           return <Tag color="red">Hủy</Tag>;
         }
-        if (item === "Returned") {
-          return <Tag color="blue">Đã trả</Tag>;
+        if (item === Constant.BORROW_STATUS.returned) {
+          return <Tag color="blue">Đã Trả</Tag>;
+        }
+        if (item === Constant.BORROW_STATUS.waitting_return) {
+          return <Tag color="blue">Chờ Trả Sách</Tag>;
         }
       }
     },

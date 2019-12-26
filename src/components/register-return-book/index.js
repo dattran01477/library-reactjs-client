@@ -97,11 +97,14 @@ class RegisterReturnbook extends Component {
 
   registerReturnBookSucess = data => {
     Action.getBorrowingTabs(this.getTabsSucess);
+    this.props.refreshUserInfo(this.errorRefresh);
   };
 
   closeBorrowPopup = () => {
     this.setState({ ...this.state, showDetail: false });
   };
+
+  errorRefresh = code => {};
 
   render() {
     return (
@@ -174,9 +177,12 @@ class RegisterReturnbook extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state.borrowing
+  ...state.borrowing,
+  ...state.auth
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  refreshUserInfo: error => dispatch(Action.exchangeAuthWithServer(error))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterReturnbook);

@@ -51,6 +51,7 @@ class Auth extends Component {
       .init({ onLoad: typeLogin, promiseType: "native" })
       .then(authentication => {
         if (authentication) {
+          console.log(keycloak);
           this.saveKeycloakLocalStore(keycloak);
           this.props.saveKeycloak(keycloak);
           this.props.exchangeAuthWithServer(this.errorLogin);
@@ -62,24 +63,25 @@ class Auth extends Component {
   };
 
   checkLogin = () => {
-    let keycloak = this.getKeycloakFromLocalStore();
-    if (keycloak !== null) {
-      if (
-        keycloak.authenticated &&
-        this.isTokenExpired(keycloak.idTokenParsed.exp)
-      ) {
-        this.checkSSO("login-required");
-      } else if (
-        keycloak.authenticated &&
-        !this.isTokenExpired(keycloak.idTokenParsed.exp)
-      ) {
-        this.saveKeycloakLocalStore(keycloak);
-        this.props.saveKeycloak(keycloak);
-        this.props.exchangeAuthWithServer(this.errorLogin);
-      }
-    } else {
-      this.checkSSO("check-sso");
-    }
+    // let keycloak = this.getKeycloakFromLocalStore();
+    // if (keycloak !== null) {
+    //   if (
+    //     keycloak.authenticated &&
+    //     this.isTokenExpired(keycloak.idTokenParsed.exp)
+    //   ) {
+    //     this.checkSSO("login-required");
+    //   } else if (
+    //     keycloak.authenticated &&
+    //     !this.isTokenExpired(keycloak.idTokenParsed.exp)
+    //   ) {
+    //     this.saveKeycloakLocalStore(keycloak);
+    //     this.props.saveKeycloak(keycloak);
+    //     this.props.exchangeAuthWithServer(this.errorLogin);
+    //   }
+    // } else {
+    //   this.checkSSO("check-sso");
+    // }
+    this.checkSSO("login-required");
   };
 
   render() {

@@ -12,7 +12,11 @@ class CartHeader extends Component {
           <Badge count={6} status="success">
             <Icon className="text-2xl" type="shopping-cart" />
           </Badge>
-        )) || <Icon className="text-2xl" type="shopping-cart" />}
+        )) || (
+          <Badge count={6} status="Default">
+            <Icon className="text-2xl" type="shopping-cart" />
+          </Badge>
+        )}
       </div>
     );
   }
