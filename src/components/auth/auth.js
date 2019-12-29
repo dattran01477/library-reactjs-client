@@ -51,7 +51,6 @@ class Auth extends Component {
       .init({ onLoad: typeLogin, promiseType: "native" })
       .then(authentication => {
         if (authentication) {
-          console.log(keycloak);
           this.saveKeycloakLocalStore(keycloak);
           this.props.saveKeycloak(keycloak);
           this.props.exchangeAuthWithServer(this.errorLogin);

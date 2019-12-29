@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Rate } from "antd";
 import React, { Component } from "react";
 import injectSheet from "react-jss";
 import { withRouter } from "react-router";
@@ -44,7 +44,9 @@ class BookItem extends Component {
               </div>
               <div className="h-24">
                 <div className="text-md font-thin">
-                  <p>Đánh Giá</p>
+                  <Rate
+                    value={3}
+                  />
                 </div>
                 <Button
                   className="w-full my-2"
@@ -63,15 +65,15 @@ class BookItem extends Component {
             <div className="w-7/12 p-2">
               <div className="text-left">
                 <div>
-                  <p className="text-base font-bold">{this.props.title}</p>
+                  <p className="text-base font-bold ">{this.props.title}</p>
                 </div>
-                <div className="text-xs font-thin">
+                <div className="text-xs font-thin text-gray-500">
                   Số lượng: {this.props.totalBooks}
                 </div>
-                <div className="text-xs font-thin">
+                <div className="text-xs font-thin text-gray-500">
                   Số lược mượn: {this.props.totalBorrowings}
                 </div>
-                <div className="my-2">
+                <div className="my-2 text-sm text-gray-900">
                   {this.props.content && this.props.content.substring(0, 50)}
                   ...
                 </div>

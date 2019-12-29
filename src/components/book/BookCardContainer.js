@@ -42,11 +42,12 @@ export class BookCardContainer extends Component {
   }
 
   isBorrowingBook = Bookid => {
-    console.log(this.props.auth);
+    console.log(Bookid)
+    console.log(this.props.auth)
     for (let i = 0; i < this.props.auth.borrowings.length; i++) {
       if ( this.props.auth.borrowings[i].status !== Constant.BORROW_STATUS.returned ) {
         for (let j = 0; j < this.props.auth.borrowings[i].bookIds.length; j++) {
-          if (this.props.auth.borrowings[i].bookIds[j] === Bookid) {
+          if (this.props.auth.borrowings[i].bookIds[j].id === Bookid) {
             return true;
           }
         }

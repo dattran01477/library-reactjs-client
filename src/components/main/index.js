@@ -2,7 +2,6 @@ import { Avatar, Icon, Layout, Menu } from "antd";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link, Route, Switch } from "react-router-dom";
-import Cookies from "universal-cookie";
 import KeycloakService from "../../app/services/keycloakService/keycloakService";
 import "../../assets/scss/argon-dashboard-react.scss";
 import "../../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
@@ -16,7 +15,6 @@ import SideMenu from "../sidebar";
 
 const { Header, Footer, Sider, Content } = Layout;
 const { SubMenu } = Menu;
-const cookies = new Cookies();
 class MainApp extends Component {
   constructor(props) {
     super(props);
@@ -34,8 +32,9 @@ class MainApp extends Component {
   };
 
   componentDidMount() {
-    let cartItem = cookies.get(Constant.CART_NAME);
+    let cartItem = localStorage.getItem(Constant.CART_NAME);
     if (cartItem != null) {
+      cartItem = JSON.parse(cartItem);
       this.props.setCart(cartItem);
     }
   }
@@ -81,7 +80,6 @@ class MainApp extends Component {
                       onClick={this.handleClick}
                       selectedKeys={[this.state.current]}
                       mode="horizontal"
-                      
                     >
                       <Menu.Item key="mail">
                         <Icon type="mail" />
@@ -118,7 +116,7 @@ class MainApp extends Component {
                               }
                             />
                             <p className="font-bold text-xs">
-                              {this.props.auth.username}  
+                              {this.props.auth.username}
                             </p>
                           </div>
                         }

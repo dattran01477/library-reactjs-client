@@ -1,11 +1,13 @@
-import { Avatar, Button, Divider, PageHeader, Steps } from "antd";
+import { Avatar, Button, Divider, PageHeader, Popconfirm, Steps } from "antd";
 import React, { Component } from "react";
 import Barcode from "react-barcode";
 import { Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as Action from "../../data/actions/action-type";
-import Page from "../page";
 import * as Constant from "../../share/constants";
+import Page from "../page";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 
 const { Step } = Steps;
 
@@ -17,30 +19,60 @@ const borrowingCard = {
   status: ""
 };
 
+let stompClient = null;
+
+function onConnected() {
+  // // Subscribe to the Public Topic
+  // stompClient.subscribe("/topic/borrowing-list", onMessageReceived);
+}
+
+function onError(error) {
+  console.log("loi roi " + error);
+}
+
+function onMessageReceived(data) {
+  console.log(data);
+}
+
 class CartDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
       steptCurrent: 1,
       showPopUp: false,
-      borrowing: borrowingCard
+      borrowing: borrowingCard,
+      stompClient: null
     };
   }
 
+  onclickSendData = () => {
+    stompClient.send("/apps/borrowing.add", {}, JSON.stringify({}));
+  };
+
   componentDidMount() {
     this.updateBorowing();
+    var socket = new SockJS(`${Constant.BASE_API}/ws`);
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, onConnected, onError);
+    this.setState({ ...this.state, stompClient: stompClient });
+  }
+
+  componentDidUpdate() {
+    if (this.state.borrowing.length === 0) {
+      this.props.history.push("/app/books");
+    }
   }
 
   updateBorowing = () => {
     let borrowingTmp = { ...this.state.borrowing };
     borrowingTmp.userId = this.props.auth.id;
-    this.props.cartItem.map(item => borrowingTmp.bookIds.push(item.id));
+    this.props.cartItem.map(item => borrowingTmp.bookIds.push(item));
     borrowingTmp.status = Constant.BORROW_STATUS.waitting;
     this.setState({ ...this.state, borrowing: borrowingTmp });
   };
 
   closeBorrowPopup = () => {
-    this.setState({ showPopUp: false });
+    this.setState({ showPopUp: false, steptCurrent: 1 });
     this.props.createBorrowing(null);
     this.props.history.push("/app/books");
   };
@@ -66,6 +98,7 @@ class CartDetail extends Component {
     this.setState({ showPopUp: true });
     this.props.addCart([]);
     this.props.refreshUserInfo(this.errorRefresh);
+    this.onclickSendData();
   };
 
   errorRefresh = code => {};
@@ -82,11 +115,15 @@ class CartDetail extends Component {
             <div>{item.name}</div>
           </div>
           <div className="w-3/12">
-            <Button
-              className="float-right"
-              icon="delete"
-              onClick={event => handleDeleteCart(item.id)}
-            />
+            <Popconfirm
+              placement="top"
+              title="Xóa Sách Khỏi Giỏ Mượn."
+              onConfirm={e => handleDeleteCart(item.id)}
+              okText="Có"
+              cancelText="Không"
+            >
+              <Button className="float-right" icon="delete" />
+            </Popconfirm>
           </div>
         </div>
       );

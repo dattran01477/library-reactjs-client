@@ -9,7 +9,7 @@ export class Page extends Component {
           {(this.props.header && this.props.header) || ""}
           {this.props.description && this.props.description}
         </div>
-        <div className="flex flex-col p-4">
+        <div className="flex flex-col">
           {this.props.content && this.props.content}
         </div>
       </div>

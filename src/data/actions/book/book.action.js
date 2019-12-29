@@ -1,6 +1,5 @@
-import { BASE_API } from "../../../share/constants";
 import Axios from "axios";
-import Cookies from "universal-cookie";
+import { BASE_API } from "../../../share/constants";
 export const GET_BOOKS = "GET_BOOKS";
 export const ADD_ITEM = "ADD_ITEM";
 export const CART_NAME = "borrowingCart";
@@ -18,8 +17,7 @@ export function getBooks(criteria) {
 }
 
 export function addToCart(cartItem) {
-  const cookies = new Cookies();
-  cookies.set(CART_NAME, JSON.stringify(cartItem), { path: "/app" });
+  localStorage.setItem(CART_NAME, JSON.stringify(cartItem));
   return {
     type: ADD_ITEM,
     cartItem: cartItem
@@ -49,4 +47,13 @@ export function getLanguage(successFunc) {
   const request = Axios.get(`${BASE_API}/languages`);
 
   request.then(response => successFunc(response.data, "languages"));
+}
+
+export function getBookByIds(ids) {
+  let books = [];
+  ids &&
+    ids.map(item =>
+      Axios.get(`${BASE_API}/books/${item}`).then(res => books.push(res.data))
+    );
+  return books;
 }

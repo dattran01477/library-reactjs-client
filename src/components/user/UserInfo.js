@@ -16,7 +16,9 @@ import { connect } from "react-redux";
 import * as Action from "../../data/actions/action-type";
 import Page from "../page";
 import { dataUser } from "./data";
+import { openMessage } from "../message/Message";
 import * as Constant from "../../share/constants";
+import Moment from "react-moment";
 const { TabPane } = Tabs;
 
 class UserInfo extends Component {
@@ -35,7 +37,8 @@ class UserInfo extends Component {
     {
       title: "Ngày mượn",
       dataIndex: "createDate",
-      key: "createDate"
+      key: "createDate",
+      render: item => <Moment parse="YYYY-MM-DD HH:mm:ss">{item}</Moment>
     },
     {
       title: "Số sách mượn",
@@ -91,12 +94,11 @@ class UserInfo extends Component {
         </div>
       );
     }
+
     return (
-      (lsBookCartItems.length > 0 &&
-        lsBookCartItems.map(item => (
-          <BookCartRow key={item._id} item={item} />
-        ))) ||
-      "Không có sách mượn"
+      (lsBookCartItems &&
+        lsBookCartItems.map(item => <BookCartRow item={item} />)) ||
+      "Không tồn tại sách"
     );
   };
 
@@ -106,7 +108,11 @@ class UserInfo extends Component {
   };
 
   saveInfo = () => {
-    this.props.saveInfoUser(this.state.form, this.props.auth.user._id);
+    this.props.saveInfoUser(
+      { ...this.props.auth, ...this.state.form },
+      this.props.auth.id,
+      this.onSuccessUpdate
+    );
     this.setState({ ...this.state, isEdit: false });
   };
 
@@ -124,9 +130,19 @@ class UserInfo extends Component {
     this.setState({ ...this.state, form: form });
   };
 
+  componentDidMount() {
+    this.setState({ ...this.state, form: this.props.auth });
+  }
+
+  onSuccessUpdate = () => {
+    this.props.refreshUser(this.errorExchangeUser);
+    openMessage("Cập nhập thông tin thành công.");
+  };
+
+  errorExchangeUser = code => {};
+
   render() {
     const data = this.props.auth;
-    console.log(data);
 
     return (
       <Page
@@ -141,7 +157,7 @@ class UserInfo extends Component {
         content={
           <div className="flex flex-row ">
             <div className="w-4/12 m-2">
-              <div class="max-w-sm rounded overflow-hidden shadow-lg p-4">
+              <div class="max-w-sm rounded overflow-hidden border p-4">
                 <div class="font-normal text-base mb-2">{data.name}</div>
                 <div className="flex flex-row">
                   {(data.status === Constant.USER_STATUS.active && (
@@ -203,7 +219,7 @@ class UserInfo extends Component {
               </div>
             </div>
             <div className="w-8/12 m-2">
-              <div class="w-full rounded overflow-hidden shadow-lg p-4">
+              <div class="w-full rounded overflow-hidden border p-4">
                 <div className="flex flex-col">
                   <div className="flex flex-row my-2">
                     <div className="w-6/12">
@@ -232,9 +248,7 @@ class UserInfo extends Component {
                       <div className="w-8/12">
                         <div className="flex flex-row">
                           <p className="w-2/5 font-semibold">Họ và tên: </p>
-                          <p className="w-3/5">
-                            {data.lastName + " " + data.firstName}
-                          </p>
+                          <p className="w-3/5">{data.name}</p>
                         </div>
                         <div className="flex flex-row">
                           <p className="w-2/5 font-semibold">
@@ -291,11 +305,7 @@ class UserInfo extends Component {
                           <p className="w-2/5 font-semibold">Họ và tên: </p>
                           <div className="w-3/5">
                             <Input
-                              value={
-                                this.state.form.name.length > 0
-                                  ? this.state.form.name
-                                  : data.name
-                              }
+                              value={this.state.form.name}
                               name="name"
                               onChange={this.onChange}
                             ></Input>
@@ -305,12 +315,8 @@ class UserInfo extends Component {
                           <p className="w-2/5 font-semibold">Số điện thoại </p>
                           <div className="w-3/5">
                             <Input
-                              value={
-                                this.state.form.phone.length > 0
-                                  ? this.state.form.phone
-                                  : data.phoneNumber
-                              }
-                              name="phone"
+                              value={this.state.form.phoneNumber}
+                              name="phoneNumber"
                               type="number"
                               onChange={this.onChange}
                             ></Input>
@@ -320,12 +326,9 @@ class UserInfo extends Component {
                           <p className="w-2/5 font-semibold">Email: </p>
                           <div className="w-3/5">
                             <Input
-                              value={
-                                this.state.form.email.length > 0
-                                  ? this.state.form.email
-                                  : data.email
-                              }
+                              value={this.state.form.email}
                               name="email"
+                              disabled
                               onChange={this.onChange}
                             ></Input>
                           </div>
@@ -371,7 +374,7 @@ class UserInfo extends Component {
                               <Barcode
                                 width={1}
                                 height={50}
-                                value={this.props.borrowDetail.Id}
+                                value={this.props.borrowDetail.id}
                               />
                             </div>
                             {/* end bar code */}
@@ -430,8 +433,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getBorrowingDetail: borrowingDetailID =>
     dispatch(Action.getBorrowingDetail(borrowingDetailID)),
-  saveInfoUser: (form, userId) => dispatch(Action.updateProfile(form, userId)),
-  getUserInfo: () => dispatch(Action.getUserInfo())
+  saveInfoUser: (form, userId, functionSucess) =>
+    dispatch(Action.updateProfile(form, userId, functionSucess)),
+  getUserInfo: () => dispatch(Action.getUserInfo()),
+  refreshUser: error => dispatch(Action.exchangeAuthWithServer(error))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);

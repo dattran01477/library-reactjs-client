@@ -102,23 +102,12 @@ export function login(form) {
     });
 }
 
-export function updateProfile(form, idUser) {
-  const config = {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-    }
-  };
-
-  const request = Axios.put(
-    `${BASE_API}/api/users/${idUser}`,
-    qs.stringify(form),
-    config
-  );
+export function updateProfile(form, idUser, successFunction) {
+  const request = Axios.put(`${BASE_API}/users/${idUser}`, form);
   return dispatch =>
     request.then(response => {
-      dispatch(getUserInfo(idUser));
+      console.log("xxx")
+      successFunction();
     });
 }
 
