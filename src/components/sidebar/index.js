@@ -2,20 +2,44 @@ import { Avatar } from "antd";
 import { PropTypes } from "prop-types";
 import React, { Component } from "react";
 import { Link, NavLink as NavLinkRRD } from "react-router-dom";
-import { Col, Collapse, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Navbar, NavbarBrand, NavItem, NavLink, Row } from "reactstrap";
+import * as Action from "../../data/actions/action-type";
+import {
+  Col,
+  Collapse,
+  Container,
+  Form,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Navbar,
+  NavbarBrand,
+  NavItem,
+  NavLink,
+  Row
+} from "reactstrap";
 
 class Sidebar extends Component {
   state = {
-    collapseOpen: false
+    collapseOpen: false,
+    topBook: []
   };
   constructor(props) {
     super(props);
     this.activeRoute.bind(this);
   }
 
-  handleClick = e => {
-   
+  handleClick = e => {};
+
+  componentDidMount() {
+    Action.getTopBooks(this.getBooksSucess, this.getBooksFail);
+  }
+
+  getBooksSucess = data => {
+    this.setState({ ...this.state, topBook: data.content });
   };
+
+  getBooksFail = err => {};
   // verifies if routeName is the one active (in browser input)
   activeRoute(routeName) {
     return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
@@ -25,6 +49,26 @@ class Sidebar extends Component {
     this.setState({
       collapseOpen: !this.state.collapseOpen
     });
+  };
+
+  rederTopBooks = data => {
+    let lsBook = [];
+    for (let i = 0; i < 5; i++) {
+      lsBook.push(
+        <div className="flex flex-row my-2" key={data[i].id}>
+          <div className="w-1/5 mr-2">
+            <Avatar shape="square" size="large" src={data[i].thumbnail} />
+          </div>
+          <div className="w-4/5 ">
+            <span className="inline-block align-middle font-normal text-sm">
+              <Link to={`/app/book/${data[i].id}`}>{data[i].name}</Link>
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    return lsBook;
   };
   // closes the collapse
   closeCollapse = () => {
@@ -205,66 +249,8 @@ class Sidebar extends Component {
             {/* Top sách mượn */}
             <div>
               <p className="font-bold">Top Sách Mượn Trong Tuần</p>
-              <div className="flex flex-row my-2">
-                <div className="w-1/5 mr-2">
-                  <Avatar
-                    shape="square"
-                    size="large"
-                    src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/7876/9781787632196.jpg"
-                  />
-                </div>
-                <div className="w-4/5 ">
-                  <span className="inline-block align-middle font-normal text-sm">
-                    Tôi đi code dạo
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex flex-row my-2">
-                <div className="w-1/5 mr-2">
-                  <Avatar
-                    shape="square"
-                    size="large"
-                    icon="user"
-                    src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9780/5713/9780571356829.jpg"
-                  />
-                </div>
-                <div className="w-4/5 ">
-                  <span className="inline-block align-middle font-normal text-sm">
-                    Ngủ rồi mới biết thế nào là sướng
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex flex-row my-2">
-                <div className="w-1/5 mr-2">
-                  <Avatar
-                    shape="square"
-                    size="large"
-                    src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/9126/9781912626076.jpg"
-                  />
-                </div>
-                <div className="w-4/5 ">
-                  <span className="inline-block align-middle font-normal text-sm">
-                    Anh nhớ cành cây nhỏ
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex flex-row my-2">
-                <div className="w-1/5 mr-2">
-                  <Avatar
-                    shape="square"
-                    size="large"
-                    src="https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/mid/9781/4063/9781406358094.jpg"
-                  />
-                </div>
-                <div className="w-4/5 ">
-                  <span className="inline-block align-middle font-normal text-sm">
-                    Tình là giấc mộng say
-                  </span>
-                </div>
-              </div>
+              {this.state.topBook.length > 0 &&
+                this.rederTopBooks(this.state.topBook)}
             </div>
           </Collapse>
         </Container>

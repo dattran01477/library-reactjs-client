@@ -8,6 +8,7 @@ import * as Constant from "../../share/constants";
 import Page from "../page";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import { openMessage } from "../message/Message";
 
 const { Step } = Steps;
 
@@ -30,10 +31,6 @@ function onError(error) {
   console.log("loi roi " + error);
 }
 
-function onMessageReceived(data) {
-  console.log(data);
-}
-
 class CartDetail extends Component {
   constructor(props) {
     super(props);
@@ -50,6 +47,11 @@ class CartDetail extends Component {
   };
 
   componentDidMount() {
+    if (this.props.cartItem.length === 0) {
+      openMessage("Bạn Không Có Sách Trong Giỏ", true);
+      this.props.history.push("/app/books");
+      return;
+    }
     this.updateBorowing();
     var socket = new SockJS(`${Constant.BASE_API}/ws`);
     stompClient = Stomp.over(socket);
@@ -57,11 +59,7 @@ class CartDetail extends Component {
     this.setState({ ...this.state, stompClient: stompClient });
   }
 
-  componentDidUpdate() {
-    if (this.state.borrowing.length === 0) {
-      this.props.history.push("/app/books");
-    }
-  }
+  componentDidUpdate() {}
 
   updateBorowing = () => {
     let borrowingTmp = { ...this.state.borrowing };

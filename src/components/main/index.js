@@ -82,17 +82,13 @@ class MainApp extends Component {
                       mode="horizontal"
                     >
                       <Menu.Item key="mail">
-                        <Icon type="mail" />
-                        Nội quy thư viện
+                        <Link to="/app/rule"> Nội quy thư viện</Link>
                       </Menu.Item>
                       <Menu.Item key="returnbook">
                         <Link to="/app/return-book">Đăng Ký Trả Sách</Link>
                       </Menu.Item>
-                      <Menu.Item key="alipay">
-                        <span>Liên lạc</span>
-                      </Menu.Item>
                       <Menu.Item key="introteam">
-                        <Link to="/app/contribute">Giới thiệu team</Link>
+                        <Link to="/app/team">Giới Thiệu Team</Link>
                       </Menu.Item>
 
                       <SubMenu title={<CartHeader className="p-2" />}>

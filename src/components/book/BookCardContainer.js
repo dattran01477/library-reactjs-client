@@ -1,18 +1,27 @@
-import { Carousel, Pagination, DatePicker, Input, Select, Button } from "antd";
+import { Button, Carousel, Input, Pagination, Select } from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { TraceSpinner } from "react-spinners-kit";
 import * as Action from "../../data/actions/action-type";
+import * as Constant from "../../share/constants";
 import { NUMBER_OBJECT_PAGE } from "../../share/constants";
 import { openMessage } from "../message/Message";
 import Page from "../page";
 import BookItem from "./BookItem";
-import * as Constant from "../../share/constants";
 
 const { Option } = Select;
 const { Search } = Input;
-const { RangePicker } = DatePicker;
+
+const criteriaDefault = {
+  pageIndex: 0,
+  pageSize: 25,
+  query: "",
+  isLoading: false,
+  categoryId: null,
+  authorId: null,
+  languageId: null
+};
 
 export class BookCardContainer extends Component {
   constructor(props) {
@@ -20,15 +29,7 @@ export class BookCardContainer extends Component {
     this.state = {
       isLoading: false,
       books: [],
-      criteria: {
-        pageIndex: 0,
-        pageSize: 25,
-        query: "",
-        isLoading: false,
-        categoryId: null,
-        authorId: null,
-        languageId: null
-      },
+      criteria: criteriaDefault,
       selectData: {
         categories: [],
         authors: [],
@@ -42,10 +43,12 @@ export class BookCardContainer extends Component {
   }
 
   isBorrowingBook = Bookid => {
-    console.log(Bookid)
-    console.log(this.props.auth)
+    console.log(Bookid);
+    console.log(this.props.auth);
     for (let i = 0; i < this.props.auth.borrowings.length; i++) {
-      if ( this.props.auth.borrowings[i].status !== Constant.BORROW_STATUS.returned ) {
+      if (
+        this.props.auth.borrowings[i].status !== Constant.BORROW_STATUS.returned
+      ) {
         for (let j = 0; j < this.props.auth.borrowings[i].bookIds.length; j++) {
           if (this.props.auth.borrowings[i].bookIds[j].id === Bookid) {
             return true;
@@ -117,6 +120,11 @@ export class BookCardContainer extends Component {
     }
   }
 
+  clearFilter = () => {
+    this.props.getBooks(criteriaDefault);
+    this.setState({ ...this.state, criteria: criteriaDefault });
+  };
+
   render() {
     let books = this.props.data.content;
     let { categories, authors, languages } = this.state.selectData;
@@ -129,38 +137,16 @@ export class BookCardContainer extends Component {
           <div class="mb-2 justify-center">
             <Carousel autoplay>
               <div className="w-full">
-                <img
-                  className="w-full h-full"
-                  src="http://mikeloomis.co/wp-content/uploads/2015/06/Slider-1-BOOKS.jpg"
-                  alt="anh1"
-                />
+                <img className="w-full" src="/books4.png" alt="anh1" />
               </div>
               <div className="w-full">
-                <img
-                  className="w-full"
-                  src="http://mikeloomis.co/wp-content/uploads/2015/06/Slider-1-BOOKS.jpg"
-                  alt="anh1"
-                />
-              </div>
-              <div className="w-full">
-                <img
-                  className="w-full"
-                  src="http://mikeloomis.co/wp-content/uploads/2015/06/Slider-1-BOOKS.jpg"
-                  alt="anh1"
-                />
-              </div>
-              <div className="w-full">
-                <img
-                  className="w-full"
-                  src="http://mikeloomis.co/wp-content/uploads/2015/06/Slider-1-BOOKS.jpg"
-                  alt="anh1"
-                />
+                <img className="w-full" src="/books.png" alt="anh1" />
               </div>
             </Carousel>
           </div>
         }
         content={
-          <div>
+          <div className="pb-4">
             {/* panel filter */}
             <div className="flex flex-col border-b-2  border-black p-4">
               <div className="font-bold text-gray-700  border-gray-700  border-b-2  mb-4">
@@ -233,15 +219,6 @@ export class BookCardContainer extends Component {
                   </div>
                 </div>
 
-                <div className="mx-4">
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                      Thời Gian Xuất Bản
-                    </label>
-                    <RangePicker />
-                  </div>
-                </div>
-
                 <Search
                   placeholder="Tên sách"
                   onChange={value =>
@@ -261,6 +238,16 @@ export class BookCardContainer extends Component {
                     Tìm Kiếm
                   </Button>
                 </div>
+                <div className="mx-4">
+                  <Button
+                    className="mt-4"
+                    type="primary"
+                    icon="delete"
+                    onClick={this.clearFilter}
+                  >
+                    Xóa Fillter
+                  </Button>
+                </div>
               </div>
             </div>
             <div className="flex md:flex-row flex-wrap p-2 h-full">
@@ -269,7 +256,7 @@ export class BookCardContainer extends Component {
                   item =>
                     this.isBorrowingBook(item.id) === false && (
                       <BookItem
-                        totalBorrowings={5}
+                        totalBorrowings={item.amountBorrowing}
                         totalBooks={item.amountBook}
                         title={item.name}
                         content={item.shortDescription}

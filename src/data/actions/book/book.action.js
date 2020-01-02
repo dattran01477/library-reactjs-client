@@ -16,6 +16,13 @@ export function getBooks(criteria) {
     );
 }
 
+export function getTopBooks(funcSuccess, funcFail) {
+  const request = Axios.get(`${BASE_API}/books/top-book`);
+  request
+    .then(response => funcSuccess(response.data))
+    .catch(err => funcFail(err));
+}
+
 export function addToCart(cartItem) {
   localStorage.setItem(CART_NAME, JSON.stringify(cartItem));
   return {

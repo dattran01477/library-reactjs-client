@@ -1,4 +1,15 @@
-import { Avatar, Button, Comment, Divider, Form, Input, List, PageHeader, Skeleton, Tabs } from "antd";
+import {
+  Avatar,
+  Button,
+  Comment,
+  Divider,
+  Form,
+  Input,
+  List,
+  PageHeader,
+  Skeleton,
+  Tabs
+} from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -90,13 +101,21 @@ export class BookDetail extends Component {
   };
 
   componentDidUpdate() {
-    if (this.props.bookDetail !== null && this.state.detail === null) {
-      this.props.getComment(this.props.bookDetail.id, this.successSubmitComment);
-      this.setState({
-        ...this.state,
-        detail: this.props.bookDetail,
-        isLoading: false
-      });
+ 
+    if (this.props.bookDetail !== null) {
+      if (this.state.detail === null) {
+        this.props.getComment(
+          this.props.bookDetail.id,
+          this.successSubmitComment
+        );
+        this.setState({
+          ...this.state,
+          detail: this.props.bookDetail,
+          isLoading: false
+        });
+      } else if (this.props.match.params.id !== this.props.bookDetail.id) {
+        this.getBookDetailByCriteria();
+      }
     }
   }
   render() {
